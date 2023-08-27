@@ -1,4 +1,4 @@
-package com.reswizard;
+package com.reswizard.Util;
 
 import com.reswizard.Models.Person;
 import com.reswizard.Services.PeopleService;
