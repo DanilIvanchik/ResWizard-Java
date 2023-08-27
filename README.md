@@ -1,6 +1,5 @@
-Project Title: ResWizard - Resume Hosting and Customizable Download Page
+ResWizard - Resume Hosting and Customizable Download Page
 
-Project Description:
 ResWizard is a Java-based web application hosted on GitHub that simplifies the process of hosting and sharing resumes. Its primary function is to create a user-friendly webpage where individuals can showcase their resumes and offer the unique ability to customize the download format. With ResWizard, users can effortlessly share their resumes, and visitors to the page can download them in the format of their choice.
 
 Key Features:
