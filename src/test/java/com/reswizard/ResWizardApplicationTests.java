@@ -1,4 +1,4 @@
-package com.example.reswizard;
+package com.reswizard;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
