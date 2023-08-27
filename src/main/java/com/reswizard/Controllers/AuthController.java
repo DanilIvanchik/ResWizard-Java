@@ -3,20 +3,15 @@ package com.reswizard.Controllers;
 import com.reswizard.DTO.AuthenticationDTO;
 import com.reswizard.DTO.PersonDTO;
 import com.reswizard.Models.Person;
-import com.reswizard.PersonValidator;
+import com.reswizard.Util.PersonValidator;
 import com.reswizard.Services.RegistrationService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Collections;
-import java.util.Map;
 
 @Controller
 @RequestMapping("/auth")
@@ -35,25 +30,19 @@ public class AuthController {
         this.authenticationManager = authenticationManager;
     }
 
-
-
-    @PostMapping("/login")
-    public String performLogin(@RequestBody AuthenticationDTO authenticationDTO){
-        return null;
-    }
-
     @GetMapping("/login")
     public String loginPage(){
         return "loginPage";
     }
 
     @GetMapping("/registration")
-    public String registrationPage(@ModelAttribute("person") Person person){
+    public String registrationPage(@ModelAttribute("personDTO") PersonDTO personDTO){
+
         return "Registration";
     }
 
     @PostMapping("/registration")
-    public String performRegistration(@RequestBody @Valid PersonDTO personDTO, BindingResult bindingResult){
+    public String performRegistration(@ModelAttribute("personDTO") @Valid PersonDTO personDTO, BindingResult bindingResult){
 
         Person person = convertToPerson(personDTO);
 
@@ -62,7 +51,7 @@ public class AuthController {
             return "redirect:/auth/registration";
         }
         registrationService.register(person);
-        return "redirect:/hello";
+        return "redirect:/auth/login";
     }
 
     private Person convertToPerson(PersonDTO personDTO){
