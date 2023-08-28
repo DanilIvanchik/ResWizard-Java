@@ -1,0 +1,67 @@
+// Form
+.form
+  .form-toggle
+  .form-panel.one
+    .form-header
+      h1 Account Login
+    .form-content
+      form
+        .form-group
+          label(for='username') Username
+          input(type='text'
+                id='username'
+                name='username'
+                required)
+        .form-group
+          label(for='password') Password
+          input(type='password'
+                id='password'
+                name='password'
+                required)
+        .form-group
+          label.form-remember
+            input(type='checkbox')
+            | Remember Me
+          a.form-recovery(href='#') Forgot Password?
+        .form-group
+          button(type='submit') Log In
+  .form-panel.two
+    .form-header
+      h1 Register Account
+    .form-content
+      form
+        .form-group
+          label(for='username') Username
+          input(type='text'
+                id='username'
+                name='username'
+                required)
+        .form-group
+          label(for='password') Password
+          input(type='password'
+                id='password'
+                name='password'
+                required)
+        .form-group
+          label(for='cpassword') Confirm Password
+          input(type='password'
+                id='cpassword'
+                name='cpassword'
+                required)
+        .form-group
+          label(for='email') Email Address
+          input(type='email'
+                id='email'
+                name='email'
+                required)
+        .form-group
+          button(type='submit') Register
+.pen-footer
+  a(href='https://www.behance.net/gallery/30478397/Login-Form-UI-Library'
+    target='_blank')
+    i.material-icons arrow_backward
+    | View on Behance
+  a(href='https://github.com/andyhqtran/UI-Library/tree/master/Login%20Form'
+    target='_blank')
+    | View on Github
+    i.material-icons arrow_forward

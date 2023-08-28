@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+  <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons'>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+
+<div class="form">
+  <div class="form-toggle"></div>
+  <div class="form-panel one">
+    <div class="form-header">
+      <h1>Registration</h1>
+    </div>
+    <div class="form-content">
+      <form th:method="POST" th:action="@{/auth/registration}" th:object="${personDTO}">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" th:field="*{username}" id="username" required="required"/>
+          <div style="color:white" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name Error!</div>
+        </div>
+        <div class="form-group">
+          <label for="age">Age</label>
+          <input type="text" th:field="*{age}" id="age" required="required"/>
+          <div style="color:white" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age Error!</div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="text" th:field="*{email}" id="email" required="required"/>
+          <div style="color:white" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email Error!</div>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="text" th:field="*{password}" id="password" required="required"/>
+          <div style="color:white" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error!</div>
+        </div>
+        <div class="form-group">
+          <button type="submit">Register</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!--<div class="form-panel two">-->
+<!--  <div class="form-header">-->
+<!--    <h1>Register Account</h1>-->
+<!--  </div>-->
+<!--  <div class="form-content">-->
+<!--    <form th:method="POST" th:action="@{/auth/registration}" th:object="${personDTO}">-->
+<!--      <div class="form-group">-->
+<!--        <label for="username">Username</label>-->
+<!--        <input type="text" th:field="*{username}" id="username" required="required"/>-->
+<!--        <div style="color:white" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name Error!</div>-->
+<!--      </div>-->
+<!--      <div class="form-group">-->
+<!--        <label for="age">Age</label>-->
+<!--        <input type="text" th:field="*{age}" id="age" required="required"/>-->
+<!--        <div style="color:white" th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Age Error!</div>-->
+<!--      </div>-->
+<!--      <div class="form-group">-->
+<!--        <label for="email">Email</label>-->
+<!--        <input type="text" th:field="*{email}" id="email" required="required"/>-->
+<!--        <div style="color:white" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">email Error!</div>-->
+<!--      </div>-->
+<!--      <div class="form-group">-->
+<!--        <label for="password">Password</label>-->
+<!--        <input type="text" th:field="*{password}" id="password" required="required"/>-->
+<!--        <div style="color:white" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error!</div>-->
+<!--      </div>-->
+<!--      <div class="form-group">-->
+<!--        <button type="submit">Register</button>-->
+<!--      </div>-->
+<!--    </form>-->
+<!--  </div>-->
+<!--</div>-->
+</body>
+</html>

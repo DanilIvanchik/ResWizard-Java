@@ -9,11 +9,9 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 public class SecurityConfig {
@@ -46,6 +44,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws  Exception{
         http.authorizeHttpRequests(req -> req
                         .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/css/style.css","/js/bootstrap.js", "/css/style.scss").permitAll()
                         .requestMatchers("/auth/login", "/error", "/auth/registration").permitAll()
                         .anyRequest().hasAnyRole("USER", "ADMIN"))
                 .formLogin(form -> form.loginPage("/auth/login")

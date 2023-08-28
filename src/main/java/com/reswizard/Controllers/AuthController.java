@@ -1,6 +1,5 @@
 package com.reswizard.Controllers;
 
-import com.reswizard.DTO.AuthenticationDTO;
 import com.reswizard.DTO.PersonDTO;
 import com.reswizard.Models.Person;
 import com.reswizard.Util.PersonValidator;
@@ -32,13 +31,13 @@ public class AuthController {
 
     @GetMapping("/login")
     public String loginPage(){
-        return "loginPage";
+        return "LoginPage";
     }
 
     @GetMapping("/registration")
     public String registrationPage(@ModelAttribute("personDTO") PersonDTO personDTO){
 
-        return "Registration";
+        return "RegistrationPage";
     }
 
     @PostMapping("/registration")
