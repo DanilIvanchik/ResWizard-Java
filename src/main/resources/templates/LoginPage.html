@@ -10,12 +10,9 @@
 
   <link rel="stylesheet" th:href="@{/css/style.css}">
 
-  
 </head>
 
 <body>
-  
-<!-- Form-->
 <div class="form">
   <div class="form-toggle"></div>
   <div class="form-panel one">
@@ -23,25 +20,33 @@
       <h1>Account Login</h1>
     </div>
     <div class="form-content">
-      <form name="f" method="POST" action="/process_login">
+      <form name="f" method="POST" action="/process_login" th:object="${authenticationDTO}">
 
         <input type="hidden" th:name="${_csrf.parameterName}" th:value = "${_csrf.token}"/>
 
         <div class="form-group">
           <label for="username">Username</label>
           <input type="text" id="username" name="username" required="required"/>
+          <div style="color:#4285F4" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name Error!</div>
         </div>
         <div class="form-group">
           <label for="password">Password</label>
           <input type="password" id="password" name="password" required="required"/>
+          <div style="color:#4285F4" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error!</div>
         </div>
-<!--        <div class="form-group">-->
-<!--          <label class="form-remember">-->
-<!--            <input type="checkbox"/>Remember Me-->
-<!--          </label><a class="form-recovery" href="#">Forgot Password?</a>-->
-<!--        </div>-->
+        <div class="form-group">
+          <label class="form-remember">
+            <input type="checkbox"/>Remember Me
+          </label><a class="form-recovery" href="#">Forgot Password?</a>
+        </div>
         <div class="form-group">
           <button type="submit">Log In</button>
+        </div>
+      </form>
+      </br>
+      <form name="f" method="GET" action="/auth/registration">
+        <div class="form-group">
+          <button type="submit">Registration</button>
         </div>
       </form>
     </div>

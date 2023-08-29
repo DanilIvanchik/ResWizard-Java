@@ -1,7 +1,9 @@
 package com.reswizard.Controllers;
 
+import com.reswizard.DTO.AuthenticationDTO;
 import com.reswizard.DTO.PersonDTO;
 import com.reswizard.Models.Person;
+import com.reswizard.Util.AuthValidator;
 import com.reswizard.Util.PersonValidator;
 import com.reswizard.Services.RegistrationService;
 import jakarta.validation.Valid;
@@ -19,19 +21,28 @@ public class AuthController {
     private final PersonValidator personValidator;
     private final RegistrationService registrationService;
     private final ModelMapper modelMapper;
-    private final AuthenticationManager authenticationManager;
+    private final AuthValidator authValidator;
 
     @Autowired
-    public AuthController(PersonValidator personValidator, RegistrationService registrationService, ModelMapper modelMapper, AuthenticationManager authenticationManager) {
+    public AuthController(PersonValidator personValidator, RegistrationService registrationService, ModelMapper modelMapper, AuthValidator authValidator) {
         this.personValidator = personValidator;
         this.registrationService = registrationService;
         this.modelMapper = modelMapper;
-        this.authenticationManager = authenticationManager;
+        this.authValidator = authValidator;
     }
 
     @GetMapping("/login")
-    public String loginPage(){
+    public String loginPage(@ModelAttribute("authenticationDTO") AuthenticationDTO authenticationDTO){
         return "LoginPage";
+    }
+
+    @PostMapping("/login")
+    public String loginPage(@ModelAttribute("authenticationDTO") @Valid AuthenticationDTO authenticationDTO, BindingResult bindingResult){
+        authValidator.validate(authenticationDTO, bindingResult);
+        if (bindingResult.hasErrors()){
+            return "LoginPage";
+        }
+        return "redirect:/process_login";
     }
 
     @GetMapping("/registration")
@@ -47,7 +58,7 @@ public class AuthController {
 
         personValidator.validate(person, bindingResult);
         if (bindingResult.hasErrors()){
-            return "redirect:/auth/registration";
+            return "RegistrationPage";
         }
         registrationService.register(person);
         return "redirect:/auth/login";

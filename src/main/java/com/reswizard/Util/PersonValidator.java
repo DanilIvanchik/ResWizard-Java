@@ -26,7 +26,10 @@ public class PersonValidator implements Validator {
     public void validate(Object target, Errors errors) {
         Person person = (Person) target;
         if (peopleService.findDuplicate(person.getUsername())){
-            errors.rejectValue("username", "", "Username error!");
+            errors.rejectValue("username", "", "The username you've chosen is unavailable. Please select a different one.");
+        }
+        if (peopleService.findUserByEmail(person.getEmail())){
+            errors.rejectValue("email", "", "This email address is already registered. Please use a different email address.");
         }
     }
 }

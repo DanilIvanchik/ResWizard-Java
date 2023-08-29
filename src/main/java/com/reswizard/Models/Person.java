@@ -23,8 +23,8 @@ public class Person {
     @Column(name = "age")
     private int age;
 
-    @Email
-    @NotNull(message = "Enter your Email.")
+    @Email(message = "It is not an email. Enter your Email.")
+    @NotNull(message = "This field should not be empty. Enter your Email.")
     private String email;
 
     @Size(min = 8, max = 100, message = "Password out of range. Password size should be between 8 and 100 characters.")
