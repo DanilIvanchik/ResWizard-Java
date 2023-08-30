@@ -34,7 +34,7 @@ public class StaticOutputController {
     @GetMapping("/js/{code}.js")
     @ResponseBody
     public ResponseEntity<String> js(@PathVariable("code") String code) throws IOException {
-        InputStream is = getClass().getClassLoader().getResourceAsStream("static/js/"+code+".js");
+        InputStream is = getClass().getClassLoader().getResourceAsStream("static/js/" +code+".js");
         BufferedReader bf = new BufferedReader(new InputStreamReader(is));
         StringBuffer sb = new StringBuffer();
         String line = null;
@@ -43,7 +43,31 @@ public class StaticOutputController {
         }
 
         final HttpHeaders httpHeaders= new HttpHeaders();
-        httpHeaders.add("Content-Type", "text/css; charset=utf-8");
+        httpHeaders.add("Content-Type", "text/js; charset=utf-8");
+        return new ResponseEntity<String>( sb.toString(), httpHeaders, HttpStatus.OK);
+    }
+
+    @GetMapping("/images/{code}")
+    @ResponseBody
+    public ResponseEntity<String> images(@PathVariable("code") String code) throws IOException {
+        InputStream is = getClass().getClassLoader().getResourceAsStream("static/images/" +code);
+        BufferedReader bf = new BufferedReader(new InputStreamReader(is));
+        StringBuffer sb = new StringBuffer();
+        String line = null;
+        while((line = bf.readLine()) != null){
+            sb.append(line+"\n");
+        }
+        String end;
+        if (code.charAt(code.length()-3) == 's'){
+            end = "svg+xml";
+        } else if (code.charAt(code.length()-3) == 'j') {
+            System.out.println("jpg");
+            end = "jpg";
+        }else{
+            end = "png";
+        }
+        final HttpHeaders httpHeaders= new HttpHeaders();
+        httpHeaders.add("Content-Type", "image/"+end);
         return new ResponseEntity<String>( sb.toString(), httpHeaders, HttpStatus.OK);
     }
 }

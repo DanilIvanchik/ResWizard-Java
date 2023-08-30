@@ -21,7 +21,7 @@ public class MainController {
 
     @GetMapping("/hello")
     public String sayHello(){
-        return "MainPage";
+        return "index";
     }
 
     @GetMapping("/showUserInfo")
