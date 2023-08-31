@@ -3,6 +3,8 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
+!**/static/css/bootstrap.css
+!**/static/css/styles.css
 
 ### STS ###
 .apt_generated
@@ -31,4 +33,3 @@ build/
 
 ### VS Code ###
 .vscode/
-/static/css/bootstrap.css
