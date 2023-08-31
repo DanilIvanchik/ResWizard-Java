@@ -1,49 +1,4 @@
-/* Template: Evolo - StartUp HTML Landing Page Template
-   Author: Inovatik
-   Created: June 2019
-   Description: Master CSS file
-*/
 
-/*****************************************
-Table Of Contents:
-
-01. General Styles
-02. Preloader
-03. Navigation
-04. Header
-05. Customers
-06. Services
-07. Details 1
-08. Details 2
-09. Details Lightboxes
-10. Pricing
-11. Request
-12. Video
-13. Testimonials
-14. About
-15. Contact
-16. Footer
-17. Copyright
-18. Back To Top Button
-19. Extra Pages
-20. Media Queries
-******************************************/
-
-/*****************************************
-Colors:
-- Backgrounds - turquoise #00bfd8
-- Backgrounds - blue #0079f9
-- Backgrounds - light gray #f7fcfd
-- Buttons, bullets, icons, links - turquoise #00bfd8
-- Cards border, inputs border - light gray #c4d8dc
-- Text headers, navbar links - black #393939
-- Text body - black #626262
-******************************************/
-
-
-/******************************/
-/*     01. General Styles     */
-/******************************/
 body,
 html {
     width: 100%;
