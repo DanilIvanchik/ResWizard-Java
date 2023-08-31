@@ -47,7 +47,7 @@ public class StaticOutputController {
         return new ResponseEntity<String>( sb.toString(), httpHeaders, HttpStatus.OK);
     }
 
-    @GetMapping("/images/{code}")
+    @GetMapping("/static/images/{code}")
     @ResponseBody
     public ResponseEntity<String> images(@PathVariable("code") String code) throws IOException {
         InputStream is = getClass().getClassLoader().getResourceAsStream("static/images/" +code);
@@ -60,14 +60,17 @@ public class StaticOutputController {
         String end;
         if (code.charAt(code.length()-3) == 's'){
             end = "svg+xml";
+            System.out.println(end);
         } else if (code.charAt(code.length()-3) == 'j') {
-            System.out.println("jpg");
-            end = "jpg";
+            end = "jpeg";
+            System.out.println(end);
         }else{
             end = "png";
+            System.out.println(end);
         }
         final HttpHeaders httpHeaders= new HttpHeaders();
         httpHeaders.add("Content-Type", "image/"+end);
         return new ResponseEntity<String>( sb.toString(), httpHeaders, HttpStatus.OK);
     }
+
 }

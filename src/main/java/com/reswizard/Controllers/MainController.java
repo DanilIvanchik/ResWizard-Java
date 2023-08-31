@@ -21,7 +21,7 @@ public class MainController {
 
     @GetMapping("/hello")
     public String sayHello(){
-        return "index";
+        return "MainPage";
     }
 
     @GetMapping("/showUserInfo")
@@ -31,6 +31,11 @@ public class MainController {
         PersonDetail personDetails = (PersonDetail) authentication.getPrincipal();
 
         return personDetails.getUsername();
+    }
+
+    @GetMapping("/logout")
+    public String logout(){
+        return "redirect:/logout";
     }
 
     @GetMapping("/admin")
