@@ -32,4 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 
-/static/css
+/resources/static/css
