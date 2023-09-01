@@ -1,8 +1,11 @@
 package com.reswizard.Models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Entity
 @Table(name = "Person")
@@ -33,5 +36,9 @@ public class Person {
 
     @Column(name = "role")
     private String role;
+
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    @JsonBackReference
+    private List<Resume> resumes;
 
 }
