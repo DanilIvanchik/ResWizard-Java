@@ -44,12 +44,13 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws  Exception{
         http.authorizeHttpRequests(req -> req
                         .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/helloUser").hasRole("USER")
                         .requestMatchers("/css/style.css","/js/bootstrap.js", "/css/style.scss").permitAll()
-                        .requestMatchers("/auth/login", "/error", "/auth/registration").permitAll()
-                        .anyRequest().hasAnyRole("USER", "ADMIN"))
+                        .requestMatchers("/auth/login", "/error", "/auth/registration", "/hello").permitAll()
+                        .requestMatchers("/helloUser").hasRole("USER").anyRequest().permitAll())
                 .formLogin(form -> form.loginPage("/auth/login")
                         .loginProcessingUrl("/process_login")
-                        .defaultSuccessUrl("/hello", true)
+                        .defaultSuccessUrl("/helloUser", true)
                         .failureForwardUrl("/auth/login?error"))
                 .logout(logout -> logout.logoutUrl("/logout")
                         .logoutSuccessUrl("/auth/login"));

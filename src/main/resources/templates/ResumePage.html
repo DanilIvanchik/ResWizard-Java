@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <p th:text="${person.getUsername() + ', ' + person.getId()}">VALUE</p>
+
+    <form th:method="POST" th:action="@{/person/current}" enctype="multipart/form-data">
+        <input type="file" name="fileToUpload" id="fileToUpload">
+        <input type="submit" value="Upload the file" name="submit">
+    </form>
+
+</body>
+</html>

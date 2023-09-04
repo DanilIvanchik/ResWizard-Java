@@ -21,6 +21,11 @@ public class MainController {
 
     @GetMapping("/hello")
     public String sayHello(){
+        return "MainPageLogin";
+    }
+
+    @GetMapping("/helloUser")
+    public String helloUser(){
         return "MainPage";
     }
 
@@ -31,11 +36,6 @@ public class MainController {
         PersonDetail personDetails = (PersonDetail) authentication.getPrincipal();
 
         return personDetails.getUsername();
-    }
-
-    @GetMapping("/logout")
-    public String logout(){
-        return "redirect:/logout";
     }
 
     @GetMapping("/admin")

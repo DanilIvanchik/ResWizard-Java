@@ -19,12 +19,12 @@ public class Resume {
     @Column(name = "title")
     private String title;
 
-    @NotNull(message = "Add your resume in pdf format.")
+    @NotNull(message = "Add your resume in any format.")
     @Column(name = "file_resume")
     private File resume;
 
     @ManyToOne
-    @JoinColumn(name = "id", referencedColumnName = "id")
+    @JoinColumn(name = "owner_id", referencedColumnName = "id")
     @JsonManagedReference
     private Person owner;
 }

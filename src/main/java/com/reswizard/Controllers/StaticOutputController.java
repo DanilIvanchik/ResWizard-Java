@@ -60,13 +60,10 @@ public class StaticOutputController {
         String end;
         if (code.charAt(code.length()-3) == 's'){
             end = "svg+xml";
-            System.out.println(end);
         } else if (code.charAt(code.length()-3) == 'j') {
             end = "jpeg";
-            System.out.println(end);
         }else{
             end = "png";
-            System.out.println(end);
         }
         final HttpHeaders httpHeaders= new HttpHeaders();
         httpHeaders.add("Content-Type", "image/"+end);
