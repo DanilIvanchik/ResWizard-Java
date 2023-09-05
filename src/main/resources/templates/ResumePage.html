@@ -8,10 +8,29 @@
 
     <p th:text="${person.getUsername() + ', ' + person.getId()}">VALUE</p>
 
-    <form th:method="POST" th:action="@{/person/current}" enctype="multipart/form-data">
-        <input type="file" name="fileToUpload" id="fileToUpload">
-        <input type="submit" value="Upload the file" name="submit">
-    </form>
+<!--    <div th:if="${message}">-->
+<!--        <h2 th:text="${message}"/>-->
+<!--    </div>-->
+    <div th:each="resume : ${resumes}">
+        <p th:text="${resume.getTitle()}"></p>
+    </div>
+
+    <div>
+        <form th:method="POST" enctype="multipart/form-data" th:action="@{/person/}">
+            <table>
+                <tr><td>File to upload:</td><td><input type="file" name="file" /></td></tr>
+                <tr><td></td><td><input type="submit" value="Upload" /></td></tr>
+            </table>
+        </form>
+    </div>
+
+<!--    <div>-->
+<!--        <ul>-->
+<!--            <li th:each="file : ${files}">-->
+<!--                <a th:href="${file}" th:text="${file}" />-->
+<!--            </li>-->
+<!--        </ul>-->
+<!--    </div>-->
 
 </body>
 </html>

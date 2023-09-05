@@ -62,4 +62,9 @@ public class PeopleService {
             return false;
         }
     }
+
+    @Transactional
+    public void save(Person person) {
+        peopleRepo.save(person);
+    }
 }

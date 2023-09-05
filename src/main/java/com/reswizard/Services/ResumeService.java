@@ -29,5 +29,10 @@ public class ResumeService {
         resumeRepository.save(resume);
     }
 
+    @Transactional
+    public void save(Resume resume){
+        resumeRepository.save(resume);
+    }
+
 
 }
