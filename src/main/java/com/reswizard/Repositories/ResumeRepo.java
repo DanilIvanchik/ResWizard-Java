@@ -10,5 +10,6 @@ import java.util.List;
 public interface ResumeRepo extends JpaRepository<Resume, Integer> {
 
     List<Resume> findAllByOwner_Id(int id);
+    Resume findResumeById(int id);
 
 }
