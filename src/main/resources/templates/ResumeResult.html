@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+    <p th:text="${person.getUsername() + ', ' + person.getId()}">VALUE</p>
+
+    <div th:each="resume : ${resumes}">
+        <a th:href="@{/resumes/{id}(id=${resume.getId()})}"
+           th:text="${resume.getTitle()}">Resume</a>
+    </div>
+
+</body>
+</html>

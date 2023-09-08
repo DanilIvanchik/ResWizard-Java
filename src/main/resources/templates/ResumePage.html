@@ -25,6 +25,12 @@
         </form>
     </div>
 
+    <div>
+        <form th:method="GET" enctype="multipart/form-data" th:action="@{/resumes/show_resumes/{id}(id=${person.getId()})}">
+                <tr><td></td><td><input type="submit" value="Get your resume" /></td></tr>
+        </form>
+    </div>
+
 <!--    <div>-->
 <!--        <ul>-->
 <!--            <li th:each="file : ${files}">-->

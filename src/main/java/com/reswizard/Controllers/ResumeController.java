@@ -57,11 +57,18 @@ public class ResumeController {
 
 
     @RequestMapping(value = "/{id}")
-    public @ResponseBody void handleFileDownload(@PathVariable("id") int id, HttpServletResponse response){
-        String fileName = resumeService.findResumeById(id).getTitle();
+    public @ResponseBody void handleFileDownload(@PathVariable("id") int ResumeId, HttpServletResponse response){
+        String fileName = resumeService.findResumeById(ResumeId).getTitle();
         resumeService.handleResumeFileDownload(fileName, response, uploadPath);
     }
 
+    @GetMapping(value = "/show_resumes/{id}")
+    public String showResumePage(@PathVariable("id") int PersonId,Model model){
+        Person currentPerson = peopleService.findPersonById(PersonId);
+        model.addAttribute("person", currentPerson);
+        model.addAttribute("resumes", currentPerson.getResumes());
+        return "ResumeResult";
+    }
 
     @ExceptionHandler(StorageFileNotFoundException.class)
     public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {

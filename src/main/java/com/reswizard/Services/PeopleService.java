@@ -63,6 +63,10 @@ public class PeopleService {
         }
     }
 
+    public Person findPersonById(int id){
+        return peopleRepo.findPersonById(id).get();
+    }
+
     @Transactional
     public void save(Person person) {
         peopleRepo.save(person);

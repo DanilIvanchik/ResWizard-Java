@@ -61,14 +61,14 @@ public class ResumeService {
         response.setHeader("Content-Disposition", "attachment; filename=" +fileName);
         response.setHeader("Content-Transfer-Encoding", "binary");
         try {
-            BufferedOutputStream bos = new BufferedOutputStream(response.getOutputStream());
-            FileInputStream fis = new FileInputStream(uploadPath+fileName);
+            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(response.getOutputStream());
+            FileInputStream fileInputStream = new FileInputStream(uploadPath+fileName);
             int len;
             byte[] buf = new byte[1024];
-            while((len = fis.read(buf)) > 0) {
-                bos.write(buf,0,len);
+            while((len = fileInputStream.read(buf)) > 0) {
+                bufferedOutputStream.write(buf,0,len);
             }
-            bos.close();
+            bufferedOutputStream.close();
             response.flushBuffer();
         }
         catch(IOException e) {
