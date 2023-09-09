@@ -1,13 +1,10 @@
 package com.reswizard.Models;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.reswizard.Util.Languages;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
 
 @Entity
 @Data
@@ -32,13 +29,18 @@ public class Resume {
     @JsonManagedReference
     private Person owner;
 
+    @Column(name = "language")
+    @Enumerated(EnumType.STRING)
+    private Languages language;
+
+    public Resume(@NotNull(message = "Enter resume title.") String title, @NotNull(message = "Add your resume in any format.") String path, Person owner, Languages language) {
+        this.title = title;
+        this.path = path;
+        this.owner = owner;
+        this.language = language;
+    }
     public Resume() {
 
     }
 
-    public Resume(String title, String path, Person person) {
-        this.title = title;
-        this.path = path;
-        this.owner = person;
-    }
 }

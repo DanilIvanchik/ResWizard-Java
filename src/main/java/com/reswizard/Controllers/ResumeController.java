@@ -4,6 +4,7 @@ import com.reswizard.Models.Person;
 import com.reswizard.Models.Resume;
 import com.reswizard.Services.PeopleService;
 import com.reswizard.Services.ResumeService;
+import com.reswizard.Util.Languages;
 import com.reswizard.Util.StorageFileNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
@@ -18,6 +19,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,6 +46,9 @@ public class ResumeController {
     @GetMapping("/")
     public String showAllPersonResumes(Model model){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        List<Languages> languageOptions = Arrays.asList(Languages.UKRAINIAN, Languages.CHINESE, Languages.SPANISH, Languages.ENGLISH, Languages.GERMAN);
+        model.addAttribute("options", languageOptions);
+        model.addAttribute("selectedOption", Languages.ENGLISH);
         Person currentPerson = peopleService.findUserByUsername(authentication.getName());
         model.addAttribute("person", currentPerson);
         model.addAttribute("resumes", currentPerson.getResumes());
@@ -50,8 +56,8 @@ public class ResumeController {
     }
 
     @PostMapping("/")
-    public String handleFileUpload(@RequestParam("file") MultipartFile file) throws IOException {
-        resumeService.handleResumeFileUpload(file, uploadPath);
+    public String handleFileUpload(@RequestParam("mySelect") Languages selectedLanguage, @RequestParam("file") MultipartFile file) throws IOException {
+        resumeService.handleResumeFileUpload(file, uploadPath, selectedLanguage);
         return "redirect:/resumes/";
     }
 

@@ -37,6 +37,9 @@ public class Person {
     @Column(name = "role")
     private String role;
 
+    @Column(name = "message")
+    private String message;
+
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Resume> resumes;

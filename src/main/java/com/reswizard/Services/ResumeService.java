@@ -3,6 +3,7 @@ package com.reswizard.Services;
 import com.reswizard.Models.Person;
 import com.reswizard.Models.Resume;
 import com.reswizard.Repositories.ResumeRepo;
+import com.reswizard.Util.Languages;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -78,7 +79,7 @@ public class ResumeService {
     }
 
     @Transactional
-    public void handleResumeFileUpload(MultipartFile file, String uploadPath) throws IOException {
+    public void handleResumeFileUpload(MultipartFile file, String uploadPath, Languages selectedLanguage) throws IOException {
         if (file != null){
             File uploadDir = new File(uploadPath);
 
@@ -93,7 +94,7 @@ public class ResumeService {
             file.transferTo(new File(uploadPath + "/" + resultFileName));
 
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            Resume resume = new Resume(resultFileName, uploadPath, peopleService.findUserByUsername(authentication.getName()));
+            Resume resume = new Resume(resultFileName, uploadPath, peopleService.findUserByUsername(authentication.getName()), selectedLanguage);
             save(resume);
             Person person = peopleService.findUserByUsername(authentication.getName());
             person.getResumes().add(resume);

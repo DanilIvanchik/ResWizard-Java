@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 
 @Configuration
 public class SecurityConfig {
@@ -46,7 +47,7 @@ public class SecurityConfig {
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/helloUser").hasRole("USER")
                         .requestMatchers("/css/style.css","/js/bootstrap.js", "/css/style.scss").permitAll()
-                        .requestMatchers("/auth/login", "/error", "/auth/registration", "/hello","/resumes/show_resumes/").permitAll()
+                        .requestMatchers("/auth/login", "/error", "/auth/registration", "/hello","/resumes/show_resumes/", "/").permitAll()
                         .requestMatchers("/helloUser").hasRole("USER").anyRequest().permitAll())
                 .formLogin(form -> form.loginPage("/auth/login")
                         .loginProcessingUrl("/process_login")
