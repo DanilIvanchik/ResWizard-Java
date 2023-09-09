@@ -8,8 +8,8 @@
 
     <p th:text="${person.getUsername() + ', ' + person.getId()}">VALUE</p>
 
-    <form action="обработчик.php" method="post">
-        <textarea id="myTextarea" name="myTextarea" rows="4" cols="50">Начальное значение</textarea>
+    <form th:action="@{/resumes/add_message}" th:method="Post">
+        <textarea name="message" rows="4" cols="50">Enter your resume message</textarea>
         <br>
         <input type="submit" value="Submit">
     </form>
@@ -24,11 +24,10 @@
             <table>
                 <tr>
                     <td>File to upload:</td><td><input type="file" name="file" />
-                    <select id="mySelect" name="mySelect">
+                    <select name="option">
                         <option th:each="option : ${options}"
                                 th:value="${option}"
-                                th:text="${option}"
-                                th:selected="${option == selectedOption}"></option>
+                                th:text="${option}"></option>
                     </select>
                     </td>
                 </tr>

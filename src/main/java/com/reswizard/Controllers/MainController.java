@@ -29,15 +29,6 @@ public class MainController {
         return "MainPage";
     }
 
-    @GetMapping("/showUserInfo")
-    @ResponseBody
-    public String showUserInfo() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        PersonDetail personDetails = (PersonDetail) authentication.getPrincipal();
-
-        return personDetails.getUsername();
-    }
-
     @GetMapping("/admin")
     public String adminPage(){
         adminService.doAdmin();

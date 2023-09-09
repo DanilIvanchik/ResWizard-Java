@@ -7,7 +7,7 @@
 <body>
 
     <p th:text="${person.getUsername() + ', ' + person.getId()}">VALUE</p>
-
+    <p th:text="${person.getMessage()}"></p>
     <div th:each="resume : ${resumes}">
         <a th:href="@{/resumes/{id}(id=${resume.getId()})}"
            th:text="${resume.getTitle()}">Resume</a>

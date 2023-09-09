@@ -51,19 +51,22 @@ public class ResumeController {
         model.addAttribute("selectedOption", Languages.ENGLISH);
         Person currentPerson = peopleService.findUserByUsername(authentication.getName());
         model.addAttribute("person", currentPerson);
-        model.addAttribute("resumes", currentPerson.getResumes());
+        if (currentPerson.getResumes() != null){
+            model.addAttribute("resumes", currentPerson.getResumes());
+        }
         return "ResumePage";
     }
 
     @PostMapping("/")
-    public String handleFileUpload(@RequestParam("mySelect") Languages selectedLanguage, @RequestParam("file") MultipartFile file) throws IOException {
+    public String handleResumeUpload(@ModelAttribute("option") Languages selectedLanguage, @RequestParam("file") MultipartFile file) throws IOException {
+        System.out.println(selectedLanguage.toString());
         resumeService.handleResumeFileUpload(file, uploadPath, selectedLanguage);
         return "redirect:/resumes/";
     }
 
 
     @RequestMapping(value = "/{id}")
-    public @ResponseBody void handleFileDownload(@PathVariable("id") int ResumeId, HttpServletResponse response){
+    public @ResponseBody void handleResumeDownload(@PathVariable("id") int ResumeId, HttpServletResponse response){
         String fileName = resumeService.findResumeById(ResumeId).getTitle();
         resumeService.handleResumeFileDownload(fileName, response, uploadPath);
     }
@@ -74,6 +77,15 @@ public class ResumeController {
         model.addAttribute("person", currentPerson);
         model.addAttribute("resumes", currentPerson.getResumes());
         return "ResumeResult";
+    }
+
+    @PostMapping("/add_message")
+    public String addPersonResumeMessage(@ModelAttribute("message") String message){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Person person = peopleService.findUserByUsername(authentication.getName());
+        person.setMessage(message);
+        peopleService.save(person);
+        return "redirect:/resumes/";
     }
 
     @ExceptionHandler(StorageFileNotFoundException.class)
