@@ -23,27 +23,11 @@ public class PeopleService {
     }
 
     public boolean findDuplicate(String name){
-        if (peopleRepo.findByUsername(name).isPresent()){
-            return true;
-        }else{
-            return false;
-        }
+        return peopleRepo.findByUsername(name).isPresent();
     }
 
     public boolean findUserByEmail(String email){
-        if (peopleRepo.findByEmail(email).isPresent()){
-            return true;
-        }else{
-            return false;
-        }
-    }
-
-    public boolean checkUserByName(String name){
-        if (peopleRepo.findByUsername(name).isPresent()){
-            return true;
-        }else{
-            return false;
-        }
+        return peopleRepo.findByEmail(email).isPresent();
     }
 
     public Person findUserByUsername(String name){
