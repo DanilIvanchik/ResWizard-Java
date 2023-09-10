@@ -4,6 +4,9 @@ import org.springframework.validation.FieldError;
 import java.util.List;
 
 public class ErrorsUtil {
+    private ErrorsUtil() {
+    }
+
     public static void returnErrorsToClient(BindingResult bindingResult){
         StringBuilder stringBuilder = new StringBuilder();
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
