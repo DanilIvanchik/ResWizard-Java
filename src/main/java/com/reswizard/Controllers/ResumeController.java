@@ -1,13 +1,11 @@
 package com.reswizard.Controllers;
 
 import com.reswizard.Models.Person;
-import com.reswizard.Models.Resume;
 import com.reswizard.Services.PeopleService;
 import com.reswizard.Services.ResumeService;
 import com.reswizard.Util.Languages;
 import com.reswizard.Util.StorageFileNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -59,7 +57,6 @@ public class ResumeController {
 
     @PostMapping("/")
     public String handleResumeUpload(@ModelAttribute("option") Languages selectedLanguage, @RequestParam("file") MultipartFile file) throws IOException {
-        System.out.println(selectedLanguage.toString());
         resumeService.handleResumeFileUpload(file, uploadPath, selectedLanguage);
         return "redirect:/resumes/";
     }

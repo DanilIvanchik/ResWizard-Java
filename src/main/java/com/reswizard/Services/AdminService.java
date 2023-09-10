@@ -8,7 +8,6 @@ public class AdminService {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void doAdmin(){
-        System.out.println("Admin");
     }
 
 }
