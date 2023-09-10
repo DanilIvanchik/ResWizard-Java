@@ -64,7 +64,7 @@ public class PeopleService {
     }
 
     public Person findPersonById(int id){
-        return peopleRepo.findPersonById(id).get();
+        return peopleRepo.findById(id).get();
     }
 
     @Transactional
