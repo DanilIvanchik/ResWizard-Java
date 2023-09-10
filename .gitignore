@@ -33,3 +33,11 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# These are needed for convinience of development, but won't be comitted to VCS 
+# (for now at least)
+.mvn
+
+# Not totally necessary to commit into VCS
+mvnw
+mvnw.cmd
