@@ -25,7 +25,7 @@ public class PersonValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         Person person = (Person) target;
-        if (peopleService.findDuplicate(person.getUsername())){
+        if (peopleService.isDuplicateName(person.getUsername())){
             errors.rejectValue("username", "", "The username you've chosen is unavailable. Please select a different one.");
         }
         if (peopleService.findUserByEmail(person.getEmail())){
