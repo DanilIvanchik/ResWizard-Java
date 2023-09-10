@@ -37,6 +37,7 @@ build/
 # These are needed for convinience of development, but won't be comitted to VCS 
 # (for now at least)
 .mvn
+src/main/resources/static/css
 
 # Not totally necessary to commit into VCS
 mvnw
