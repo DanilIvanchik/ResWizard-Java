@@ -28,9 +28,9 @@ public class AuthValidator implements Validator {
     @Override
     public void validate(Object target, Errors errors) {
         AuthenticationDTO authenticationDTO = (AuthenticationDTO) target;
-        if (!peopleService.isDuplicate(authenticationDTO.getUsername())){
+        if (!peopleService.findDuplicate(authenticationDTO.getUsername())){
             errors.rejectValue("username", "", "Oops, it seems there's a typo in your username. Please double-check it.");
-        }else if (!peopleService.isValidPassword(passwordEncoder.encode(authenticationDTO.getPassword()))){
+        }else if (!peopleService.validatePassword(passwordEncoder.encode(authenticationDTO.getPassword()))){
             errors.rejectValue("password", "", "Oops! That's not the right password. Please check and try again.");
         }
     }

@@ -68,7 +68,7 @@ public class ResumeController {
 
     @GetMapping(value = "/show_resumes/{id}")
     public String showResumePage(@PathVariable("id") int PersonId,Model model){
-        Person currentPerson = peopleService.findPersonById(PersonId);
+        Person currentPerson = peopleService.findUserById(PersonId);
         model.addAttribute("person", currentPerson);
         model.addAttribute("resumes", currentPerson.getResumes());
         return "ResumeResult";
