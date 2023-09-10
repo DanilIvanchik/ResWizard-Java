@@ -22,11 +22,11 @@ public class PeopleService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public boolean findDuplicate(String name){
+    public boolean isDuplicate(String name){
         return peopleRepo.findByUsername(name).isPresent();
     }
 
-    public boolean findUserByEmail(String email){
+    public boolean isUserPresentByEmail(String email){
         return peopleRepo.findByEmail(email).isPresent();
     }
 
@@ -39,12 +39,8 @@ public class PeopleService {
         }
     }
 
-    public boolean validatePassword(String password){
-        if (peopleRepo.findByPassword(passwordEncoder.encode(password)).isPresent()){
-            return true;
-        }else{
-            return false;
-        }
+    public boolean isPasswordValid(String password){
+        return peopleRepo.findByPassword(passwordEncoder.encode(password)).isPresent();
     }
 
     public Person findPersonById(int id){
