@@ -45,9 +45,10 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws  Exception{
         http.authorizeHttpRequests(req -> req
                         .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/helloUser").hasRole("USER")
                         .requestMatchers("/css/style.css","/js/bootstrap.js", "/css/style.scss").permitAll()
                         .requestMatchers("/auth/login", "/error", "/auth/registration", "/hello","/resumes/show_resumes/", "/").permitAll()
-                        .requestMatchers("/helloUser").hasRole("USER").anyRequest().permitAll())
+                        .anyRequest().permitAll())
                 .formLogin(form -> form.loginPage("/auth/login")
                         .loginProcessingUrl("/process_login")
                         .defaultSuccessUrl("/helloUser", true)

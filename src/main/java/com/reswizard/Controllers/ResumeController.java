@@ -4,9 +4,11 @@ import com.reswizard.Models.Person;
 import com.reswizard.Services.PeopleService;
 import com.reswizard.Services.ResumeService;
 import com.reswizard.Util.Languages;
+import com.reswizard.Util.StorageFileNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -68,7 +70,7 @@ public class ResumeController {
 
     @GetMapping(value = "/show_resumes/{id}")
     public String showResumePage(@PathVariable("id") int PersonId,Model model){
-        Person currentPerson = peopleService.findUserById(PersonId);
+        Person currentPerson = peopleService.findPersonById(PersonId);
         model.addAttribute("person", currentPerson);
         model.addAttribute("resumes", currentPerson.getResumes());
         return "ResumeResult";
@@ -83,10 +85,10 @@ public class ResumeController {
         return "redirect:/resumes/";
     }
 
-//    @ExceptionHandler(StorageFileNotFoundException.class)
-//    public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
-//        return ResponseEntity.notFound().build();
-//    }
+    @ExceptionHandler(StorageFileNotFoundException.class)
+    public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
+        return ResponseEntity.notFound().build();
+    }
 
 
 }

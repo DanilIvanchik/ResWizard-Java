@@ -11,7 +11,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -61,15 +60,13 @@ public class ResumeService {
         if (fileName.indexOf(".zip")>-1) response.setContentType("application/zip");
         response.setHeader("Content-Disposition", "attachment; filename=" +fileName);
         response.setHeader("Content-Transfer-Encoding", "binary");
-        try {
-            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(response.getOutputStream());
-            FileInputStream fileInputStream = new FileInputStream(uploadPath+fileName);
+        try(FileInputStream fileInputStream = new FileInputStream(uploadPath+fileName);
+            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(response.getOutputStream());) {
             int len;
             byte[] buf = new byte[1024];
             while((len = fileInputStream.read(buf)) > 0) {
                 bufferedOutputStream.write(buf,0,len);
             }
-            bufferedOutputStream.close();
             response.flushBuffer();
         }
         catch(IOException e) {
@@ -80,26 +77,50 @@ public class ResumeService {
 
     @Transactional
     public void handleResumeFileUpload(MultipartFile file, String uploadPath, Languages selectedLanguage) throws IOException {
-        if (file != null){
-            File uploadDir = new File(uploadPath);
+        if (file == null || file.isEmpty()) {
+            return;
+        }
 
+        File uploadDir = new File(uploadPath);
 
-            if (!uploadDir.exists() && !file.getOriginalFilename().isEmpty()){
-                uploadDir.mkdir();
-            }
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
+        }
 
-            String UIDFile = UUID.randomUUID().toString();
-            String resultFileName = UIDFile + "." + file.getOriginalFilename();
+        String uniqueFileName = generateUniqueFileName(file.getOriginalFilename());
+        String filePath = uploadPath + uniqueFileName;
 
-            file.transferTo(new File(uploadPath + "/" + resultFileName));
+        file.transferTo(new File(filePath));
 
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            Resume resume = new Resume(resultFileName, uploadPath, peopleService.findUserByUsername(authentication.getName()), selectedLanguage);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        Person person = peopleService.findUserByUsername(username);
+
+        Resume existingResume = resumeRepository.findAllByLanguageAndOwner_Id(selectedLanguage, person.getId());
+        Resume resume = new Resume(uniqueFileName, uploadPath, person, selectedLanguage);
+
+        if (existingResume != null) {
+            resume.setId(existingResume.getId());
             save(resume);
-            Person person = peopleService.findUserByUsername(authentication.getName());
+            updatePersonResumes(person, existingResume, resume);
+        } else {
+            save(resume);
             person.getResumes().add(resume);
             peopleService.save(person);
         }
+    }
+
+    private String generateUniqueFileName(String originalFileName) {
+        String uidFile = UUID.randomUUID().toString();
+        int lastDotIndex = originalFileName.lastIndexOf(".");
+        String extension = (lastDotIndex >= 0) ? originalFileName.substring(lastDotIndex) : "";
+        return uidFile + extension;
+    }
+
+    private void updatePersonResumes(Person person, Resume oldResume, Resume newResume) {
+        person.getResumes().remove(oldResume);
+        person.getResumes().add(newResume);
+        peopleService.save(person);
     }
 
 

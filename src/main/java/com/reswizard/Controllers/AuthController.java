@@ -9,6 +9,7 @@ import com.reswizard.Services.RegistrationService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -65,6 +66,7 @@ public class AuthController {
 
     private Person convertToPerson(PersonDTO personDTO){
         Person person = modelMapper.map(personDTO, Person.class);
+        System.out.println(person.getRole());
         return person;
     }
 }
