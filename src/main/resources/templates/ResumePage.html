@@ -3,52 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,400i,600,700,700i&amp;subset=latin-ext" rel="stylesheet">
+    <link href="../static/css/bootstrap.css" rel="stylesheet">
+    <link href="../static/css/styles.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f0f0; /* Light gray background */
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header style */
+        header {
+            background-color: #007bff; /* Blue header */
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        /* Paragraph style */
+        p {
+            font-size: 18px;
+            margin: 20px;
+        }
+
+        /* Form style */
+        form {
+            margin: 20px;
+            padding: 20px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff; /* Blue button */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Link style */
+        a {
+            text-decoration: none;
+            color: #007bff; /* Blue link */
+        }
+
+        /* Table style */
+        table {
+            width: 100%;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+        }
+
+        /* Footer style */
+        footer {
+            background-color: #007bff; /* Blue footer */
+            color: white;
+            text-align: center;
+            padding: 10px;
+        }
+
+        /* Center align and space buttons */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px; /* Расстояние между кнопками */
+            margin: 20px;
+        }
+    </style>
 </head>
 <body>
 
-    <p th:text="${person.getUsername() + ', ' + person.getId()}">VALUE</p>
+<p th:text="${'Hello ' + person.getUsername() +'!'}" align="center">VALUE</p>
 
-    <form th:action="@{/resumes/add_message}" th:method="Post">
-        <textarea name="message" rows="4" cols="50">Enter your resume message</textarea>
-        <br>
-        <input type="submit" value="Submit">
+<form th:action="@{/resumes/add_message}" th:method="Post">
+    <textarea name="message" rows="4" cols="50">Enter your resume message</textarea>
+    <br>
+    <input type="submit" value="Submit">
+</form>
+
+<div class="button-container">
+    <form th:each="resume : ${resumes}" th:method="POST" th:action="@{/resumes/{id}(id=${resume.getId()})}">
+        <input class="btn-solid-lg page-scroll" type="submit" th:value="${resume.getLanguage()}">
     </form>
+</div>
 
-    <div th:each="resume : ${resumes}">
-        <a th:href="@{/resumes/{id}(id=${resume.getId()})}"
-           th:text="${resume.getTitle()}">Resume</a>
-    </div>
-
-    <div>
-        <form th:method="POST" enctype="multipart/form-data" th:action="@{/resumes/}">
-            <table>
-                <tr>
-                    <td>File to upload:</td><td><input type="file" name="file" />
+<div>
+    <form th:method="POST" enctype="multipart/form-data" th:action="@{/resumes/}">
+        <table>
+            <tr>
+                <td>File to upload:</td>
+                <td><input type="file" name="file" /></td>
+                <td>
                     <select name="option">
                         <option th:each="option : ${options}"
                                 th:value="${option}"
                                 th:text="${option}"></option>
                     </select>
-                    </td>
-                </tr>
-                <tr><td></td><td><input type="submit" value="Upload" /></td></tr>
-            </table>
-        </form>
-    </div>
+                </td>
+            </tr>
+            <tr><td></td><td><input type="submit" value="Upload" /></td></tr>
+        </table>
+    </form>
+</div>
 
-    <div>
-        <form th:method="GET" enctype="multipart/form-data" th:action="@{/resumes/show_resumes/{id}(id=${person.getId()})}">
-                <tr><td></td><td><input type="submit" value="Get your resume" /></td></tr>
-        </form>
-    </div>
-
-<!--    <div>-->
-<!--        <ul>-->
-<!--            <li th:each="file : ${files}">-->
-<!--                <a th:href="${file}" th:text="${file}" />-->
-<!--            </li>-->
-<!--        </ul>-->
-<!--    </div>-->
+<div class="button-container">
+<!--    <form th:method="GET" enctype="multipart/form-data" th:action="@{/resumes/show_resumes/{id}(id=${person.getId()})}">-->
+<!--        <tr><td></td><td><input type="submit" value="Get your resume" /></td></tr>-->
+<!--    </form>-->
+    <a class="btn-solid-lg page-scroll" th:href="@{/resumes/show_resumes/{id}(id=${person.getId()})}">Get your resume</a>
+</div>
 
 </body>
 </html>
+

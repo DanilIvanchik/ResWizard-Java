@@ -154,12 +154,14 @@ a.white {
 	font: 700 0.75rem/0 "Raleway", sans-serif;
 	text-decoration: none;
 	transition: all 0.2s;
+
 }
 
 .btn-outline-lg:hover {
 	background-color: #00bfd8;
 	color: #fff;
 	text-decoration: none;
+
 }
 
 .btn-outline-sm {
@@ -177,6 +179,7 @@ a.white {
 .btn-outline-sm:hover {
 	background-color: #00bfd8;
 	color: #fff;
+	border-color: #0056b3;
 	text-decoration: none;
 }
 
