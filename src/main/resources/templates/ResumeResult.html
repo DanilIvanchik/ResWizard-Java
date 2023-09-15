@@ -120,9 +120,9 @@
 
 <body>
 <div class="ResultForm">
-    <div class="form-panel one">
+    <div class="form-panel-result one">
         <div class="photo">
-            <img class="personPhoto" alt="" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvTnQ10XsARegWrtgIwH8LiUMMNeggR5CDtHdVDUPFZwdTA-En">
+            <img class="personPhoto" alt="" th:src="@{'/static/images/avatar/' + ${person.avatarTitle}}">
         </div>
         <center>
             <div class="form-header">

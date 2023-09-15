@@ -6,6 +6,7 @@ import com.reswizard.Services.ResumeService;
 import com.reswizard.Util.Languages;
 import com.reswizard.Util.StorageFileNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,8 +32,11 @@ public class ResumeController {
     private final PeopleService peopleService;
     private final ResumeService resumeService;
 
-    @Value("${upload.path}")
+    @Value("${upload.file.path}")
     private String uploadPath;
+
+    @Value("${upload.avatar.path}")
+    private String avatarUploadPath;
 
     @Autowired
     public ResumeController(PeopleService peopleService, ResumeService resumeService) {
@@ -42,7 +45,7 @@ public class ResumeController {
     }
 
     @GetMapping("/")
-    public String showAllPersonResumes(Model model){
+    public String showAllPersonResumes(Model model, HttpSession session){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         List<Languages> languageOptions = Arrays.asList(Languages.UKRAINIAN, Languages.CHINESE, Languages.SPANISH, Languages.ENGLISH, Languages.GERMAN);
         model.addAttribute("options", languageOptions);
@@ -85,10 +88,16 @@ public class ResumeController {
         return "redirect:/resumes/";
     }
 
-    @ExceptionHandler(StorageFileNotFoundException.class)
-    public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
-        return ResponseEntity.notFound().build();
+    @PostMapping("/upload_avatar")
+    public String handleAvatarUpload(@RequestParam("file") MultipartFile file,  HttpSession session) throws IOException {
+        peopleService.handleAvatarFileUpload(file, avatarUploadPath);
+        return "redirect:/resumes/";
     }
+
+//    @ExceptionHandler(StorageFileNotFoundException.class)
+//    public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
+//        return ResponseEntity.notFound().build();
+//    }
 
 
 }

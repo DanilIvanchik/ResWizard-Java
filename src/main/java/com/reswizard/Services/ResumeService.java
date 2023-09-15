@@ -110,6 +110,7 @@ public class ResumeService {
         }
     }
 
+
     private String generateUniqueFileName(String originalFileName) {
         String uidFile = UUID.randomUUID().toString();
         int lastDotIndex = originalFileName.lastIndexOf(".");

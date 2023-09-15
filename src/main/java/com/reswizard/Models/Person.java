@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -40,8 +41,13 @@ public class Person {
     @Column(name = "message")
     private String message;
 
+    @Column(name = "avatar_title")
+    private String avatarTitle;
+
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Resume> resumes;
+
+
 
 }

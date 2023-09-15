@@ -200,6 +200,10 @@ body {
   padding: 60px calc(5% + 60px) 60px 60px;
   box-sizing: border-box;
 }
+.form-panel-result {
+  padding: 60px calc(5% + 60px) 30px 60px;
+  box-sizing: border-box;
+}
 .form-panel.one:before {
   content: '';
   display: block;
