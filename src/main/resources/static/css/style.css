@@ -24,6 +24,24 @@ body {
   height: 100%;
 }
 
+.item {
+  margin-left: 150px;
+}
+
+.photo {
+  width: 132px;
+  height: 132px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.personPhoto {
+  width: auto;
+  height: 100%;
+  margin: 0 auto;
+}
+
 .form {
   z-index: 15;
   position: relative;
@@ -33,6 +51,17 @@ body {
   box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
   box-sizing: border-box;
   margin: 100px auto 10px;
+  overflow: hidden;
+}
+.ResultForm {
+  z-index: 15;
+  position: relative;
+  background: #FFFFFF;
+  width: 500px;
+  border-radius: 4px;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  margin: 10px auto 10px;
   overflow: hidden;
 }
 .form-toggle {
@@ -53,6 +82,7 @@ body {
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
 }
+
 .form-toggle:before, .form-toggle:after {
   content: '';
   display: block;
@@ -230,6 +260,13 @@ body {
   margin: 0 0 40px;
 }
 .form-header h1 {
+  padding: 4px 0;
+  color: #00bfd8;
+  font-size: 24px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.form-header h2 {
   padding: 4px 0;
   color: #00bfd8;
   font-size: 24px;
