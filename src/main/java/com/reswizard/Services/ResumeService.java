@@ -100,6 +100,7 @@ public class ResumeService {
         Resume resume = new Resume(uniqueFileName, uploadPath, person, selectedLanguage);
 
         if (existingResume != null) {
+            deleteResume(uploadPath, existingResume.getTitle());
             resume.setId(existingResume.getId());
             save(resume);
             updatePersonResumes(person, existingResume, resume);
@@ -110,6 +111,29 @@ public class ResumeService {
         }
     }
 
+    private void deleteResume(String uploadPath, String fileName){
+        File file = new File(uploadPath+fileName);
+        if(file.delete()){
+            System.out.println(uploadPath+fileName+" file deleted");
+        }else{
+            System.out.println("File "+uploadPath+fileName+" has not been found");
+        }
+    }
+
+    @Transactional
+    public void deletePersonResumeFromSettingsPage(Integer resumeId, String uploadPath){
+        Resume resume = resumeRepository.findResumeById(resumeId);
+        System.out.println(resume.getTitle());
+        resumeRepository.deleteResumeById(resumeId);
+        deleteResume(uploadPath, resume.getTitle());
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        Person person = peopleService.findUserByUsername(username);
+        person.getResumes().remove(resume);
+        peopleService.save(person);
+
+    }
 
     private String generateUniqueFileName(String originalFileName) {
         String uidFile = UUID.randomUUID().toString();

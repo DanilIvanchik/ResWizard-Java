@@ -14,5 +14,5 @@ public interface ResumeRepo extends JpaRepository<Resume, Integer> {
     List<Resume> findAllByOwner_Id(int id);
     Resume findResumeById(int id);
     Resume findAllByLanguageAndOwner_Id(Languages language, Integer id);
-
+    void deleteResumeById(int id);
 }

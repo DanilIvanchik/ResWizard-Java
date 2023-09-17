@@ -89,8 +89,14 @@ public class ResumeController {
     }
 
     @PostMapping("/upload_avatar")
-    public String handleAvatarUpload(@RequestParam("file") MultipartFile file,  HttpSession session) throws IOException {
+    public String handleAvatarUpload(@RequestParam("file") MultipartFile file) throws IOException {
         peopleService.handleAvatarFileUpload(file, avatarUploadPath);
+        return "redirect:/resumes/";
+    }
+
+    @DeleteMapping ("/delete/{id}")
+    public String deleteResume(@PathVariable("id") int resumeId){
+        resumeService.deletePersonResumeFromSettingsPage(resumeId, uploadPath);
         return "redirect:/resumes/";
     }
 

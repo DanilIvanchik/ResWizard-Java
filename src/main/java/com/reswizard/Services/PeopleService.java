@@ -67,8 +67,20 @@ public class PeopleService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         Optional<Person> person = peopleRepo.findByUsername(username);
+        if (person.get().getAvatarTitle() != null){
+            deleteOldAvatar(uploadPath, person.get().getAvatarTitle());
+        }
         person.get().setAvatarTitle(uniqueFileName);
         peopleRepo.save(person.get());
+    }
+
+    private void deleteOldAvatar(String uploadPath, String fileName){
+        File file = new File(uploadPath+fileName);
+        if(file.delete()){
+            System.out.println(uploadPath+fileName+" file deleted");
+        }else{
+            System.out.println("File "+uploadPath+fileName+" has not been found");
+        }
     }
 
     private String generateUniqueFileName(String originalFileName) {
