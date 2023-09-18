@@ -263,6 +263,12 @@ body {
 .form-header {
   margin: 0 0 40px;
 }
+.form-header-edit {
+  padding: 4px 0;
+  color: #00bfd8;
+  font-size: 5px;
+  margin: 0 0 5px;
+}
 .form-header h1 {
   padding: 4px 0;
   color: #00bfd8;
