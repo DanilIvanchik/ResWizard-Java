@@ -45,10 +45,6 @@
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
          <a class="navbar-brand logo-text page-scroll" href="MainPage.html">Wizard</a>
-
-        <!-- Image Logo -->
-<!--        <a class="navbar-brand logo-image" href="MainPage.html"><img src="images/logo.svg" alt="alternative"></a>-->
-        
         <!-- Mobile Menu Toggle Button -->
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-awesome fas fa-bars"></span>
@@ -67,7 +63,7 @@
                 <li class="nav-item">
                     <a class="nav-link page-scroll" href="#pricing">Pricing</a>
                 </li>
-                <!-- Dropdown Menu -->          
+                <!-- Dropdown Menu -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle page-scroll" href="#about" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">About</a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -76,33 +72,16 @@
                         <a class="dropdown-item" href="privacy-policy.html"><span class="item-text">Privacy Policy</span></a>
                     </div>
                 </li>
-                <!-- end of dropdown menu -->
                 <li class="nav-item">
-                    <form class="nav-link page-scroll" th:action="@{/logout}" th:method="POST"/>
-                        <input type="submit" value="Logout" />
+                    <form class="nav-link page-scroll" th:action="@{/logout}" th:method="POST" style="display: inline;">
+                        <button type="submit" style="background: none; border: none; padding: 0;">Logout</button>
                     </form>
+
                 </li>
             </ul>
-<!--            <span class="nav-item social-icons">-->
-<!--                <span class="fa-stack">-->
-<!--                    <a href="#your-link">-->
-<!--                        <i class="fas fa-circle fa-stack-2x facebook"></i>-->
-<!--                        <i class="fab fa-facebook-f fa-stack-1x"></i>-->
-<!--                    </a>-->
-<!--                </span>-->
-<!--                <span class="fa-stack">-->
-<!--                    <a href="#your-link">-->
-<!--                        <i class="fas fa-circle fa-stack-2x twitter"></i>-->
-<!--                        <i class="fab fa-twitter fa-stack-1x"></i>-->
-<!--                    </a>-->
-<!--                </span>-->
-<!--            </span>-->
         </div>
-    </nav> <!-- end of navbar -->
-    <!-- end of navigation -->
+    </nav>
 
-
-    <!-- Header -->
     <header id="header" class="header">
         <div class="header-content">
             <div class="container">

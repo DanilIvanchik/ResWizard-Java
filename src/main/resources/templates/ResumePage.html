@@ -81,12 +81,13 @@
 <div class="container">
 
     <div class="form-header-edit">
-        <center><h3 class="form-header" th:text="${'Hello ' + person.getUsername() +'!'}">VALUE</h3></center>
+        <center><h3 class="form-header" th:text="${'Hello ' + person.getUsername() +'!'}"></h3></center>
     </div>
 
     <div class="photo">
-        <img class="personPhoto" alt="" th:src="@{'/static/images/avatar/' + ${person.avatarTitle}}">
+        <img class="personPhoto" alt="" th:src="@{/static/images/avatar/{title}(title=${person.getAvatarTitle()})}">
     </div>
+
 
     <form th:method="POST" enctype="multipart/form-data" th:action="@{/resumes/upload_avatar}">
         <table>
@@ -103,7 +104,7 @@
 
     <div>
         <form th:action="@{/resumes/add_message}" th:method="Post">
-            <textarea name="message" rows="4" cols="50">Enter your resume message</textarea>
+            <textarea name="message" rows="4" cols="50" th:text="${person.getMessage()}">Enter your resume message</textarea>
             <br>
             <center><input type="submit" value="Submit" style="background-color: #00bfd8;; color: #FFFFFF;"></center>
         </form>
