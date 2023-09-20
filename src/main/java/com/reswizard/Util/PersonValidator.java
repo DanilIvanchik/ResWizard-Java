@@ -31,5 +31,6 @@ public class PersonValidator implements Validator {
         if (peopleService.isUserPresentByEmail(person.getEmail())){
             errors.rejectValue("email", "", "This email address is already registered. Please use a different email address.");
         }
+
     }
 }

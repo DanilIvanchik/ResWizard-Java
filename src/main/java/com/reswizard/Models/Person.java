@@ -39,6 +39,7 @@ public class Person {
     private String role;
 
     @Column(name = "message")
+    @Size(max = 500, message = "Message length out of range. Message length should be between 0 and 500 characters.")
     private String message;
 
     @Column(name = "avatar_title")

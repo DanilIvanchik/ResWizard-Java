@@ -99,14 +99,20 @@
         </table>
     </form>
 
+    </br>
+
+    <div class="form-header-edit">
+        <center><h5>Add your message</h5></center>
+    </div>
 
     </br>
 
     <div>
-        <form th:action="@{/resumes/add_message}" th:method="Post">
+        <form th:action="@{/resumes/add_message}" th:method="Post"  th:object="${person}">
             <textarea name="message" rows="4" cols="50" th:text="${person.getMessage()}">Enter your resume message</textarea>
             <br>
-            <center><input type="submit" value="Submit" style="background-color: #00bfd8;; color: #FFFFFF;"></center>
+            <center><input type="submit" value="Submit" th:field="*{message}" style="background-color: #00bfd8;; color: #FFFFFF;"></center>
+            <div style="color:#4285F4" th:if="${#fields.hasErrors('message')}" th:errors="*{message}">Message Error!</div>
         </form>
     </div>
 
@@ -114,7 +120,7 @@
 
 
     <div class="form-header-edit">
-        <center><h3>Your resumes:</h3></center>
+        <center><h5>Your resumes</h5></center>
     </div>
 
 
