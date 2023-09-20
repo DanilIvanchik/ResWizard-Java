@@ -9,7 +9,6 @@ import com.reswizard.Services.RegistrationService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -51,10 +50,16 @@ public class AuthController {
         return "RegistrationPage";
     }
 
+    @GetMapping("/access-denied")
+    public String accessDenied(@ModelAttribute("personDTO") PersonDTO personDTO){
+
+        return "AccessDeniedPage";
+    }
+
     @PostMapping("/registration")
     public String performRegistration(@ModelAttribute("personDTO") @Valid PersonDTO personDTO, BindingResult bindingResult){
 
-        Person person = convertToPerson(personDTO);
+        Person person = DTOToPerson(personDTO);
 
         personValidator.validate(person, bindingResult);
         if (bindingResult.hasErrors()){
@@ -64,7 +69,7 @@ public class AuthController {
         return "redirect:/auth/login";
     }
 
-    private Person convertToPerson(PersonDTO personDTO){
+    private Person DTOToPerson(PersonDTO personDTO){
         Person person = modelMapper.map(personDTO, Person.class);
         System.out.println(person.getRole());
         return person;

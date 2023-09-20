@@ -45,7 +45,7 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws  Exception{
         http.authorizeHttpRequests(req -> req
                         .requestMatchers("/admin").hasRole("ADMIN")
-                        .requestMatchers("/helloUser").hasRole("USER")
+                        .requestMatchers("/helloUser", "/resumes", "/resumes/").hasRole("USER")
                         .requestMatchers("/css/style.css","/js/bootstrap.js", "/css/style.scss").permitAll()
                         .requestMatchers("/auth/login", "/error", "/auth/registration", "/hello","/resumes/show_resumes/", "/").permitAll()
                         .anyRequest().permitAll())
@@ -54,7 +54,10 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/helloUser", true)
                         .failureForwardUrl("/auth/login?error"))
                 .logout(logout -> logout.logoutUrl("/logout")
-                        .logoutSuccessUrl("/auth/login"));
+                        .logoutSuccessUrl("/auth/login"))
+                .exceptionHandling(exceptionHandling -> exceptionHandling
+                        .accessDeniedPage("/auth/access-denied"));
+
 //                .sessionManagement(s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         return http.build();

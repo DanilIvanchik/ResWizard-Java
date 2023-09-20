@@ -20,7 +20,7 @@ public class Resume {
     @Column(name = "title")
     private String title;
 
-    @NotNull(message = "Add your resume in any format.")
+    @NotNull(message = "Add your resume pdf or docx.")
     @Column(name = "path")
     private String path;
 

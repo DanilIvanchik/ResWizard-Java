@@ -3,12 +3,15 @@ package com.reswizard.Controllers;
 import com.reswizard.Models.Person;
 import com.reswizard.Services.PeopleService;
 import com.reswizard.Services.ResumeService;
+import com.reswizard.Util.IncorrectFormatExceptionResponse;
+import com.reswizard.Util.IncorrectResumeFormatException;
 import com.reswizard.Util.Languages;
 import com.reswizard.Util.StorageFileNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -49,7 +52,6 @@ public class ResumeController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         List<Languages> languageOptions = Arrays.asList(Languages.UKRAINIAN, Languages.CHINESE, Languages.SPANISH, Languages.ENGLISH, Languages.GERMAN);
         model.addAttribute("options", languageOptions);
-        model.addAttribute("selectedOption", Languages.ENGLISH);
         Person currentPerson = peopleService.findUserByUsername(authentication.getName());
         model.addAttribute("person", currentPerson);
         if (currentPerson.getResumes() != null){
@@ -99,6 +101,29 @@ public class ResumeController {
         resumeService.deletePersonResumeFromSettingsPage(resumeId, uploadPath);
         return "redirect:/resumes/";
     }
+
+    @ExceptionHandler
+    private String handleException(IncorrectResumeFormatException e){
+
+        IncorrectFormatExceptionResponse response = new IncorrectFormatExceptionResponse();
+        response.setMessage(e.getMessage());
+        response.setTime(System.currentTimeMillis());
+        new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+
+        return "IncorrectFormatPage";
+
+    }
+
+//    @ExceptionHandler
+//    private ResponseEntity<IncorrectFormatExceptionResponse> handleException(IncorrectResumeFormatException e){
+//
+//        IncorrectFormatExceptionResponse response = new IncorrectFormatExceptionResponse();
+//        response.setMessage(e.getMessage());
+//        response.setTime(System.currentTimeMillis());
+//
+//        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+//
+//    }
 
 //    @ExceptionHandler(StorageFileNotFoundException.class)
 //    public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {

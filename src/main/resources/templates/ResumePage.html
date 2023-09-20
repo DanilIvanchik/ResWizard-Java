@@ -25,7 +25,7 @@
             border: 1px solid #ccc;
             border-radius: 5px;
             width: 80%;
-            max-width: 600px;
+            max-width: 700px;
             padding: 20px;
             margin: 20px auto; /* Центрирование контейнера по горизонтали */
         }
@@ -92,7 +92,7 @@
     <form th:method="POST" enctype="multipart/form-data" th:action="@{/resumes/upload_avatar}">
         <table>
             <tr>
-                <td>Select avatar:</td>
+                <td>Upload avatar in PNG:</td>
                 <td><input type="file" name="file" /></td>
                 <td><input type="submit" value="Upload" style="background-color: #00bfd8;; color: #FFFFFF;" /></td>
             </tr>
@@ -142,7 +142,7 @@
         <form th:method="POST" enctype="multipart/form-data" th:action="@{/resumes/}">
             <table>
                 <tr>
-                    <td>File to upload:</td>
+                    <td>File to upload (PDF,DOCX):</td>
                     <td><input type="file" name="file" /></td>
                     <td>
                         <select name="option">

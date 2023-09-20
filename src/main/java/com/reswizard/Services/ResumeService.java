@@ -3,6 +3,7 @@ package com.reswizard.Services;
 import com.reswizard.Models.Person;
 import com.reswizard.Models.Resume;
 import com.reswizard.Repositories.ResumeRepo;
+import com.reswizard.Util.IncorrectResumeFormatException;
 import com.reswizard.Util.Languages;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -88,6 +89,9 @@ public class ResumeService {
         }
 
         String uniqueFileName = generateUniqueFileName(file.getOriginalFilename());
+        if (!isValidResumeFormat(uniqueFileName)) {
+            throw new IncorrectResumeFormatException("Invalid file format. Only PDF and DOCX are allowed.");
+        }
         String filePath = uploadPath + uniqueFileName;
 
         file.transferTo(new File(filePath));
@@ -109,6 +113,11 @@ public class ResumeService {
             person.getResumes().add(resume);
             peopleService.save(person);
         }
+    }
+
+    private boolean isValidResumeFormat(String fileName) {
+        String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+        return fileExtension.equals("pdf") || fileExtension.equals("docx");
     }
 
     private void deleteResume(String uploadPath, String fileName){

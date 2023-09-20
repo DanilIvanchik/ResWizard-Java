@@ -70,4 +70,28 @@ public class StaticOutputController {
         return new ResponseEntity<String>( sb.toString(), httpHeaders, HttpStatus.OK);
     }
 
+//    @GetMapping("/static/images/avatar/{code}")
+//    @ResponseBody
+//    public ResponseEntity<String> imagesAvatar(@PathVariable("code") String code) throws IOException {
+//        InputStream is = getClass().getClassLoader().getResourceAsStream("static/images/avatar/" +code);
+//        BufferedReader bf = new BufferedReader(new InputStreamReader(is));
+//        StringBuffer sb = new StringBuffer();
+//        String line = null;
+//        while((line = bf.readLine()) != null){
+//            sb.append(line+"\n");
+//        }
+//        String end;
+//        if (code.charAt(code.length()-3) == 's'){
+//            end = "svg+xml";
+//        } else if (code.charAt(code.length()-3) == 'j') {
+//            end = "jpeg";
+//        }else{
+//            end = "png";
+//        }
+//        final HttpHeaders httpHeaders= new HttpHeaders();
+//        httpHeaders.add("Content-Type", "image/"+end);
+//        return new ResponseEntity<String>( sb.toString(), httpHeaders, HttpStatus.OK);
+//    }
+
+
 }
