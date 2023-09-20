@@ -54,11 +54,7 @@ public class ResumeService {
     public void handleResumeFileDownload(String fileName, HttpServletResponse response, String uploadPath){
         if (fileName.indexOf(".doc")>-1) response.setContentType("application/msword");
         if (fileName.indexOf(".docx")>-1) response.setContentType("application/msword");
-        if (fileName.indexOf(".xls")>-1) response.setContentType("application/vnd.ms-excel");
-        if (fileName.indexOf(".csv")>-1) response.setContentType("application/vnd.ms-excel");
-        if (fileName.indexOf(".ppt")>-1) response.setContentType("application/ppt");
         if (fileName.indexOf(".pdf")>-1) response.setContentType("application/pdf");
-        if (fileName.indexOf(".zip")>-1) response.setContentType("application/zip");
         response.setHeader("Content-Disposition", "attachment; filename=" +fileName);
         response.setHeader("Content-Transfer-Encoding", "binary");
         try(FileInputStream fileInputStream = new FileInputStream(uploadPath+fileName);
@@ -117,7 +113,7 @@ public class ResumeService {
 
     private boolean isValidResumeFormat(String fileName) {
         String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
-        return fileExtension.equals("pdf") || fileExtension.equals("docx");
+        return fileExtension.equals("pdf") || fileExtension.equals("docx")|| fileExtension.equals("doc");
     }
 
     private void deleteResume(String uploadPath, String fileName){

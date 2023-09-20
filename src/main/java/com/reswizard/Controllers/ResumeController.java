@@ -3,10 +3,7 @@ package com.reswizard.Controllers;
 import com.reswizard.Models.Person;
 import com.reswizard.Services.PeopleService;
 import com.reswizard.Services.ResumeService;
-import com.reswizard.Util.IncorrectFormatExceptionResponse;
-import com.reswizard.Util.IncorrectResumeFormatException;
-import com.reswizard.Util.Languages;
-import com.reswizard.Util.StorageFileNotFoundException;
+import com.reswizard.Util.*;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,7 +100,19 @@ public class ResumeController {
     }
 
     @ExceptionHandler
-    private String handleException(IncorrectResumeFormatException e){
+    private String handleIncorrectAvatarFormatException(IncorrectAvatarFormatException e){
+
+        IncorrectAvatarFormatExceptionResponse response = new IncorrectAvatarFormatExceptionResponse();
+        response.setMessage(e.getMessage());
+        response.setTime(System.currentTimeMillis());
+        new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+
+        return "IncorrectFormatPage";
+
+    }
+
+    @ExceptionHandler
+    private String handleIncorrectResumeFormatException(IncorrectResumeFormatException e){
 
         IncorrectFormatExceptionResponse response = new IncorrectFormatExceptionResponse();
         response.setMessage(e.getMessage());
@@ -113,22 +122,5 @@ public class ResumeController {
         return "IncorrectFormatPage";
 
     }
-
-//    @ExceptionHandler
-//    private ResponseEntity<IncorrectFormatExceptionResponse> handleException(IncorrectResumeFormatException e){
-//
-//        IncorrectFormatExceptionResponse response = new IncorrectFormatExceptionResponse();
-//        response.setMessage(e.getMessage());
-//        response.setTime(System.currentTimeMillis());
-//
-//        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-//
-//    }
-
-//    @ExceptionHandler(StorageFileNotFoundException.class)
-//    public ResponseEntity<?> handleStorageFileNotFound(StorageFileNotFoundException exc) {
-//        return ResponseEntity.notFound().build();
-//    }
-
 
 }

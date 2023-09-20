@@ -1,9 +1,8 @@
 package com.reswizard.Services;
 
 import com.reswizard.Models.Person;
-import com.reswizard.Models.Resume;
 import com.reswizard.Repositories.PeopleRepo;
-import jakarta.servlet.http.HttpSession;
+import com.reswizard.Util.IncorrectAvatarFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -60,6 +59,9 @@ public class PeopleService {
         }
 
         String uniqueFileName = generateUniqueFileName(file.getOriginalFilename());
+        if (!isValidResumeFormat(uniqueFileName)) {
+            throw new IncorrectAvatarFormatException("Invalid file format. Only PDF is allowed.");
+        }
         String filePath = uploadPath + uniqueFileName;
 
         file.transferTo(new File(filePath));
@@ -81,6 +83,11 @@ public class PeopleService {
         }else{
             System.out.println("File "+uploadPath+fileName+" has not been found");
         }
+    }
+
+    private boolean isValidResumeFormat(String fileName) {
+        String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
+        return fileExtension.equals("png");
     }
 
     private String generateUniqueFileName(String originalFileName) {
