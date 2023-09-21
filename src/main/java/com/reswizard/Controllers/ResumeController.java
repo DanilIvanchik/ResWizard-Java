@@ -6,6 +6,7 @@ import com.reswizard.Services.ResumeService;
 import com.reswizard.Util.*;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -80,10 +82,15 @@ public class ResumeController {
 
     @PostMapping("/add_message")
     public String addPersonResumeMessage(@ModelAttribute("message") String message){
+
+        if (message.length() > 500){
+            throw  new MessageLengthException("Message length out of range. Message length should be between 0 and 500 characters.");
+        }
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Person person = peopleService.findUserByUsername(authentication.getName());
-        person.setMessage(message);
-        peopleService.save(person);
+        Person currentPerson = peopleService.findUserByUsername(authentication.getName());
+        currentPerson.setMessage(message);
+        peopleService.save(currentPerson);
         return "redirect:/resumes/";
     }
 
@@ -120,6 +127,18 @@ public class ResumeController {
         new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 
         return "IncorrectFormatPage";
+
+    }
+
+    @ExceptionHandler
+    private String handleMessageLengthException(MessageLengthException e){
+
+        MessageLengthExceptionResponse response = new MessageLengthExceptionResponse();
+        response.setMessage(e.getMessage());
+        response.setTime(System.currentTimeMillis());
+        new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+
+        return "MessageLengthExceptionPage";
 
     }
 

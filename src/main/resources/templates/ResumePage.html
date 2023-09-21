@@ -108,13 +108,32 @@
     </br>
 
     <div>
-        <form th:action="@{/resumes/add_message}" th:method="Post"  th:object="${person}">
-            <textarea name="message" rows="4" cols="50" th:text="${person.getMessage()}">Enter your resume message</textarea>
+        <form th:action="@{/resumes/add_message}" th:method="post" th:object="${person}">
+            <textarea name="message" id="message" rows="4" cols="50" th:text="${person.getMessage()}" placeholder="Enter your resume message"></textarea>
             <br>
-            <center><input type="submit" value="Submit" th:field="*{message}" style="background-color: #00bfd8;; color: #FFFFFF;"></center>
-            <div style="color:#4285F4" th:if="${#fields.hasErrors('message')}" th:errors="*{message}">Message Error!</div>
+            <center>
+                <span id="characterCount">0</span>/<span id="maxCharacter">500</span> characters remaining
+                </br></br>
+                <input type="submit" value="Submit" style="background-color: #00bfd8; color: #FFFFFF;">
+            </center>
         </form>
     </div>
+
+    <script>
+        var messageInput = document.getElementById("message");
+        var characterCount = document.getElementById("characterCount");
+        var maxCharacter = 500;
+
+        messageInput.addEventListener("input", function () {
+            var currentLength = messageInput.value.length;
+            characterCount.innerText = currentLength;
+            if (currentLength > maxCharacter) {
+                messageInput.value = messageInput.value.substring(0, maxCharacter);
+                characterCount.innerText = maxCharacter;
+            }
+        });
+    </script>
+
 
     </br>
 

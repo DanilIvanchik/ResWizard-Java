@@ -128,7 +128,6 @@ public class ResumeService {
     @Transactional
     public void deletePersonResumeFromSettingsPage(Integer resumeId, String uploadPath){
         Resume resume = resumeRepository.findResumeById(resumeId);
-        System.out.println(resume.getTitle());
         resumeRepository.deleteResumeById(resumeId);
         deleteResume(uploadPath, resume.getTitle());
 
