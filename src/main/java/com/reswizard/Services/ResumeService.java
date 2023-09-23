@@ -5,7 +5,6 @@ import com.reswizard.Models.Resume;
 import com.reswizard.Repositories.ResumeRepo;
 import com.reswizard.Util.IncorrectResumeFormatException;
 import com.reswizard.Util.Languages;
-import com.reswizard.Util.ResumeNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -146,18 +145,6 @@ public class ResumeService {
         peopleService.save(person);
 
     }
-
-//    @Transactional
-//    public void deletePersonResume(String fileName){
-//        Resume resume = resumeRepository.findResumeByTitle(fileName);
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        String username = authentication.getName();
-//        Person person = peopleService.findUserByUsername(username);
-//        resumeRepository.deleteResumeById(resume.getId());
-//        System.out.println("Deleting resume: " + resume.getTitle() +" "+ Integer.valueOf(resume.getId()));
-//        person.getResumes().remove(resume);
-//        peopleService.save(person);
-//    }
 
     private String generateUniqueFileName(String originalFileName) {
         String uidFile = UUID.randomUUID().toString();
