@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,400i,600,700,700i&amp;subset=latin-ext" rel="stylesheet">
+    <link href="../static/css/bootstrap.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <style>
+        body {
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 700px;
+            padding: 20px;
+            margin: 20px auto; /* Центрирование контейнера по горизонтали */
+        }
+
+        p {
+            font-size: 18px;
+            margin: 20px;
+            text-align: center;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        input[type="submit"] {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        a.button {
+            text-decoration: none;
+            color: white;
+            background-color: #007bff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px; /* Отступ между таблицей и предыдущим элементом */
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="form-header-edit">
+        <center><h3 class="form-header" th:text="${'Hello ' + person.getUsername() +'!'}"></h3></center>
+    </div>
+
+    <div class="photo">
+        <img class="personPhoto" alt="" th:src="@{/static/images/avatar/{title}(title=${person.getAvatarTitle()})}">
+    </div>
+
+
+    <form th:method="POST" enctype="multipart/form-data" th:action="@{/resumes/upload_avatar}">
+        <table>
+            <tr>
+                <td>Upload avatar in PNG:</td>
+                <td><input type="file" name="file" /></td>
+                <td><input type="submit" value="Upload" style="background-color: #00bfd8;; color: #FFFFFF;" /></td>
+            </tr>
+        </table>
+    </form>
+
+    </br>
+
+    <div class="form-header-edit">
+        <center><h5>Add your message</h5></center>
+    </div>
+
+    </br>
+
+    <div>
+        <form th:action="@{/resumes/add_message}" th:method="post" th:object="${person}">
+            <textarea name="message" id="message" rows="4" cols="50" th:text="${person.getMessage()}" placeholder="Enter your resume message"></textarea>
+            <br>
+            <center>
+                <span id="characterCount">0</span>/<span id="maxCharacter">500</span> characters remaining
+                </br></br>
+                <input type="submit" value="Submit" style="background-color: #00bfd8; color: #FFFFFF;">
+            </center>
+        </form>
+    </div>
+
+    <script>
+        var messageInput = document.getElementById("message");
+        var characterCount = document.getElementById("characterCount");
+        var maxCharacter = 500;
+
+        messageInput.addEventListener("input", function () {
+            var currentLength = messageInput.value.length;
+            characterCount.innerText = currentLength;
+            if (currentLength > maxCharacter) {
+                messageInput.value = messageInput.value.substring(0, maxCharacter);
+                characterCount.innerText = maxCharacter;
+            }
+        });
+    </script>
+
+
+    </br>
+
+
+    <div class="form-header-edit">
+        <center><h5>Your resumes</h5></center>
+    </div>
+
+
+    <div class="button-container">
+        <div style="display: inline-block; margin-right: 10px;">
+            <form th:each="resume : ${resumes}" th:method="POST" th:action="@{/resumes/{id}(id=${resume.getId()})}">
+                <input type="hidden" name="action" value="edit">
+                <input type="hidden" name="resumeId" th:value="${resume.getId()}">
+                <button class="btn-solid-lg page-scroll" type="submit" name="submit" th:text="${resume.getLanguage()}"></button>
+                </br></br>
+            </form>
+        </div>
+        <div style="display: inline-block;">
+            <form th:each="resume : ${resumes}" th:method="DELETE" th:action="@{/resumes/delete/{id}(id=${resume.getId()})}">
+                <input type="hidden" name="action" value="delete">
+                <input type="hidden" name="resumeId" th:value="${resume.getId()}">
+                <button class="btn-solid-lg page-scroll" type="submit" name="submit" value="delete" >Delete</button>
+                </br></br>
+            </form>
+        </div>
+    </div>
+
+
+    <div>
+        <form th:method="POST" enctype="multipart/form-data" th:action="@{/resumes/}">
+            <table>
+                <tr>
+                    <td>File to upload (PDF,DOCX):</td>
+                    <td><input type="file" name="file" /></td>
+                    <td>
+                        <select name="option">
+                            <option th:each="option : ${options}" th:value="${option}" th:text="${option}"></option>
+                        </select>
+                    </td>
+                    <td><input type="submit" value="Upload" style="background-color: #00bfd8;; color: #FFFFFF;"/></td>
+                </tr>
+            </table>
+        </form>
+    </div>
+
+    <div class="button-container">
+        <a class="btn-solid-lg page-scroll" th:href="@{/resumes/show_resumes/{id}(id=${person.getId()})}">Get your resume</a>
+    </div>
+</div>
+
+</body>
+</html>
+
+
+
+

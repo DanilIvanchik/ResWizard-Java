@@ -1,0 +1,17 @@
+{
+  "frontendFolder": "/Users/danil/IdeaProjects/ResWizard/./frontend",
+  "themeFolder": "themes",
+  "themeResourceFolder": "/Users/danil/IdeaProjects/ResWizard/./frontend/generated/jar-resources",
+  "staticOutput": "/Users/danil/IdeaProjects/ResWizard/target/classes/META-INF/VAADIN/webapp/VAADIN/static",
+  "generatedFolder": "generated",
+  "statsOutput": "/Users/danil/IdeaProjects/ResWizard/target/classes/META-INF/VAADIN/config",
+  "frontendBundleOutput": "/Users/danil/IdeaProjects/ResWizard/target/classes/META-INF/VAADIN/webapp",
+  "devBundleOutput": "/Users/danil/IdeaProjects/ResWizard/src/main/dev-bundle/webapp",
+  "devBundleStatsOutput": "/Users/danil/IdeaProjects/ResWizard/src/main/dev-bundle/config",
+  "jarResourcesFolder": "/Users/danil/IdeaProjects/ResWizard/./frontend/generated/jar-resources",
+  "themeName": "",
+  "clientServiceWorkerSource": "/Users/danil/IdeaProjects/ResWizard/target/sw.ts",
+  "pwaEnabled": false,
+  "offlineEnabled": false,
+  "offlinePath": "'offline.html'"
+}

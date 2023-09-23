@@ -1,0 +1,145 @@
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Title</title>-->
+<!--    <link href="https://fonts.googleapis.com/css?family=Raleway:400,400i,600,700,700i&amp;subset=latin-ext" rel="stylesheet">-->
+<!--    <link href="../static/css/bootstrap.css" rel="stylesheet">-->
+<!--    <link href="../static/css/styles.css" rel="stylesheet">-->
+<!--    <style>-->
+<!--        body {-->
+<!--            background-color: #f0f0f0; /* Light gray background */-->
+<!--            font-family: Arial, sans-serif;-->
+<!--            margin: 0;-->
+<!--            padding: 0;-->
+<!--        }-->
+
+<!--        /* Header style */-->
+<!--        header {-->
+<!--            background-color: #007bff; /* Blue header */-->
+<!--            color: white;-->
+<!--            text-align: center;-->
+<!--            padding: 20px;-->
+<!--        }-->
+
+<!--        /* Paragraph style */-->
+<!--        p {-->
+<!--            font-size: 18px;-->
+<!--            margin: 20px;-->
+<!--        }-->
+
+<!--        /* Form style */-->
+<!--        form {-->
+<!--            margin: 20px;-->
+<!--            padding: 20px;-->
+<!--            background-color: white;-->
+<!--            border: 1px solid #ccc;-->
+<!--            border-radius: 5px;-->
+<!--        }-->
+
+<!--        textarea {-->
+<!--            width: 100%;-->
+<!--            padding: 10px;-->
+<!--            margin-bottom: 10px;-->
+<!--        }-->
+
+<!--        input[type="submit"] {-->
+<!--            background-color: #007bff; /* Blue button */-->
+<!--            color: white;-->
+<!--            padding: 10px 20px;-->
+<!--            border: none;-->
+<!--            border-radius: 5px;-->
+<!--            cursor: pointer;-->
+<!--        }-->
+
+<!--        /* Link style */-->
+<!--        a {-->
+<!--            text-decoration: none;-->
+<!--            color: #007bff; /* Blue link */-->
+<!--        }-->
+
+<!--        /* Table style */-->
+<!--        table {-->
+<!--            width: 100%;-->
+<!--        }-->
+
+<!--        select {-->
+<!--            width: 100%;-->
+<!--            padding: 10px;-->
+<!--        }-->
+
+<!--        /* Footer style */-->
+<!--        footer {-->
+<!--            background-color: #007bff; /* Blue footer */-->
+<!--            color: white;-->
+<!--            text-align: center;-->
+<!--            padding: 10px;-->
+<!--        }-->
+
+<!--        /* Center align and space buttons */-->
+<!--        .button-container {-->
+<!--            display: flex;-->
+<!--            justify-content: center;-->
+<!--            align-items: center;-->
+<!--            gap: 10px; /* Расстояние между кнопками */-->
+<!--            margin: 20px;-->
+<!--        }-->
+<!--    </style>-->
+<!--</head>-->
+<!--<body>-->
+
+<!--<p th:text="${'Hello ' + person.getUsername() +'!'}" align="center">VALUE</p>-->
+
+<!--<p th:text="${person.getMessage()}" align="center"></p>-->
+
+<!--<div class="button-container">-->
+<!--    <form th:each="resume : ${resumes}" th:method="POST" th:action="@{/resumes/{id}(id=${resume.getId()})}">-->
+<!--        <input class="btn-solid-lg page-scroll" type="submit" th:value="${resume.getLanguage()}">-->
+<!--    </form>-->
+<!--</div>-->
+
+
+<!--</body>-->
+<!--</html>-->
+
+<!DOCTYPE html>
+<html xmlns:th = "https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ResWizard</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+
+    <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons'>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+
+</head>
+
+<body>
+<div class="ResultForm">
+    <div class="form-panel-result one">
+        <div class="photo">
+            <img class="personPhoto" alt="" th:src="@{'/static/images/avatar/' + ${person.avatarTitle}}">
+        </div>
+        <center>
+            <div class="form-header">
+                <H1 th:text="${person.getUsername()}">VALUE</H1>
+                <p th:text="${person.getMessage()}" align=”justify”></p>
+            </div>
+        </center>
+        <div class="form-header">
+            <H1 align="center">Choose the language</H1>
+            <form align="center" th:each="resume : ${resumes}" th:method="POST" th:action="@{/resumes/{id}(id=${resume.getId()})}">
+                </br>
+                <input class="btn-solid-lg page-scroll" type="submit" th:value="${resume.getLanguage()}">
+            </form>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>
