@@ -3,8 +3,7 @@ target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
-!**src/main/resources/static/css/bootstrap.css
-!**src/main/resources/static/css/styles.css
+
 
 ### STS ###
 .apt_generated
@@ -36,10 +35,6 @@ build/
 
 # These are needed for convinience of development, but won't be comitted to VCS 
 # (for now at least)
-.mvn
-src/main/resources/static/css/styles.css
-src/main/resources/static/css/bootstrap.css
-src/main/resources/static/images/header-background.svg
 
 # Not totally necessary to commit into VCS
 mvnw
