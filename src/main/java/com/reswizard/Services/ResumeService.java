@@ -5,6 +5,7 @@ import com.reswizard.Models.Resume;
 import com.reswizard.Repositories.ResumeRepo;
 import com.reswizard.Util.IncorrectResumeFormatException;
 import com.reswizard.Util.Languages;
+import com.reswizard.Util.ResumeNotFoundException;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -16,6 +17,8 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -51,13 +54,19 @@ public class ResumeService {
         return resumeRepository.findResumeById(id);
     }
 
-    public void handleResumeFileDownload(String fileName, HttpServletResponse response, String uploadPath){
+    @Transactional
+    public void handleResumeFileDownload(String fileName, HttpServletResponse response, String filePath){
+
+//        if (!isResumeExists(fileName, filePath)){
+//            deletePersonResume(fileName);
+//            throw new ResumeNotFoundException("No resume found in storage.");
+//        }
         if (fileName.indexOf(".doc")>-1) response.setContentType("application/msword");
         if (fileName.indexOf(".docx")>-1) response.setContentType("application/msword");
         if (fileName.indexOf(".pdf")>-1) response.setContentType("application/pdf");
         response.setHeader("Content-Disposition", "attachment; filename=" +fileName);
         response.setHeader("Content-Transfer-Encoding", "binary");
-        try(FileInputStream fileInputStream = new FileInputStream(uploadPath+fileName);
+        try(FileInputStream fileInputStream = new FileInputStream(filePath+fileName);
             BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(response.getOutputStream());) {
             int len;
             byte[] buf = new byte[1024];
@@ -100,7 +109,7 @@ public class ResumeService {
         Resume resume = new Resume(uniqueFileName, uploadPath, person, selectedLanguage);
 
         if (existingResume != null) {
-            deleteResume(uploadPath, existingResume.getTitle());
+            deleteResumeFromStorage(uploadPath, existingResume.getTitle());
             resume.setId(existingResume.getId());
             save(resume);
             updatePersonResumes(person, existingResume, resume);
@@ -116,7 +125,7 @@ public class ResumeService {
         return fileExtension.equals("pdf") || fileExtension.equals("docx")|| fileExtension.equals("doc");
     }
 
-    private void deleteResume(String uploadPath, String fileName){
+    private void deleteResumeFromStorage(String uploadPath, String fileName){
         File file = new File(uploadPath+fileName);
         if(file.delete()){
             System.out.println(uploadPath+fileName+" file deleted");
@@ -126,11 +135,10 @@ public class ResumeService {
     }
 
     @Transactional
-    public void deletePersonResumeFromSettingsPage(Integer resumeId, String uploadPath){
+    public void deletePersonResumeFromEditPage(Integer resumeId, String uploadPath){
         Resume resume = resumeRepository.findResumeById(resumeId);
         resumeRepository.deleteResumeById(resumeId);
-        deleteResume(uploadPath, resume.getTitle());
-
+        deleteResumeFromStorage(uploadPath, resume.getTitle());
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         Person person = peopleService.findUserByUsername(username);
@@ -138,6 +146,18 @@ public class ResumeService {
         peopleService.save(person);
 
     }
+
+//    @Transactional
+//    public void deletePersonResume(String fileName){
+//        Resume resume = resumeRepository.findResumeByTitle(fileName);
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        String username = authentication.getName();
+//        Person person = peopleService.findUserByUsername(username);
+//        resumeRepository.deleteResumeById(resume.getId());
+//        System.out.println("Deleting resume: " + resume.getTitle() +" "+ Integer.valueOf(resume.getId()));
+//        person.getResumes().remove(resume);
+//        peopleService.save(person);
+//    }
 
     private String generateUniqueFileName(String originalFileName) {
         String uidFile = UUID.randomUUID().toString();
@@ -150,6 +170,47 @@ public class ResumeService {
         person.getResumes().remove(oldResume);
         person.getResumes().add(newResume);
         peopleService.save(person);
+    }
+
+    @Transactional
+    public List<Resume> getAllExistedResumes(List<Resume> resumes, String path, Person currentPerson){
+        List<Resume> newResumeList = new ArrayList<>();
+        for (Resume r: resumes){
+            if (isResumeExists(r.getTitle(), path)){
+                newResumeList.add(r);
+            }else{
+                resumeRepository.deleteResumeById(r.getId());
+            }
+        }
+        currentPerson.setResumes(newResumeList);
+        peopleService.save(currentPerson);
+        return newResumeList;
+    }
+
+    public boolean isAllResumesExist(List<Resume> resumes, String path){
+        for(Resume r: resumes){
+            if (!isResumeExists(r.getTitle(), path)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean isResumeExists(String title, String path){
+        File directory = new File(path);
+        File[] files = directory.listFiles();
+
+        if (files != null) {
+            HashSet<String> fileNames = new HashSet<>();
+
+            for (File file : files) {
+                fileNames.add(file.getName());
+            }
+
+            return fileNames.contains(title);
+        }
+
+        return false;
     }
 
 

@@ -5,9 +5,12 @@ import com.reswizard.Util.Languages;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Table(name = "Resume")
 public class Resume {
 
@@ -43,4 +46,13 @@ public class Resume {
 
     }
 
+    @Override
+    public String toString() {
+        return "Resume{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", path='" + path + '\'' +
+                ", language=" + language +
+                '}';
+    }
 }

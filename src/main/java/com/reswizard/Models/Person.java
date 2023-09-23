@@ -4,13 +4,16 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Entity
 @Table(name = "Person")
-@Data
+@Getter
+@Setter
 public class Person {
 
     @Id

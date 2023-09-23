@@ -6,7 +6,6 @@ import com.reswizard.Services.ResumeService;
 import com.reswizard.Util.*;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -15,7 +14,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -53,6 +51,10 @@ public class ResumeController {
         model.addAttribute("options", languageOptions);
         Person currentPerson = peopleService.findUserByUsername(authentication.getName());
         model.addAttribute("person", currentPerson);
+        if (!resumeService.isAllResumesExist(currentPerson.getResumes(), uploadPath)){
+            model.addAttribute("resumes", resumeService.getAllExistedResumes(currentPerson.getResumes(), uploadPath, currentPerson));
+            return "ResumePageMissing";
+        }
         if (currentPerson.getResumes() != null){
             model.addAttribute("resumes", currentPerson.getResumes());
         }
@@ -102,7 +104,7 @@ public class ResumeController {
 
     @DeleteMapping ("/delete/{id}")
     public String deleteResume(@PathVariable("id") int resumeId){
-        resumeService.deletePersonResumeFromSettingsPage(resumeId, uploadPath);
+        resumeService.deletePersonResumeFromEditPage(resumeId, uploadPath);
         return "redirect:/resumes/";
     }
 
@@ -126,7 +128,7 @@ public class ResumeController {
         response.setTime(System.currentTimeMillis());
         new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 
-        return "IncorrectFormatPage";
+        return "IncorrectFormatPageException";
 
     }
 
