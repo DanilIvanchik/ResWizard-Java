@@ -42,3 +42,7 @@ m
 .src/main/java/com/reswizard/Models/Person.java,3/f/3f8e568d84c11e7d01b3d9ddc7adaa97c4273b44
 k
 ;src/main/java/com/reswizard/Controllers/MainController.java,5/e/5e493465b6da17c6d15371b4ba91578aac5947e2
+e
+5src/main/java/com/reswizard/ResWizardApplication.java,f/6/f6b5ca7b781f736d143c1ccd33caf2147c891738
+f
+6src/main/java/com/reswizard/DTO/AuthenticationDTO.java,8/5/85724c8ec66d2f252dd45c560b53f914be60332f

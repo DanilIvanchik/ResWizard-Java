@@ -3,4 +3,12 @@
   <component name="SonarLintModuleSettings">
     <option name="uniqueId" value="67ddc668-164a-4799-b01d-617b94c3c77e" />
   </component>
+  <component name="TemplatesService">
+    <option name="TEMPLATE_CONFIGURATION" value="Chameleon" />
+    <option name="TEMPLATE_FOLDERS">
+      <list>
+        <option value="$MODULE_DIR$/src/main/resources/templates" />
+      </list>
+    </option>
+  </component>
 </module>
