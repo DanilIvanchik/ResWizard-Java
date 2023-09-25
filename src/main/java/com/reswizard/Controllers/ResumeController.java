@@ -116,7 +116,7 @@ public class ResumeController {
         response.setTime(System.currentTimeMillis());
         new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 
-        return "IncorrectFormatPage";
+        return "IncorrectFormatExceptionPage";
 
     }
 
@@ -128,7 +128,7 @@ public class ResumeController {
         response.setTime(System.currentTimeMillis());
         new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 
-        return "IncorrectFormatPageException";
+        return "IncorrectFormatExceptionPage";
 
     }
 
