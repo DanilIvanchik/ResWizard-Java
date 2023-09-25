@@ -110,4 +110,11 @@ public class PeopleService {
         peopleRepo.save(person);
     }
 
+
+    public Person getCurrentPerson(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        Optional<Person> person = peopleRepo.findByUsername(username);
+        return person.get();
+    }
 }
