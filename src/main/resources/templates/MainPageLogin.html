@@ -30,8 +30,37 @@
         <a class="nav-link page-scroll" href="/hello">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link page-scroll" href="#contact">Contact</a>
+        <a class="nav-link page-scroll" href="#contact" id="contact-link">Contact</a>
       </li>
+
+      <div id="contact-modal" class="modal">
+        <div class="modal-content">
+          <span class="close-button" id="close-modal">&times;</span>
+          <center>
+            <div class="form-panel-result one">
+              <h3>Hello User!</h3>
+              </br>
+              <p align=”justify”>I'm Daniil Ivanchyk, the creator of this pet project. I'd like to introduce you to ResWizard, a Java-based web application hosted on GitHub. ResWizard makes hosting and sharing resumes a breeze. Its main purpose is to provide a user-friendly webpage where people can display their resumes and have the option to customize the download format.</p>
+              </br>
+              <p align=”justify”>With ResWizard, sharing your resumes is effortless, and visitors to the page can easily download them in their preferred format. If you have any questions or feedback, please don't hesitate to reach out.</p>
+              <h4>Contact the creator</h4>
+              </br>
+              <a class="btn-solid-lg page-scroll" href="https://github.com/DanilIvanchik">GitHub</a>
+              <a class="btn-solid-lg page-scroll" href="https://www.linkedin.com/in/daniil-ivanchyk-564a5122b/">LinkedIn</a>
+            </div>
+          </center>
+        </div>
+      </div>
+
+      <script>
+        document.getElementById("contact-link").addEventListener("click", function() {
+          document.getElementById("contact-modal").style.display = "block";
+        });
+
+        document.getElementById("close-modal").addEventListener("click", function() {
+          document.getElementById("contact-modal").style.display = "none";
+        });
+      </script>
       <li class="nav-item">
         <a class="nav-link page-scroll" href="#pricing">Pricing</a>
       </li>
