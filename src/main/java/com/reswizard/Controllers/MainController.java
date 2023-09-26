@@ -21,18 +21,12 @@ public class MainController {
 
     @GetMapping("/hello")
     public String sayHello(){
-        return "MainPageLogin";
+        return "MainPage";
     }
 
     @GetMapping("/helloUser")
     public String helloUser(Model model){
         model.addAttribute("person", peopleService.getCurrentPerson());
-        return "MainPage";
-    }
-
-    @GetMapping("/admin")
-    public String adminPage(){
-        adminService.doAdmin();
-        return "Admin";
+        return "MainUserPage";
     }
 }

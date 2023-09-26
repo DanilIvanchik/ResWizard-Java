@@ -53,7 +53,7 @@ public class ResumeController {
         model.addAttribute("person", currentPerson);
         if (!resumeService.isAllResumesExist(currentPerson.getResumes(), uploadPath)){
             model.addAttribute("resumes", resumeService.getAllExistedResumes(currentPerson.getResumes(), uploadPath, currentPerson));
-            return "ResumePageMissing";
+            return "someOfResumesNotFoundPage";
         }
         if (currentPerson.getResumes() != null){
             model.addAttribute("resumes", currentPerson.getResumes());
@@ -79,7 +79,7 @@ public class ResumeController {
         Person currentPerson = peopleService.findPersonById(PersonId);
         model.addAttribute("person", currentPerson);
         model.addAttribute("resumes", currentPerson.getResumes());
-        return "ResumeResult";
+        return "ResumeResultPage";
     }
 
     @PostMapping("/add_message")
@@ -141,7 +141,6 @@ public class ResumeController {
         new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
 
         return "MessageLengthExceptionPage";
-
     }
 
 }

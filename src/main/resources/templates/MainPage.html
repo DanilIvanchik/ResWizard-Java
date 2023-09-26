@@ -1,136 +1,96 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/html">
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
-    <!-- SEO Meta Tags -->
-    <meta name="description" content="Create a stylish landing page for your business startup and get leads for the offered services with this HTML landing page template.">
-    <meta name="author" content="Inovatik">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- OG Meta Tags to improve the way the post looks when you share the page on LinkedIn, Facebook, Google+ -->
-	<meta property="og:site_name" content="" /> <!-- website name -->
-	<meta property="og:site" content="" /> <!-- website link -->
-	<meta property="og:title" content=""/> <!-- title shown in the actual shared post -->
-	<meta property="og:description" content="" /> <!-- description shown in the actual shared post -->
-	<meta property="og:image" content="" /> <!-- image link, make sure it's jpg -->
-	<meta property="og:url" content="" /> <!-- where do you want your post to link to -->
-	<meta property="og:type" content="article" />
+  <title>Wizard</title>
 
-    <!-- Website Title -->
-    <title>Wizard</title>
-    
-    <!-- Styles -->
-    <link href="https://fonts.googleapis.com/css?family=Raleway:400,400i,600,700,700i&amp;subset=latin-ext" rel="stylesheet">
-    <link href="../static/css/bootstrap.css" rel="stylesheet">
-	<link href="../static/css/styles.css" rel="stylesheet">
-	
-	<!-- Favicon  -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway:400,400i,600,700,700i&amp;subset=latin-ext" rel="stylesheet">
+  <link href="../static/css/bootstrap.css" rel="stylesheet">
+  <link href="../static/css/styles.css" rel="stylesheet">
 
-    <link rel="icon" src="/static/images/favicon.png">
-<!--    <style>-->
-<!--        /* CSS стили с использованием Thymeleaf */-->
-<!--        body {-->
-<!--            background-image: url('images/header-background.jpg');-->
-<!--            background-size: cover;-->
-<!--            /* Другие стили фона, если необходимо */-->
-<!--        }-->
-<!--    </style>-->
+  <link rel="icon" src="/static/images/favicon.png">
 </head>
 
 <body data-spy="scroll">
 
-    
-
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
-         <a class="navbar-brand logo-text page-scroll" href="MainPage.html">Wizard</a>
-        <!-- Mobile Menu Toggle Button -->
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-awesome fas fa-bars"></span>
-            <span class="navbar-toggler-awesome fas fa-times"></span>
-        </button>
-        <!-- end of mobile menu toggle button -->
-
-        <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link page-scroll" href="/helloUser">Home <span class="sr-only">(current)</span></a>
-                </li>
 
 
-                <li class="nav-item">
-                    <a class="nav-link page-scroll" href="#contact" id="contact-link">Contact</a>
-                </li>
+<nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+  <a class="navbar-brand logo-text page-scroll" href="MainUserPage.html">Wizard</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-awesome fas fa-bars"></span>
+    <span class="navbar-toggler-awesome fas fa-times"></span>
+  </button>
 
-                <div id="contact-modal" class="modal">
-                    <div class="modal-content">
-                        <span class="close-button" id="close-modal">&times;</span>
-                        <center>
-                        <div class="form-panel-result one">
-                            <h3>Hello User!</h3>
-                            </br>
-                            <p align=”justify”>I'm Daniil Ivanchyk, the creator of this pet project. I'd like to introduce you to ResWizard, a Java-based web application hosted on GitHub. ResWizard makes hosting and sharing resumes a breeze. Its main purpose is to provide a user-friendly webpage where people can display their resumes and have the option to customize the download format.</p>
-                            </br>
-                            <p align=”justify”>With ResWizard, sharing your resumes is effortless, and visitors to the page can easily download them in their preferred format. If you have any questions or feedback, please don't hesitate to reach out.</p>
-                            <h4>Contact the creator</h4>
-                            </br>
-                            <a class="btn-solid-lg page-scroll" href="https://github.com/DanilIvanchik">GitHub</a>
-                            <a class="btn-solid-lg page-scroll" href="https://www.linkedin.com/in/daniil-ivanchyk-564a5122b/">LinkedIn</a>
-                        </div>
-                        </center>
-                    </div>
-                </div>
+  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link page-scroll" href="/hello">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link page-scroll" href="#contact" id="contact-link">Contact</a>
+      </li>
 
-                <script>
-                    document.getElementById("contact-link").addEventListener("click", function() {
-                        document.getElementById("contact-modal").style.display = "block";
-                    });
-
-                    document.getElementById("close-modal").addEventListener("click", function() {
-                        document.getElementById("contact-modal").style.display = "none";
-                    });
-                </script>
-
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle page-scroll" href="#about" id="navbarDropdown" role="button" aria-haspopup="true" aria-expanded="false">Resume</a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <a class="dropdown-item" href="/resumes/"><span class="item-text">Edit my resume</span></a>
-                        <div class="dropdown-items-divide-hr"></div>
-                        <a class="dropdown-item" th:href="@{/resumes/show_resumes/{id}(id=${person.getId()})}"><span class="item-text">Show my resume</span></a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <form class="nav-link page-scroll" th:action="@{/logout}" th:method="POST" style="display: inline;">
-                        <button type="submit" style="background: none; border: none; padding: 0;">Logout</button>
-                    </form>
-
-                </li>
-            </ul>
+      <div id="contact-modal" class="modal">
+        <div class="modal-content">
+          <span class="close-button" id="close-modal">&times;</span>
+          <center>
+            <div class="form-panel-result one">
+              <h3>Hello User!</h3>
+              </br>
+              <p align=”justify”>I'm Daniil Ivanchyk, the creator of this pet project. I'd like to introduce you to ResWizard, a Java-based web application hosted on GitHub. ResWizard makes hosting and sharing resumes a breeze. Its main purpose is to provide a user-friendly webpage where people can display their resumes and have the option to customize the download format.</p>
+              </br>
+              <p align=”justify”>With ResWizard, sharing your resumes is effortless, and visitors to the page can easily download them in their preferred format. If you have any questions or feedback, please don't hesitate to reach out.</p>
+              <h4>Contact the creator</h4>
+              </br>
+              <a class="btn-solid-lg page-scroll" href="https://github.com/DanilIvanchik">GitHub</a>
+              <a class="btn-solid-lg page-scroll" href="https://www.linkedin.com/in/daniil-ivanchyk-564a5122b/">LinkedIn</a>
+            </div>
+          </center>
         </div>
-    </nav>
+      </div>
 
-    <header id="header" class="header">
-        <div class="header-content">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-6">
-                        <div class="text-container">
-                            <h1><span class="turquoise">Create your</span> own unique resume catalog</h1>
-                            <p class="p-large">Use ResWizard to make your resume cleaner and more convenient</p>
-                            <a class="btn-solid-lg page-scroll" href="/resumes/">DISCOVER</a>
-                        </div> <!-- end of text-container -->
-                    </div> <!-- end of col -->
-                    <div class="col-lg-6">
-                        <div class="image-container">
-                            <img class="img-fluid" src="/static/images/header-teamwork.svg" alt="alternative">
-                        </div> <!-- end of image-container -->
-                    </div> <!-- end of col -->
-                </div> <!-- end of row -->
-            </div> <!-- end of container -->
-        </div> <!-- end of header-content -->
-    </header> <!-- end of header -->
-    <!-- end of header -->
+      <script>
+        document.getElementById("contact-link").addEventListener("click", function() {
+          document.getElementById("contact-modal").style.display = "block";
+        });
+
+        document.getElementById("close-modal").addEventListener("click", function() {
+          document.getElementById("contact-modal").style.display = "none";
+        });
+      </script>
+
+      <li class="nav-item">
+        <a class="nav-link page-scroll" href="/auth/login">Login</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+
+<header id="header" class="header">
+  <div class="header-content">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="text-container">
+            <h1><span class="turquoise">Create your</span> own unique resume catalog</h1>
+            <p class="p-large">Use ResWizard to make your resume cleaner and more convenient</p>
+            <a class="btn-solid-lg page-scroll" href="/auth/login">DISCOVER</a>
+          </div> <!-- end of text-container -->
+        </div> <!-- end of col -->
+        <div class="col-lg-6">
+          <div class="image-container">
+            <img class="img-fluid" src="/static/images/header-teamwork.svg" alt="alternative">
+          </div> <!-- end of image-container -->
+        </div> <!-- end of col -->
+      </div> <!-- end of row -->
+    </div> <!-- end of container -->
+  </div> <!-- end of header-content -->
+</header> <!-- end of header -->
+<!-- end of header -->
 
 </body>
 </html>
