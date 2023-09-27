@@ -15,13 +15,17 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 @Service
 @Transactional(readOnly = true)
 public class PeopleService {
+
     private final PeopleRepo peopleRepo;
     private final PasswordEncoder passwordEncoder;
-
+    private static final Logger logger = Logger.getGlobal();
 
     @Autowired
     public PeopleService(PeopleRepo peopleRepo, PasswordEncoder passwordEncoder) {
@@ -29,25 +33,28 @@ public class PeopleService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    // Check if a username is a duplicate
     public boolean isDuplicate(String name) {
         return peopleRepo.findByUsername(name).isPresent();
     }
 
+    // Check if a user is present by email
     public boolean isUserPresentByEmail(String email) {
         return peopleRepo.findByEmail(email).isPresent();
     }
 
+    // Find a user by username
     public Person findUserByUsername(String name) {
-        if (peopleRepo.findByUsername(name).isPresent()) {
-            Optional<Person> person = peopleRepo.findByUsername(name);
-            return person.get();
-        } else {
-            return null;
-        }
+        logger.log(Level.INFO, "Finding user by username: " + name);
+        Optional<Person> person = peopleRepo.findByUsername(name);
+        return person.orElse(null);
     }
 
+    // Handle uploading an avatar file
     @Transactional
     public void handleAvatarFileUpload(MultipartFile file, String uploadPath) throws IOException {
+        logger.log(Level.INFO, "Uploading avatar file: " + file.getOriginalFilename());
+
         if (file == null || file.isEmpty()) {
             return;
         }
@@ -59,8 +66,8 @@ public class PeopleService {
         }
 
         String uniqueFileName = generateUniqueFileName(file.getOriginalFilename());
-        if (!isValidResumeFormat(uniqueFileName)) {
-            throw new IncorrectAvatarFormatException("Invalid file format. Only PDF is allowed.");
+        if (!isValidAvatarFormat(uniqueFileName)) {
+            throw new IncorrectAvatarFormatException("Invalid file format. Only PNG is allowed.");
         }
         String filePath = uploadPath + uniqueFileName;
 
@@ -68,28 +75,37 @@ public class PeopleService {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        Optional<Person> person = peopleRepo.findByUsername(username);
-        if (person.get().getAvatarTitle() != null){
-            deleteOldAvatar(uploadPath, person.get().getAvatarTitle());
+        Optional<Person> personOptional = peopleRepo.findByUsername(username);
+
+        if (personOptional.isPresent()) {
+            Person person = personOptional.get();
+            if (person.getAvatarTitle() != null) {
+                deleteOldAvatar(uploadPath, person.getAvatarTitle());
+            }
+            person.setAvatarTitle(uniqueFileName);
+            peopleRepo.save(person);
         }
-        person.get().setAvatarTitle(uniqueFileName);
-        peopleRepo.save(person.get());
+
+        logger.log(Level.INFO, "Avatar file upload completed successfully: " + file.getOriginalFilename());
     }
 
-    private void deleteOldAvatar(String uploadPath, String fileName){
-        File file = new File(uploadPath+fileName);
-        if(file.delete()){
-            System.out.println(uploadPath+fileName+" file deleted");
-        }else{
-            System.out.println("File "+uploadPath+fileName+" has not been found");
+    // Delete an old avatar file
+    private void deleteOldAvatar(String uploadPath, String fileName) {
+        File file = new File(uploadPath + fileName);
+        if (file.delete()) {
+            logger.log(Level.INFO, "Deleted old avatar: " + uploadPath + fileName);
+        } else {
+            logger.log(Level.INFO, "Old avatar file not found: " + uploadPath + fileName);
         }
     }
 
-    private boolean isValidResumeFormat(String fileName) {
+    // Check if the file format is valid for avatars
+    private boolean isValidAvatarFormat(String fileName) {
         String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
         return fileExtension.equals("png");
     }
 
+    // Generate a unique file name for uploaded avatars
     private String generateUniqueFileName(String originalFileName) {
         String uidFile = UUID.randomUUID().toString();
         int lastDotIndex = originalFileName.lastIndexOf(".");
@@ -97,24 +113,40 @@ public class PeopleService {
         return uidFile + extension;
     }
 
+    // Check if a password is valid
     public boolean isPasswordValid(String password) {
         return peopleRepo.findByPassword(passwordEncoder.encode(password)).isPresent();
     }
 
+    // Find a person by their ID
     public Person findPersonById(int id) {
-        return peopleRepo.findPersonById(id).get();
+        logger.log(Level.INFO, "Finding person by ID: " + id);
+        return peopleRepo.findPersonById(id).orElse(null);
     }
 
+    // Save a person
     @Transactional
     public void save(Person person) {
         peopleRepo.save(person);
+        logger.log(Level.INFO, "Saved person: " + person.getUsername());
     }
 
-
-    public Person getCurrentPerson(){
+    // Get the currently authenticated person
+    public Person getCurrentPerson() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
+        logger.log(Level.INFO, "Getting current authenticated person: " + username);
         Optional<Person> person = peopleRepo.findByUsername(username);
-        return person.get();
+        return person.orElse(null);
+    }
+
+    /**
+     * Checks if the length of the given message is valid.
+     *
+     * @param message The string representing the message to be checked.
+     * @return true if the message length is greater than 500 characters; otherwise, returns false.
+     */
+    public boolean isMessageLengthValid(String message){
+        return message.length() > 500;
     }
 }

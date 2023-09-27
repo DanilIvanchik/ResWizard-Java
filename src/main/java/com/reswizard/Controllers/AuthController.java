@@ -13,6 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 @Controller
 @RequestMapping("/auth")
 public class AuthController {
@@ -21,57 +24,94 @@ public class AuthController {
     private final RegistrationService registrationService;
     private final ModelMapper modelMapper;
     private final AuthValidator authValidator;
+    private static final Logger logger = Logger.getGlobal();
 
     @Autowired
-    public AuthController(PersonValidator personValidator, RegistrationService registrationService, ModelMapper modelMapper, AuthValidator authValidator) {
+    public AuthController(
+            PersonValidator personValidator,
+            RegistrationService registrationService,
+            ModelMapper modelMapper,
+            AuthValidator authValidator
+    ) {
         this.personValidator = personValidator;
         this.registrationService = registrationService;
         this.modelMapper = modelMapper;
         this.authValidator = authValidator;
     }
 
+    // Handles HTTP GET requests to the "/auth/login" path, displaying the login page.
     @GetMapping("/login")
-    public String loginPage(@ModelAttribute("authenticationDTO") AuthenticationDTO authenticationDTO){
+    public String loginPage(@ModelAttribute("authenticationDTO") AuthenticationDTO authenticationDTO) {
+        logger.log(Level.INFO, "Displaying login page.");
         return "LoginPage";
     }
 
+    // Handles HTTP POST requests to the "/auth/login" path, processing user login.
     @PostMapping("/login")
-    public String loginPage(@ModelAttribute("authenticationDTO") @Valid AuthenticationDTO authenticationDTO, BindingResult bindingResult){
+    public String loginPage(
+            @ModelAttribute("authenticationDTO") @Valid AuthenticationDTO authenticationDTO,
+            BindingResult bindingResult){
+        logger.log(Level.INFO, "Processing user login.");
+
+        // Validate the submitted authentication data.
         authValidator.validate(authenticationDTO, bindingResult);
-        if (bindingResult.hasErrors()){
+
+        // If validation errors exist, return to the login page with error messages.
+        if (bindingResult.hasErrors()) {
+            logger.log(Level.WARNING, "Login validation failed.");
             return "LoginPage";
         }
+
+        // Redirect to the login processing page.
+        logger.log(Level.INFO, "Redirecting to login processing page.");
         return "redirect:/process_login";
     }
 
+    // Handles HTTP GET requests to the "/auth/registration" path, displaying the registration page.
     @GetMapping("/registration")
-    public String registrationPage(@ModelAttribute("personDTO") PersonDTO personDTO){
-
+    public String registrationPage(@ModelAttribute("personDTO") PersonDTO personDTO) {
+        logger.log(Level.INFO, "Displaying registration page.");
         return "RegistrationPage";
     }
 
+    // Handles HTTP GET requests to the "/auth/access-denied" path, displaying the access denied page.
     @GetMapping("/access-denied")
-    public String accessDenied(@ModelAttribute("personDTO") PersonDTO personDTO){
-
+    public String accessDenied() {
+        logger.log(Level.INFO, "Displaying access denied page.");
         return "AccessDeniedPage";
     }
 
+    // Handles HTTP POST requests to the "/auth/registration" path, processing user registration.
     @PostMapping("/registration")
-    public String performRegistration(@ModelAttribute("personDTO") @Valid PersonDTO personDTO, BindingResult bindingResult){
+    public String performRegistration(
+            @ModelAttribute("personDTO") @Valid PersonDTO personDTO,
+            BindingResult bindingResult){
+        logger.log(Level.INFO, "Processing user registration.");
 
+        // Convert the DTO to a Person object.
         Person person = DTOToPerson(personDTO);
 
+        // Validate the submitted person data.
         personValidator.validate(person, bindingResult);
-        if (bindingResult.hasErrors()){
+
+        // If validation errors exist, return to the registration page with error messages.
+        if (bindingResult.hasErrors()) {
+            logger.log(Level.WARNING, "Registration validation failed.");
             return "RegistrationPage";
         }
+
+        // Register the user and redirect to the login page.
         registrationService.register(person);
+        logger.log(Level.INFO, "User registration successful. Redirecting to login page.");
         return "redirect:/auth/login";
     }
 
-    private Person DTOToPerson(PersonDTO personDTO){
+    // Converts a PersonDTO to a Person object using ModelMapper.
+    private Person DTOToPerson(PersonDTO personDTO) {
         Person person = modelMapper.map(personDTO, Person.class);
-        System.out.println(person.getRole());
+        logger.log(Level.INFO, "Converting PersonDTO to Person object: " + person.getUsername());
         return person;
     }
 }
+
+
