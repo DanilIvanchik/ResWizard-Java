@@ -8,8 +8,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class MvcConfig implements WebMvcConfigurer {
 
-    @Value("${upload.file.path}")
-    private String uploadPath;
+    @Value("${upload.avatar.path}")
+    private String avatarUploadPath;
 
 
     @Override
@@ -18,8 +18,8 @@ public class MvcConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/static/css/");
         registry.addResourceHandler("/static/images/**")
                 .addResourceLocations("classpath:/static/images/");
-        registry.addResourceHandler("/static/images/avatar/**")
-                .addResourceLocations("classpath:/static/images/avatar/");
+        registry.addResourceHandler("/avatar/**")
+                .addResourceLocations("file://"+avatarUploadPath+"/");
 
     }
 }
