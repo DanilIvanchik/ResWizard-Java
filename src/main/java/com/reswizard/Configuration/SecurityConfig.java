@@ -46,7 +46,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(req -> req
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/helloUser", "/resumes", "/resumes/").hasRole("USER")
-                        .requestMatchers("/css/style.css","/js/bootstrap.js", "/css/style.scss").permitAll()
+                        .requestMatchers("/css/style.css","/js/bootstrap.js").permitAll()
                         .requestMatchers("/auth/login", "/error", "/auth/registration", "/hello","/resumes/show_resumes/", "/").permitAll()
                         .anyRequest().permitAll())
                 .formLogin(form -> form.loginPage("/auth/login")

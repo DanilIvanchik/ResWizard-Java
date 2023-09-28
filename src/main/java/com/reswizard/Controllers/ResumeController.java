@@ -50,8 +50,7 @@ public class ResumeController {
     }
 
     @GetMapping("/")
-    public String showAllPersonResumes(Model model,
-                                       HttpSession session) {
+    public String showAllPersonResumes(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         logger.log(Level.INFO, "Displaying all resumes for user: " + authentication.getName());

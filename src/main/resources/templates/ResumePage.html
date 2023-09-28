@@ -147,6 +147,40 @@
     </div>
 
 
+    <script>
+        // Получение ссылки на элемент img
+        const imgElement = document.getElementById("avatarImage");
+
+        // URL, по которому находится изображение
+        const imageUrl = `/static/images/avatar/${person.getAvatarTitle()}`;
+
+        // Опции для запроса
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'image/png' // Установите желаемый Content-Type для изображения
+            },
+        };
+
+        // Отправка запроса и установка полученного изображения как src для img
+        fetch(imageUrl, requestOptions)
+            .then(response => {
+                if (response.ok) {
+                    return response.blob(); // Получаем изображение в виде Blob
+                }
+                throw new Error('Network response was not ok.');
+            })
+            .then(blob => {
+                // Преобразование Blob в URL для изображения
+                const imageUrl = URL.createObjectURL(blob);
+                imgElement.src = imageUrl;
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+            });
+    </script>
+
+
     <form th:method="POST" enctype="multipart/form-data" th:action="@{/resumes/upload_avatar}">
         <table>
             <tr>
