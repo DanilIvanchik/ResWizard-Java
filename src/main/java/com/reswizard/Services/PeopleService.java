@@ -79,7 +79,9 @@ public class PeopleService {
 
         if (personOptional.isPresent()) {
             Person person = personOptional.get();
-            if (person.getAvatarTitle() != null) {
+            System.out.println(person.getAvatarTitle());
+            if (!person.getAvatarTitle().equals("defaultAvatar.png")) {
+                System.out.println("!");
                 deleteOldAvatar(uploadPath, person.getAvatarTitle());
             }
             person.setAvatarTitle(uniqueFileName);

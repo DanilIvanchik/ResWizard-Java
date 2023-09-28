@@ -122,7 +122,7 @@
 <div class="ResultForm">
     <div class="form-panel-result one">
         <div class="photo">
-            <img class="personPhoto" alt="" th:src="@{'/static/images/avatar/' + ${person.avatarTitle}}">
+            <img class="personPhoto" alt="" th:src="@{/avatar/{title}(title=${person.getAvatarTitle()})}">
         </div>
         <center>
             <div class="form-header">

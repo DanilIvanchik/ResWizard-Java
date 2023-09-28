@@ -25,6 +25,7 @@ public class RegistrationService {
         String password = person.getPassword();
         person.setPassword(passwordEncoder.encode(password));
         person.setRole("ROLE_USER");
+        person.setAvatarTitle("defaultAvatar.png");
         peopleRepo.save(person);
     }
 }
