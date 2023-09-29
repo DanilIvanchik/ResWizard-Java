@@ -3,6 +3,7 @@ package com.reswizard.Services;
 import com.reswizard.Models.Person;
 import com.reswizard.Repositories.PeopleRepo;
 import com.reswizard.Util.IncorrectAvatarFormatException;
+import com.reswizard.Util.MessageLengthException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -148,7 +149,9 @@ public class PeopleService {
      * @param message The string representing the message to be checked.
      * @return true if the message length is greater than 500 characters; otherwise, returns false.
      */
-    public boolean isMessageLengthValid(String message){
-        return message.length() > 500;
+    public void isMessageLengthValid(String message){
+        if (message.length() > 500){
+            throw new MessageLengthException("Message length out of range. Message length should be between 0 and 500 characters.");
+        }
     }
 }

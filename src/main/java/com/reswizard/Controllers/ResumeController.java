@@ -5,16 +5,14 @@ import com.reswizard.Services.PeopleService;
 import com.reswizard.Services.ResumeService;
 import com.reswizard.Util.*;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -27,6 +25,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.naming.SizeLimitExceededException;
 
 @Controller
 @RequestMapping("/resumes")
@@ -63,7 +63,7 @@ public class ResumeController {
 
         if (!resumeService.isAllResumesExist(currentPerson.getResumes(), uploadPath)) {
             model.addAttribute("resumes", resumeService.getPersonsExistedResumes(currentPerson.getResumes(), uploadPath, currentPerson));
-            return "someOfResumesNotFoundPage";
+            return "SomeOfResumesNotFoundPage";
         }
 
         if (currentPerson.getResumes() != null) {
@@ -76,6 +76,9 @@ public class ResumeController {
     @PostMapping("/")
     public String handleResumeUpload(@ModelAttribute("option") Languages selectedLanguage,
                                      @RequestParam("file") MultipartFile file) throws IOException {
+        if (resumeService.getFileSizeMegabytes(file) > 1){
+            throw new MaxUploadSizeExceededException(file.getSize());
+        }
         logger.log(Level.INFO, "Uploading resume file: " + file.getOriginalFilename());
         resumeService.handleResumeFileUpload(file, uploadPath, selectedLanguage);
 
@@ -106,9 +109,7 @@ public class ResumeController {
 
     @PostMapping("/add_message")
     public String addPersonResumeMessage(@ModelAttribute("message") String message) {
-        if (peopleService.isMessageLengthValid(message)) {
-            throw new MessageLengthException("Message length out of range. Message length should be between 0 and 500 characters.");
-        }
+        peopleService.isMessageLengthValid(message);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -142,31 +143,32 @@ public class ResumeController {
     @ExceptionHandler
     private String handleIncorrectAvatarFormatException(IncorrectAvatarFormatException e) {
         logger.log(Level.SEVERE, "Incorrect Avatar Format: " + e.getMessage());
-        IncorrectAvatarFormatExceptionResponse response = new IncorrectAvatarFormatExceptionResponse();
-        response.setMessage(e.getMessage());
-        response.setTime(System.currentTimeMillis());
-        new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+//        IncorrectAvatarFormatExceptionResponse response = new IncorrectAvatarFormatExceptionResponse();
+//        response.setMessage(e.getMessage());
+//        response.setTime(System.currentTimeMillis());
+//        new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         return "IncorrectFormatExceptionPage";
     }
 
     @ExceptionHandler
     private String handleIncorrectResumeFormatException(IncorrectResumeFormatException e) {
         logger.log(Level.SEVERE, "Incorrect Resume Format: " + e.getMessage());
-        IncorrectFormatExceptionResponse response = new IncorrectFormatExceptionResponse();
-        response.setMessage(e.getMessage());
-        response.setTime(System.currentTimeMillis());
-        new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+//        IncorrectFormatExceptionResponse response = new IncorrectFormatExceptionResponse();
+//        response.setMessage(e.getMessage());
+//        response.setTime(System.currentTimeMillis());
+//        new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         return "IncorrectFormatExceptionPage";
     }
 
     @ExceptionHandler
     private String handleMessageLengthException(MessageLengthException e) {
         logger.log(Level.SEVERE, "Message Length Exception: " + e.getMessage());
-        MessageLengthExceptionResponse response = new MessageLengthExceptionResponse();
-        response.setMessage(e.getMessage());
-        response.setTime(System.currentTimeMillis());
-        new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+//        MessageLengthExceptionResponse response = new MessageLengthExceptionResponse();
+//        response.setMessage(e.getMessage());
+//        response.setTime(System.currentTimeMillis());
+//        new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         return "MessageLengthExceptionPage";
     }
+
 }
 

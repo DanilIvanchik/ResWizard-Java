@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -227,5 +228,9 @@ public class ResumeService {
         }
 
         return false;
+    }
+
+    public Double getFileSizeMegabytes(MultipartFile file) {
+        return (double) file.getSize()/(1024*1024);
     }
 }
