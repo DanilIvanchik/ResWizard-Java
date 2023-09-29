@@ -24,9 +24,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.naming.SizeLimitExceededException;
 
 @Controller
 @RequestMapping("/resumes")
@@ -86,12 +84,18 @@ public class ResumeController {
     }
 
     @RequestMapping(value = "/{id}")
-    public @ResponseBody void handleResumeDownload(@PathVariable("id") int ResumeId,
+    public String handleResumeDownload(@PathVariable("id") int ResumeId,
                                                    HttpServletResponse response) {
         String fileName = resumeService.findResumeById(ResumeId).getTitle();
+        if (!resumeService.isResumeExist(fileName, uploadPath)){
+            logger.log(Level.INFO, "File not found: " + fileName);
+
+            return "redirect:/resumes/";
+        }
 
         logger.log(Level.INFO, "Downloading resume file: " + fileName);
         resumeService.handleResumeFileDownload(fileName, response, uploadPath);
+        return "redirect:/resumes/";
     }
 
     @GetMapping(value = "/show_resumes/{id}")

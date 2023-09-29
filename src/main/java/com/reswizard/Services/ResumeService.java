@@ -213,7 +213,7 @@ public class ResumeService {
     }
 
     // Check if a specific resume exists in storage
-    private boolean isResumeExist(String title, String path) {
+    public boolean isResumeExist(String title, String path) {
         File directory = new File(path);
         File[] files = directory.listFiles();
 
