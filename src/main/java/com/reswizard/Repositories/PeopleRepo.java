@@ -14,4 +14,6 @@ public interface PeopleRepo extends JpaRepository<Person, Integer> {
 
     Optional<Person> findByPassword(String password);
     Optional<Person> findPersonById(int id);
+
+    Optional<Person> findByActivationCode(String code);
 }

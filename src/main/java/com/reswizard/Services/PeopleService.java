@@ -27,11 +27,13 @@ public class PeopleService {
     private final PeopleRepo peopleRepo;
     private final PasswordEncoder passwordEncoder;
     private static final Logger logger = Logger.getGlobal();
+    private MailSender mailSender;
 
     @Autowired
-    public PeopleService(PeopleRepo peopleRepo, PasswordEncoder passwordEncoder) {
+    public PeopleService(PeopleRepo peopleRepo, PasswordEncoder passwordEncoder, MailSender mailSender) {
         this.peopleRepo = peopleRepo;
         this.passwordEncoder = passwordEncoder;
+        this.mailSender = mailSender;
     }
 
     // Check if a username is a duplicate
@@ -66,7 +68,7 @@ public class PeopleService {
             uploadDir.mkdirs();
         }
 
-        String uniqueFileName = generateUniqueFileName(file.getOriginalFilename());
+        String uniqueFileName = generateUniqueKey(file.getOriginalFilename());
         if (!isValidAvatarFormat(uniqueFileName)) {
             throw new IncorrectAvatarFormatException("Invalid file format. Only PNG is allowed.");
         }
@@ -109,7 +111,7 @@ public class PeopleService {
     }
 
     // Generate a unique file name for uploaded avatars
-    private String generateUniqueFileName(String originalFileName) {
+    private String generateUniqueKey(String originalFileName) {
         String uidFile = UUID.randomUUID().toString();
         int lastDotIndex = originalFileName.lastIndexOf(".");
         String extension = (lastDotIndex >= 0) ? originalFileName.substring(lastDotIndex) : "";
@@ -153,5 +155,16 @@ public class PeopleService {
         if (message.length() > 500){
             throw new MessageLengthException("Message length out of range. Message length should be between 0 and 500 characters.");
         }
+    }
+
+    @Transactional
+    public boolean isActiveUser(String code) {
+        Optional<Person> person = peopleRepo.findByActivationCode(code);
+        if (person.isEmpty()){
+            return false;
+        }
+        person.get().setActivationCode(null);
+        peopleRepo.save(person.get());
+        return true;
     }
 }

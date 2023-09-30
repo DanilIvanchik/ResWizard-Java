@@ -47,7 +47,7 @@ public class SecurityConfig {
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .requestMatchers("/helloUser", "/resumes", "/resumes/").hasRole("USER")
                         .requestMatchers("/css/style.css","/js/bootstrap.js").permitAll()
-                        .requestMatchers("/auth/login", "/error", "/auth/registration", "/hello","/resumes/show_resumes/", "/").permitAll()
+                        .requestMatchers("/auth/login", "/error", "/auth/registration", "/hello","/resumes/show_resumes/", "/", "/activate/*").permitAll()
                         .anyRequest().permitAll())
                 .formLogin(form -> form.loginPage("/auth/login")
                         .loginProcessingUrl("/process_login")

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th = "https://www.thymeleaf.org">
+<html xmlns:th="https://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
   <meta charset="UTF-8">
   <title>ResWizard</title>
@@ -17,9 +17,13 @@
 <div class="form">
   <div class="form-toggle"></div>
   <div class="form-panel one">
-    <div class="form-header">
-      <h1>Account Login</h1>
+    <div class ="form-header" th:if="${message != null}">
+      <center><h1 th:text="${message}"></h1></center>
     </div>
+    <center><div class="form-header">
+      <h1>Account Login</h1>
+    </div></center>
+    </br>
     <div class="form-content">
       <form name="f" method="POST" action="/process_login" th:object="${authenticationDTO}">
 

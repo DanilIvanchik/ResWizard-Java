@@ -3,6 +3,7 @@ package com.reswizard.Controllers;
 import com.reswizard.DTO.AuthenticationDTO;
 import com.reswizard.DTO.PersonDTO;
 import com.reswizard.Models.Person;
+import com.reswizard.Services.PeopleService;
 import com.reswizard.Util.AuthValidator;
 import com.reswizard.Util.PersonValidator;
 import com.reswizard.Services.RegistrationService;
@@ -10,6 +11,7 @@ import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,18 +27,20 @@ public class AuthController {
     private final ModelMapper modelMapper;
     private final AuthValidator authValidator;
     private static final Logger logger = Logger.getGlobal();
+    private final PeopleService peopleService;
 
     @Autowired
     public AuthController(
             PersonValidator personValidator,
             RegistrationService registrationService,
             ModelMapper modelMapper,
-            AuthValidator authValidator
-    ) {
+            AuthValidator authValidator,
+            PeopleService peopleService) {
         this.personValidator = personValidator;
         this.registrationService = registrationService;
         this.modelMapper = modelMapper;
         this.authValidator = authValidator;
+        this.peopleService = peopleService;
     }
 
     // Handles HTTP GET requests to the "/auth/login" path, displaying the login page.
@@ -48,7 +52,7 @@ public class AuthController {
 
     // Handles HTTP POST requests to the "/auth/login" path, processing user login.
     @PostMapping("/login")
-    public String loginPage(
+    public String loginPage(Model model,
             @ModelAttribute("authenticationDTO") @Valid AuthenticationDTO authenticationDTO,
             BindingResult bindingResult){
         logger.log(Level.INFO, "Processing user login.");
@@ -111,6 +115,16 @@ public class AuthController {
         Person person = modelMapper.map(personDTO, Person.class);
         logger.log(Level.INFO, "Converting PersonDTO to Person object: " + person.getUsername());
         return person;
+    }
+
+    @GetMapping("/activate/{code}")
+    public String activateUser(@ModelAttribute("authenticationDTO") AuthenticationDTO authenticationDTO, Model model, @PathVariable String code ){
+        if (peopleService.isActiveUser(code)){
+            model.addAttribute("message", "User account successfully activated!");
+        }else{
+            model.addAttribute("message", "Activation code is not found.");
+        }
+        return "LoginPage";
     }
 }
 
