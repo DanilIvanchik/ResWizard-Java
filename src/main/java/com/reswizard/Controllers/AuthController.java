@@ -3,6 +3,7 @@ package com.reswizard.Controllers;
 import com.reswizard.DTO.AuthenticationDTO;
 import com.reswizard.DTO.PersonDTO;
 import com.reswizard.Models.Person;
+import com.reswizard.Services.AuthenticationService;
 import com.reswizard.Services.PeopleService;
 import com.reswizard.Util.AuthValidator;
 import com.reswizard.Util.PersonValidator;
@@ -28,6 +29,7 @@ public class AuthController {
     private final AuthValidator authValidator;
     private static final Logger logger = Logger.getGlobal();
     private final PeopleService peopleService;
+    private final AuthenticationService authenticationService;
 
     @Autowired
     public AuthController(
@@ -35,12 +37,13 @@ public class AuthController {
             RegistrationService registrationService,
             ModelMapper modelMapper,
             AuthValidator authValidator,
-            PeopleService peopleService) {
+            PeopleService peopleService, AuthenticationService authenticationService) {
         this.personValidator = personValidator;
         this.registrationService = registrationService;
         this.modelMapper = modelMapper;
         this.authValidator = authValidator;
         this.peopleService = peopleService;
+        this.authenticationService = authenticationService;
     }
 
     // Handles HTTP GET requests to the "/auth/login" path, displaying the login page.
@@ -82,7 +85,7 @@ public class AuthController {
     @GetMapping("/access-denied")
     public String accessDenied() {
         logger.log(Level.INFO, "Displaying access denied page.");
-        return "AccessDeniedPage";
+        return "AccessDeniedEmailPage";
     }
 
     // Handles HTTP POST requests to the "/auth/registration" path, processing user registration.

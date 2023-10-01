@@ -36,8 +36,8 @@ public class PeopleService {
         this.mailSender = mailSender;
     }
 
-    // Check if a username is a duplicate
-    public boolean isDuplicate(String name) {
+    // Check if a username is present
+    public boolean isUsernamePresent(String name) {
         return peopleRepo.findByUsername(name).isPresent();
     }
 

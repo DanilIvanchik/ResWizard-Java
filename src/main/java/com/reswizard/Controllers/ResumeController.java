@@ -102,6 +102,10 @@ public class ResumeController {
     public String showResumePage(@PathVariable("id") int PersonId,
                                  Model model) {
         Person currentPerson = peopleService.findPersonById(PersonId);
+        if (currentPerson.getActivationCode()!=null){
+            logger.log(Level.WARNING, "Users " + currentPerson.getUsername()  + " account is not activated. Access denied.");
+            return "AccessDeniedEmailPage";
+        }
         model.addAttribute("person", currentPerson);
 
         model.addAttribute("resumes", resumeService.getPersonsExistedResumes(currentPerson.getResumes(), uploadPath, currentPerson));
