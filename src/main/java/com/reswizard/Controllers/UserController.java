@@ -27,7 +27,10 @@ public class UserController {
     @PostMapping("/recover")
     public String recoverPassword(@ModelAttribute("personDTO") @Valid PersonDTO personDTO,
                                   BindingResult bindingResult){
-        System.out.println(personDTO.getEmail());
+        if(!peopleService.isUserPresentByEmail(personDTO.getEmail())){
+            bindingResult.rejectValue("email", "", "Please check the entered information. It appears that the email address is not formatted correctly.");
+            return "RecoveringCredentialsPage";
+        }
         return "RecoverPasswordPage";
     }
 }
