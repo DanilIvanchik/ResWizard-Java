@@ -130,12 +130,14 @@
                 <p th:text="${person.getMessage()}" align=”justify”></p>
             </div>
         </center>
-        <div class="form-header">
-            <H1 align="center">Choose the language</H1>
-            <form align="center" th:each="resume : ${resumes}" th:method="POST" th:action="@{/resumes/{id}(id=${resume.getId()})}">
-                </br>
-                <input class="btn-solid-lg page-scroll" type="submit" th:value="${resume.getLanguage()}">
-            </form>
+        <div th:if="${resumes.size() > 0}">
+            <div class="form-header">
+                <H1 align="center">Choose the language</H1>
+                <form align="center" th:each="resume : ${resumes}" th:method="POST" th:action="@{/resumes/{id}(id=${resume.getId()})}">
+                    </br>
+                    <input class="btn-solid-lg page-scroll" type="submit" th:value="${resume.getLanguage()}">
+                </form>
+            </div>
         </div>
     </div>
 </div>
