@@ -51,10 +51,11 @@ public class Person {
     @Column(name = "avatar_title")
     private String avatarTitle;
 
+    @Column(name = "is_in_recovering")
+    private Boolean isInRecovering;
+
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Resume> resumes;
-
-
 
 }

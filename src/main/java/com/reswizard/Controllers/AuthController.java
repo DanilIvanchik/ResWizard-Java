@@ -29,7 +29,6 @@ public class AuthController {
     private final AuthValidator authValidator;
     private static final Logger logger = Logger.getGlobal();
     private final PeopleService peopleService;
-    private final AuthenticationService authenticationService;
 
     @Autowired
     public AuthController(
@@ -37,13 +36,12 @@ public class AuthController {
             RegistrationService registrationService,
             ModelMapper modelMapper,
             AuthValidator authValidator,
-            PeopleService peopleService, AuthenticationService authenticationService) {
+            PeopleService peopleService) {
         this.personValidator = personValidator;
         this.registrationService = registrationService;
         this.modelMapper = modelMapper;
         this.authValidator = authValidator;
         this.peopleService = peopleService;
-        this.authenticationService = authenticationService;
     }
 
     // Handles HTTP GET requests to the "/auth/login" path, displaying the login page.

@@ -32,6 +32,7 @@ public class RegistrationService {
         person.setRole("ROLE_USER");
         person.setAvatarTitle("defaultAvatar.png");
         person.setActivationCode(UUID.randomUUID().toString());
+        person.setIsInRecovering(false);
         peopleRepo.save(person);
 
         if (!StringUtils.isEmpty(person.getEmail())) {

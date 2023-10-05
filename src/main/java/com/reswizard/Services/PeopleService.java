@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.thymeleaf.util.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -94,6 +95,23 @@ public class PeopleService {
         logger.log(Level.INFO, "Avatar file upload completed successfully: " + file.getOriginalFilename());
     }
 
+    @Transactional
+    public void sendRecoveringEmail(String email){
+        Optional<Person> person = peopleRepo.findByEmail(email);
+        if (!StringUtils.isEmpty(person.get().getEmail())) {
+            String message = String.format(
+                    "Hello, %s! \n" +
+                            "Welcome to ResWizard! Please, visit next link to recover your password: \nhttp://localhost:8080/user/reset/%s",
+                    person.get().getUsername(),
+                    person.get().getId()
+            );
+
+            mailSender.sendMail(person.get().getEmail(), "Password recovering", message);
+        }
+        person.get().setIsInRecovering(true);
+        peopleRepo.save(person.get());
+    }
+
     // Delete an old avatar file
     private void deleteOldAvatar(String uploadPath, String fileName) {
         File file = new File(uploadPath + fileName);
@@ -166,5 +184,12 @@ public class PeopleService {
         person.get().setActivationCode(null);
         peopleRepo.save(person.get());
         return true;
+    }
+
+    @Transactional
+    public void resetPassword(Person person, String password){
+        person.setPassword(passwordEncoder.encode(password));
+        person.setIsInRecovering(false);
+        save(person);
     }
 }
