@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>ResWizard</title>
   <link href="https://fonts.googleapis.com/css?family=Raleway:400,400i,600,700,700i&amp;subset=latin-ext" rel="stylesheet">
   <link href="../static/css/bootstrap.css" rel="stylesheet">
   <link rel="stylesheet" th:href="@{/css/style.css}">
@@ -184,7 +184,7 @@
   </div>
 
   <div class="button-container">
-    <a class="btn-solid-lg page-scroll" th:href="@{/resumes/show_resumes/{id}(id=${person.getId()})}">Get your resume</a>
+    <a class="btn-solid-lg page-scroll" th:href="@{/resumes/{key}(key=${person.getResumePassKey()})}">Get your resume</a>
   </div>
 </div>
 

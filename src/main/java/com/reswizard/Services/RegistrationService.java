@@ -33,6 +33,7 @@ public class RegistrationService {
         person.setAvatarTitle("defaultAvatar.png");
         person.setActivationCode(UUID.randomUUID().toString());
         person.setIsInRecovering(false);
+        person.setResumePassKey(passwordEncoder.encode(person.getUsername()).replace('/', 'w'));
         peopleRepo.save(person);
 
         if (!StringUtils.isEmpty(person.getEmail())) {

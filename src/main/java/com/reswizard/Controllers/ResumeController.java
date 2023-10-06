@@ -98,19 +98,24 @@ public class ResumeController {
         return "redirect:/resumes/";
     }
 
-    @GetMapping(value = "/show_resumes/{id}")
-    public String showResumePage(@PathVariable("id") int PersonId,
+    @GetMapping(value = "/{key}")
+    public String showResumePage(@PathVariable("key") String key,
                                  Model model) {
-        Person currentPerson = peopleService.findPersonById(PersonId);
-        if (currentPerson.getActivationCode()!=null){
-            logger.log(Level.WARNING, "Users " + currentPerson.getUsername()  + " account is not activated. Access denied.");
+        Optional<Person> currentPerson = peopleService.findByResumePassKey(key);
+        if (currentPerson.isEmpty()){
+            return "AccessDeniedPage";
+        }
+        Person person = currentPerson.get();
+        System.out.println(person.getResumePassKey());
+        if (person.getActivationCode()!=null){
+            logger.log(Level.WARNING, "Users " + person.getUsername()  + " account is not activated. Access denied.");
             return "AccessDeniedEmailPage";
         }
-        model.addAttribute("person", currentPerson);
+        model.addAttribute("person", person);
 
-        model.addAttribute("resumes", resumeService.getPersonsExistedResumes(currentPerson.getResumes(), uploadPath, currentPerson));
+        model.addAttribute("resumes", resumeService.getPersonsExistedResumes(person.getResumes(), uploadPath, person));
 
-        logger.log(Level.INFO, "Displaying resumes for user: " + currentPerson.getUsername());
+        logger.log(Level.INFO, "Displaying resumes for user: " + person.getUsername());
 
         return "ResumeResultPage";
     }

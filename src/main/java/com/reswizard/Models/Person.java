@@ -54,6 +54,9 @@ public class Person {
     @Column(name = "is_in_recovering")
     private Boolean isInRecovering;
 
+    @Column(name = "resume_pass_key")
+    private String resumePassKey;
+
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Resume> resumes;

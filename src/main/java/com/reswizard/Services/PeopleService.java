@@ -175,6 +175,10 @@ public class PeopleService {
         }
     }
 
+    public Optional<Person> findByResumePassKey(String key){
+        return peopleRepo.findByResumePassKey(key);
+    }
+
     @Transactional
     public boolean isActiveUser(String code) {
         Optional<Person> person = peopleRepo.findByActivationCode(code);
