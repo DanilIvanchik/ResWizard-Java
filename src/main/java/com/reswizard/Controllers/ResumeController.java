@@ -1,7 +1,7 @@
 package com.reswizard.Controllers;
 
-import com.reswizard.Models.Person;
-import com.reswizard.Services.PeopleService;
+import com.reswizard.Models.User;
+import com.reswizard.Services.UserService;
 import com.reswizard.Services.ResumeService;
 import com.reswizard.Util.*;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/resumes")
 public class ResumeController {
 
-    private final PeopleService peopleService;
+    private final UserService userService;
     private final ResumeService resumeService;
 
     @Value("${upload.file.path}")
@@ -42,13 +42,13 @@ public class ResumeController {
     private static final Logger logger = Logger.getGlobal();
 
     @Autowired
-    public ResumeController(PeopleService peopleService, ResumeService resumeService) {
-        this.peopleService = peopleService;
+    public ResumeController(UserService userService, ResumeService resumeService) {
+        this.userService = userService;
         this.resumeService = resumeService;
     }
 
     @GetMapping("/")
-    public String showAllPersonResumes(Model model) {
+    public String showAllUsersResumes(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         logger.log(Level.INFO, "Displaying all resumes for user: " + authentication.getName());
@@ -56,16 +56,16 @@ public class ResumeController {
         List<Languages> languageOptions = Arrays.asList(Languages.UKRAINIAN, Languages.CHINESE, Languages.SPANISH, Languages.ENGLISH, Languages.GERMAN);
         model.addAttribute("options", languageOptions);
 
-        Person currentPerson = peopleService.findUserByUsername(authentication.getName());
-        model.addAttribute("person", currentPerson);
+        User currentUser = userService.findUserByUsername(authentication.getName());
+        model.addAttribute("user", currentUser);
 
-        if (!resumeService.isAllResumesExist(currentPerson.getResumes(), uploadPath)) {
-            model.addAttribute("resumes", resumeService.getPersonsExistedResumes(currentPerson.getResumes(), uploadPath, currentPerson));
+        if (!resumeService.isAllResumesExist(currentUser.getResumes(), uploadPath)) {
+            model.addAttribute("resumes", resumeService.getUsersExistingResumes(currentUser.getResumes(), uploadPath, currentUser));
             return "SomeOfResumesNotFoundPage";
         }
 
-        if (currentPerson.getResumes() != null) {
-            model.addAttribute("resumes", currentPerson.getResumes());
+        if (currentUser.getResumes() != null) {
+            model.addAttribute("resumes", currentUser.getResumes());
         }
 
         return "ResumePage";
@@ -101,37 +101,37 @@ public class ResumeController {
     @GetMapping(value = "/{key}")
     public String showResumePage(@PathVariable("key") String key,
                                  Model model) {
-        Optional<Person> currentPerson = peopleService.findByResumePassKey(key);
-        if (currentPerson.isEmpty()){
+        Optional<User> currentUser = userService.findByResumePassKey(key);
+        if (currentUser.isEmpty()){
             return "AccessDeniedPage";
         }
-        Person person = currentPerson.get();
-        System.out.println(person.getResumePassKey());
-        if (person.getActivationCode()!=null){
-            logger.log(Level.WARNING, "Users " + person.getUsername()  + " account is not activated. Access denied.");
+        User user = currentUser.get();
+        System.out.println(user.getResumePassKey());
+        if (user.getActivationCode()!=null){
+            logger.log(Level.WARNING, "Users " + user.getUsername()  + " account is not activated. Access denied.");
             return "AccessDeniedEmailPage";
         }
-        model.addAttribute("person", person);
+        model.addAttribute("user", user);
 
-        model.addAttribute("resumes", resumeService.getPersonsExistedResumes(person.getResumes(), uploadPath, person));
+        model.addAttribute("resumes", resumeService.getUsersExistingResumes(user.getResumes(), uploadPath, user));
 
-        logger.log(Level.INFO, "Displaying resumes for user: " + person.getUsername());
+        logger.log(Level.INFO, "Displaying resumes for user: " + user.getUsername());
 
         return "ResumeResultPage";
     }
 
     @PostMapping("/add_message")
-    public String addPersonResumeMessage(@ModelAttribute("message") String message) {
-        peopleService.isMessageLengthValid(message);
+    public String addUserResumeMessage(@ModelAttribute("message") String message) {
+        userService.isMessageLengthValid(message);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        Person currentPerson = peopleService.findUserByUsername(authentication.getName());
+        User currentUser = userService.findUserByUsername(authentication.getName());
 
-        currentPerson.setMessage(message);
-        peopleService.save(currentPerson);
+        currentUser.setMessage(message);
+        userService.save(currentUser);
 
-        logger.log(Level.INFO, "Added a message to the resume for user: " + currentPerson.getUsername());
+        logger.log(Level.INFO, "Added a message to the resume for user: " + currentUser.getUsername());
 
         return "redirect:/resumes/";
     }
@@ -139,14 +139,14 @@ public class ResumeController {
     @PostMapping("/upload_avatar")
     public String handleAvatarUpload(@RequestParam("file") MultipartFile file) throws IOException {
         logger.log(Level.INFO, "Uploading avatar image: " + file.getOriginalFilename());
-        peopleService.handleAvatarFileUpload(file, avatarUploadPath);
+        userService.handleAvatarFileUpload(file, avatarUploadPath);
 
         return "redirect:/resumes/";
     }
 
     @DeleteMapping("/delete/{id}")
     public String deleteResume(@PathVariable("id") int resumeId) {
-        resumeService.deletePersonResumeFromEditPage(resumeId, uploadPath);
+        resumeService.deleteUsersResumeFromEditPage(resumeId, uploadPath);
 
         logger.log(Level.INFO, "Deleted resume with ID: " + resumeId);
 
@@ -156,30 +156,18 @@ public class ResumeController {
     @ExceptionHandler
     private String handleIncorrectAvatarFormatException(IncorrectAvatarFormatException e) {
         logger.log(Level.SEVERE, "Incorrect Avatar Format: " + e.getMessage());
-//        IncorrectAvatarFormatExceptionResponse response = new IncorrectAvatarFormatExceptionResponse();
-//        response.setMessage(e.getMessage());
-//        response.setTime(System.currentTimeMillis());
-//        new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         return "IncorrectFormatExceptionPage";
     }
 
     @ExceptionHandler
     private String handleIncorrectResumeFormatException(IncorrectResumeFormatException e) {
         logger.log(Level.SEVERE, "Incorrect Resume Format: " + e.getMessage());
-//        IncorrectFormatExceptionResponse response = new IncorrectFormatExceptionResponse();
-//        response.setMessage(e.getMessage());
-//        response.setTime(System.currentTimeMillis());
-//        new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         return "IncorrectFormatExceptionPage";
     }
 
     @ExceptionHandler
     private String handleMessageLengthException(MessageLengthException e) {
         logger.log(Level.SEVERE, "Message Length Exception: " + e.getMessage());
-//        MessageLengthExceptionResponse response = new MessageLengthExceptionResponse();
-//        response.setMessage(e.getMessage());
-//        response.setTime(System.currentTimeMillis());
-//        new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         return "MessageLengthExceptionPage";
     }
 

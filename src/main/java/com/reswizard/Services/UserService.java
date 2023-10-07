@@ -1,7 +1,7 @@
 package com.reswizard.Services;
 
-import com.reswizard.Models.Person;
-import com.reswizard.Repositories.PeopleRepo;
+import com.reswizard.Models.User;
+import com.reswizard.Repositories.UserRepo;
 import com.reswizard.Util.IncorrectAvatarFormatException;
 import com.reswizard.Util.MessageLengthException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,38 +23,34 @@ import java.util.logging.Logger;
 
 @Service
 @Transactional(readOnly = true)
-public class PeopleService {
+public class UserService {
 
-    private final PeopleRepo peopleRepo;
+    private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
     private static final Logger logger = Logger.getGlobal();
     private MailSender mailSender;
 
     @Autowired
-    public PeopleService(PeopleRepo peopleRepo, PasswordEncoder passwordEncoder, MailSender mailSender) {
-        this.peopleRepo = peopleRepo;
+    public UserService(UserRepo userRepo, PasswordEncoder passwordEncoder, MailSender mailSender) {
+        this.userRepo = userRepo;
         this.passwordEncoder = passwordEncoder;
         this.mailSender = mailSender;
     }
 
-    // Check if a username is present
     public boolean isUsernamePresent(String name) {
-        return peopleRepo.findByUsername(name).isPresent();
+        return userRepo.findByUsername(name).isPresent();
     }
 
-    // Check if a user is present by email
     public boolean isUserPresentByEmail(String email) {
-        return peopleRepo.findByEmail(email).isPresent();
+        return userRepo.findByEmail(email).isPresent();
     }
 
-    // Find a user by username
-    public Person findUserByUsername(String name) {
+    public User findUserByUsername(String name) {
         logger.log(Level.INFO, "Finding user by username: " + name);
-        Optional<Person> person = peopleRepo.findByUsername(name);
-        return person.orElse(null);
+        Optional<User> optionalUser = userRepo.findByUsername(name);
+        return optionalUser.orElse(null);
     }
 
-    // Handle uploading an avatar file
     @Transactional
     public void handleAvatarFileUpload(MultipartFile file, String uploadPath) throws IOException {
         logger.log(Level.INFO, "Uploading avatar file: " + file.getOriginalFilename());
@@ -79,17 +75,16 @@ public class PeopleService {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        Optional<Person> personOptional = peopleRepo.findByUsername(username);
+        Optional<User> optionalUser = userRepo.findByUsername(username);
 
-        if (personOptional.isPresent()) {
-            Person person = personOptional.get();
-            System.out.println(person.getAvatarTitle());
-            if (!person.getAvatarTitle().equals("defaultAvatar.png")) {
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            if (!user.getAvatarTitle().equals("defaultAvatar.png")) {
                 System.out.println("!");
-                deleteOldAvatar(uploadPath, person.getAvatarTitle());
+                deleteOldAvatar(uploadPath, user.getAvatarTitle());
             }
-            person.setAvatarTitle(uniqueFileName);
-            peopleRepo.save(person);
+            user.setAvatarTitle(uniqueFileName);
+            userRepo.save(user);
         }
 
         logger.log(Level.INFO, "Avatar file upload completed successfully: " + file.getOriginalFilename());
@@ -97,22 +92,21 @@ public class PeopleService {
 
     @Transactional
     public void sendRecoveringEmail(String email){
-        Optional<Person> person = peopleRepo.findByEmail(email);
-        if (!StringUtils.isEmpty(person.get().getEmail())) {
+        Optional<User> optionalUser = userRepo.findByEmail(email);
+        if (!StringUtils.isEmpty(optionalUser.get().getEmail())) {
             String message = String.format(
                     "Hello, %s! \n" +
                             "Welcome to ResWizard! Please, visit next link to recover your password: \nhttp://localhost:8080/user/reset/%s",
-                    person.get().getUsername(),
-                    person.get().getId()
+                    optionalUser.get().getUsername(),
+                    optionalUser.get().getId()
             );
 
-            mailSender.sendMail(person.get().getEmail(), "Password recovering", message);
+            mailSender.sendMail(optionalUser.get().getEmail(), "Password recovering", message);
         }
-        person.get().setIsInRecovering(true);
-        peopleRepo.save(person.get());
+        optionalUser.get().setIsInRecovering(true);
+        userRepo.save(optionalUser.get());
     }
 
-    // Delete an old avatar file
     private void deleteOldAvatar(String uploadPath, String fileName) {
         File file = new File(uploadPath + fileName);
         if (file.delete()) {
@@ -122,13 +116,11 @@ public class PeopleService {
         }
     }
 
-    // Check if the file format is valid for avatars
     private boolean isValidAvatarFormat(String fileName) {
         String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
         return fileExtension.equals("png");
     }
 
-    // Generate a unique file name for uploaded avatars
     private String generateUniqueKey(String originalFileName) {
         String uidFile = UUID.randomUUID().toString();
         int lastDotIndex = originalFileName.lastIndexOf(".");
@@ -136,31 +128,27 @@ public class PeopleService {
         return uidFile + extension;
     }
 
-    // Check if a password is valid
     public boolean isPasswordValid(String password) {
-        return peopleRepo.findByPassword(passwordEncoder.encode(password)).isPresent();
+        return userRepo.findByPassword(passwordEncoder.encode(password)).isPresent();
     }
 
-    // Find a person by their ID
-    public Person findPersonById(int id) {
-        logger.log(Level.INFO, "Finding person by ID: " + id);
-        return peopleRepo.findPersonById(id).orElse(null);
+    public User findUserById(int id) {
+        logger.log(Level.INFO, "Finding user by ID: " + id);
+        return userRepo.findById(id).orElse(null);
     }
 
-    // Save a person
     @Transactional
-    public void save(Person person) {
-        peopleRepo.save(person);
-        logger.log(Level.INFO, "Saved person: " + person.getUsername());
+    public void save(User user) {
+        userRepo.save(user);
+        logger.log(Level.INFO, "Saved user: " + user.getUsername());
     }
 
-    // Get the currently authenticated person
-    public Person getCurrentPerson() {
+    public User getCurrentUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        logger.log(Level.INFO, "Getting current authenticated person: " + username);
-        Optional<Person> person = peopleRepo.findByUsername(username);
-        return person.orElse(null);
+        logger.log(Level.INFO, "Getting current authenticated user: " + username);
+        Optional<User> optionalUser = userRepo.findByUsername(username);
+        return optionalUser.orElse(null);
     }
 
     /**
@@ -175,25 +163,25 @@ public class PeopleService {
         }
     }
 
-    public Optional<Person> findByResumePassKey(String key){
-        return peopleRepo.findByResumePassKey(key);
+    public Optional<User> findByResumePassKey(String key){
+        return userRepo.findByResumePassKey(key);
     }
 
     @Transactional
     public boolean isActiveUser(String code) {
-        Optional<Person> person = peopleRepo.findByActivationCode(code);
-        if (person.isEmpty()){
+        Optional<User> optioanlUser = userRepo.findByActivationCode(code);
+        if (optioanlUser.isEmpty()){
             return false;
         }
-        person.get().setActivationCode(null);
-        peopleRepo.save(person.get());
+        optioanlUser.get().setActivationCode(null);
+        userRepo.save(optioanlUser.get());
         return true;
     }
 
     @Transactional
-    public void resetPassword(Person person, String password){
-        person.setPassword(passwordEncoder.encode(password));
-        person.setIsInRecovering(false);
-        save(person);
+    public void resetPassword(User user, String password){
+        user.setPassword(passwordEncoder.encode(password));
+        user.setIsInRecovering(false);
+        save(user);
     }
 }

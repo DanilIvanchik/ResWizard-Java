@@ -1,8 +1,8 @@
 package com.reswizard.Controllers;
 
-import com.reswizard.DTO.PersonDTO;
-import com.reswizard.Models.Person;
-import com.reswizard.Services.PeopleService;
+import com.reswizard.DTO.UserDTO;
+import com.reswizard.Models.User;
+import com.reswizard.Services.UserService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
@@ -10,60 +10,55 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Controller
 @RequestMapping("/user")
 public class UserController {
-    private final PeopleService peopleService;
+    private final UserService userService;
     private static final Logger logger = Logger.getGlobal();
     private final ModelMapper modelMapper;
 
-    public UserController(PeopleService peopleService, ModelMapper modelMapper) {
-        this.peopleService = peopleService;
+    public UserController(UserService userService, ModelMapper modelMapper) {
+        this.userService = userService;
         this.modelMapper = modelMapper;
     }
 
     @GetMapping("/recover_password")
-    public String recoverPassword(@ModelAttribute("personDTO") PersonDTO personDTO){
+    public String recoverPassword(@ModelAttribute("userDTO") UserDTO userDTO){
         return "RecoveringCredentialsPage";
     }
 
     @PostMapping("/recover")
-    public String recoverPassword(@ModelAttribute("personDTO") @Valid PersonDTO personDTO,
+    public String recoverPassword(@ModelAttribute("userDTO") @Valid UserDTO userDTO,
                                   BindingResult bindingResult){
-        if(!peopleService.isUserPresentByEmail(personDTO.getEmail())){
+        if(!userService.isUserPresentByEmail(userDTO.getEmail())){
             bindingResult.rejectValue("email", "", "Please check the entered information. It appears that the email address is not formatted correctly.");
             return "RecoveringCredentialsPage";
         }
-        peopleService.sendRecoveringEmail(personDTO.getEmail());
+        userService.sendRecoveringEmail(userDTO.getEmail());
         return "RecoverPasswordPage";
     }
 
     @GetMapping("/reset/{id}")
-    public String resetPasswordPage(@PathVariable Integer id, @ModelAttribute("personDTO") PersonDTO personDTO, Model model){
-        Person person = peopleService.findPersonById(id);
-        if (!person.getIsInRecovering()){
+    public String resetPasswordPage(@PathVariable Integer id, @ModelAttribute("userDTO") UserDTO userDTO, Model model){
+        User user = userService.findUserById(id);
+        if (!user.getIsInRecovering()){
             return "AccessDeniedPage";
         }
-        person.setPassword("");
-        model.addAttribute("person", person);
+        user.setPassword("");
+        model.addAttribute("user", user);
         return "RecoveringPasswordPage";
     }
 
     @PostMapping("/reset/{id}")
-    public String resetPassword(@PathVariable Integer id, @ModelAttribute("person") Person person, Model model){
-        Person currentUser = peopleService.findPersonById(id);
+    public String resetPassword(@PathVariable Integer id, @ModelAttribute("user") User user, Model model){
+        User currentUser = userService.findUserById(id);
         if (!currentUser.getIsInRecovering()){
             return "AccessDeniedPage";
         }
-        peopleService.resetPassword(currentUser, person.getPassword());
+        userService.resetPassword(currentUser, user.getPassword());
         return "SuccessfulPasswordRecoverPage";
     }
 
-//    private PersonDTO personToDTO(Person person) {
-//        PersonDTO personDTO = modelMapper.map(person, PersonDTO.class);
-//        return personDTO;
-//    }
 }

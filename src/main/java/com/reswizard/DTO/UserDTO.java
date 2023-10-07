@@ -4,7 +4,7 @@ import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
-public class PersonDTO {
+public class UserDTO {
 
     @NotNull(message = "Enter your name.")
     private String username;

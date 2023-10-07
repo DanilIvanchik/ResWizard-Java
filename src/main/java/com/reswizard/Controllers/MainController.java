@@ -1,7 +1,6 @@
 package com.reswizard.Controllers;
 
-import com.reswizard.Services.AdminService;
-import com.reswizard.Services.PeopleService;
+import com.reswizard.Services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,13 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MainController {
 
-    private final AdminService adminService;
-    private final PeopleService peopleService;
+    private final UserService userService;
 
     @Autowired
-    public MainController(AdminService adminService, PeopleService peopleService) {
-        this.adminService = adminService;
-        this.peopleService = peopleService;
+    public MainController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/hello")
@@ -26,7 +23,7 @@ public class MainController {
 
     @GetMapping("/helloUser")
     public String helloUser(Model model){
-        model.addAttribute("person", peopleService.getCurrentPerson());
+        model.addAttribute("user", userService.getCurrentUser());
         return "MainUserPage";
     }
 }

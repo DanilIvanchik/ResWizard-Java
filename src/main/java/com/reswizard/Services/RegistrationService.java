@@ -1,7 +1,7 @@
 package com.reswizard.Services;
 
-import com.reswizard.Models.Person;
-import com.reswizard.Repositories.PeopleRepo;
+import com.reswizard.Models.User;
+import com.reswizard.Repositories.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,38 +13,38 @@ import java.util.UUID;
 @Service
 public class RegistrationService {
 
-    public final PeopleRepo peopleRepo;
+    public final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
     private final MailSender mailSender;
 
 
     @Autowired
-    public RegistrationService(PeopleRepo peopleRepo, PasswordEncoder passwordEncoder, MailSender mailSender) {
-        this.peopleRepo = peopleRepo;
+    public RegistrationService(UserRepo userRepo, PasswordEncoder passwordEncoder, MailSender mailSender) {
+        this.userRepo = userRepo;
         this.passwordEncoder = passwordEncoder;
         this.mailSender = mailSender;
     }
 
     @Transactional
-    public void register(Person person) {
-        String password = person.getPassword();
-        person.setPassword(passwordEncoder.encode(password));
-        person.setRole("ROLE_USER");
-        person.setAvatarTitle("defaultAvatar.png");
-        person.setActivationCode(UUID.randomUUID().toString());
-        person.setIsInRecovering(false);
-        person.setResumePassKey(passwordEncoder.encode(person.getUsername()).replace('/', 'w'));
-        peopleRepo.save(person);
+    public void register(User user) {
+        String password = user.getPassword();
+        user.setPassword(passwordEncoder.encode(password));
+        user.setRole("ROLE_USER");
+        user.setAvatarTitle("defaultAvatar.png");
+        user.setActivationCode(UUID.randomUUID().toString());
+        user.setIsInRecovering(false);
+        user.setResumePassKey(passwordEncoder.encode(user.getUsername()).replace('/', 'w'));
+        userRepo.save(user);
 
-        if (!StringUtils.isEmpty(person.getEmail())) {
+        if (!StringUtils.isEmpty(user.getEmail())) {
             String message = String.format(
                     "Hello, %s! \n" +
                             "Welcome to ResWizard! Please, visit next link to activate tour account : http://localhost:8080/auth/activate/%s",
-                    person.getUsername(),
-                    person.getActivationCode()
+                    user.getUsername(),
+                    user.getActivationCode()
             );
 
-            mailSender.sendMail(person.getEmail(), "Activation code", message);
+            mailSender.sendMail(user.getEmail(), "Activation code", message);
         }
 
     }

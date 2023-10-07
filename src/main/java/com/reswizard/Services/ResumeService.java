@@ -1,6 +1,6 @@
 package com.reswizard.Services;
 
-import com.reswizard.Models.Person;
+import com.reswizard.Models.User;
 import com.reswizard.Models.Resume;
 import com.reswizard.Repositories.ResumeRepo;
 import com.reswizard.Util.IncorrectResumeFormatException;
@@ -11,7 +11,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MaxUploadSizeExceededException;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -30,45 +29,39 @@ import java.util.logging.Logger;
 public class ResumeService {
 
     private final ResumeRepo resumeRepository;
-    private final PeopleService peopleService;
+    private final UserService userService;
     private static final Logger logger = Logger.getGlobal();
 
     @Autowired
-    public ResumeService(ResumeRepo resumeRepository, PeopleService peopleService) {
+    public ResumeService(ResumeRepo resumeRepository, UserService userService) {
         this.resumeRepository = resumeRepository;
-        this.peopleService = peopleService;
+        this.userService = userService;
     }
 
-    // Find all resumes of a person by their ID
-    public List<Resume> findAllPersonResumes(int id) {
+    public List<Resume> findAllUsersResumes(int id) {
         return resumeRepository.findAllByOwner_Id(id);
     }
 
-    // Save a resume
     @Transactional
     public void saveResume(Resume resume) {
         resumeRepository.save(resume);
         logger.log(Level.INFO, "Saved resume: " + resume.getTitle());
     }
 
-    // Save a resume (overloaded method)
     @Transactional
     public void save(Resume resume) {
         resumeRepository.save(resume);
         logger.log(Level.INFO, "Saved resume: " + resume.getTitle());
     }
 
-    // Find a resume by its ID
     public Resume findResumeById(int id) {
         return resumeRepository.findResumeById(id);
     }
 
-    // Handle downloading a resume file
     @Transactional
     public void handleResumeFileDownload(String fileName, HttpServletResponse response, String filePath) {
         logger.log(Level.INFO, "Downloading file: " + fileName);
 
-        // Set response content type based on file extension
         if (fileName.endsWith(".doc") || fileName.endsWith(".docx")) {
             response.setContentType("application/msword");
         } else if (fileName.endsWith(".pdf")) {
@@ -94,7 +87,6 @@ public class ResumeService {
         logger.log(Level.INFO, "Downloaded file: " + fileName + " successfully.");
     }
 
-    // Handle uploading a resume file
     @Transactional
     public void handleResumeFileUpload(MultipartFile file, String uploadPath, Languages selectedLanguage) throws IOException {
         logger.log(Level.INFO, "Uploading file: " + file.getOriginalFilename());
@@ -121,32 +113,30 @@ public class ResumeService {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        Person person = peopleService.findUserByUsername(username);
+        User user = userService.findUserByUsername(username);
 
-        Resume existingResume = resumeRepository.findAllByLanguageAndOwner_Id(selectedLanguage, person.getId());
-        Resume resume = new Resume(uniqueFileName, uploadPath, person, selectedLanguage);
+        Resume existingResume = resumeRepository.findAllByLanguageAndOwner_Id(selectedLanguage, user.getId());
+        Resume resume = new Resume(uniqueFileName, uploadPath, user, selectedLanguage);
 
         if (existingResume != null) {
             deleteResumeFromStorage(uploadPath, existingResume.getTitle());
             resume.setId(existingResume.getId());
             save(resume);
-            updatePersonResumes(person, existingResume, resume);
+            updateUserResumes(user, existingResume, resume);
         } else {
             save(resume);
-            person.getResumes().add(resume);
-            peopleService.save(person);
+            user.getResumes().add(resume);
+            userService.save(user);
         }
 
         logger.log(Level.INFO, "File upload completed successfully: " + file.getOriginalFilename());
     }
 
-    // Check if a file format is valid
     private boolean isValidResumeFormat(String fileName) {
         String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
         return fileExtension.equals("pdf") || fileExtension.equals("docx") || fileExtension.equals("doc");
     }
 
-    // Delete a resume file from storage
     private void deleteResumeFromStorage(String uploadPath, String fileName) {
         File file = new File(uploadPath + fileName);
         if (file.delete()) {
@@ -156,21 +146,19 @@ public class ResumeService {
         }
     }
 
-    // Delete a person's resume from the edit page
     @Transactional
-    public void deletePersonResumeFromEditPage(Integer resumeId, String uploadPath) {
+    public void deleteUsersResumeFromEditPage(Integer resumeId, String uploadPath) {
         Resume resume = resumeRepository.findResumeById(resumeId);
         resumeRepository.deleteResumeById(resumeId);
         deleteResumeFromStorage(uploadPath, resume.getTitle());
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-        Person person = peopleService.findUserByUsername(username);
-        person.getResumes().remove(resume);
-        peopleService.save(person);
+        User user = userService.findUserByUsername(username);
+        user.getResumes().remove(resume);
+        userService.save(user);
     }
 
-    // Generate a unique file name for a resume
     private String generateUniqueFileName(String originalFileName) {
         String uidFile = UUID.randomUUID().toString();
         int lastDotIndex = originalFileName.lastIndexOf(".");
@@ -178,17 +166,15 @@ public class ResumeService {
         return uidFile + extension;
     }
 
-    // Update a person's resumes
-    private void updatePersonResumes(Person person, Resume oldResume, Resume newResume) {
-        person.getResumes().remove(oldResume);
-        person.getResumes().add(newResume);
-        peopleService.save(person);
+    private void updateUserResumes(User user, Resume oldResume, Resume newResume) {
+        user.getResumes().remove(oldResume);
+        user.getResumes().add(newResume);
+        userService.save(user);
         logger.log(Level.INFO, "Updated resume: " + newResume.getTitle());
     }
 
-    // Get a person's existing resumes and delete those that don't exist in storage
     @Transactional
-    public List<Resume> getPersonsExistedResumes(List<Resume> resumes, String path, Person currentPerson) {
+    public List<Resume> getUsersExistingResumes(List<Resume> resumes, String path, User currentUser) {
         List<Resume> newResumeList = new ArrayList<>();
         for (Resume r : resumes) {
             if (isResumeExist(r.getTitle(), path)) {
@@ -197,12 +183,11 @@ public class ResumeService {
                 resumeRepository.deleteResumeById(r.getId());
             }
         }
-        currentPerson.setResumes(newResumeList);
-        peopleService.save(currentPerson);
+        currentUser.setResumes(newResumeList);
+        userService.save(currentUser);
         return newResumeList;
     }
 
-    // Check if all resumes exist in storage
     public boolean isAllResumesExist(List<Resume> resumes, String path) {
         for (Resume r : resumes) {
             if (!isResumeExist(r.getTitle(), path)) {
@@ -212,7 +197,6 @@ public class ResumeService {
         return true;
     }
 
-    // Check if a specific resume exists in storage
     public boolean isResumeExist(String title, String path) {
         File directory = new File(path);
         File[] files = directory.listFiles();

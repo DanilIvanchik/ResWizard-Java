@@ -1,6 +1,6 @@
 package com.reswizard.Security;
 
-import com.reswizard.Models.Person;
+import com.reswizard.Models.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,27 +8,27 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 
-public class PersonDetail implements UserDetails {
-    private final Person person;
+public class UserDetailsImpl implements UserDetails {
+    private final User user;
 
-    public PersonDetail(Person person) {
-        this.person = person;
+    public UserDetailsImpl(User user) {
+        this.user = user;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        return Collections.singletonList(new SimpleGrantedAuthority(person.getRole()));
+        return Collections.singletonList(new SimpleGrantedAuthority(user.getRole()));
     }
 
     @Override
     public String getPassword() {
-        return this.person.getPassword();
+        return this.user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return this.person.getUsername();
+        return this.user.getUsername();
     }
 
     @Override
@@ -51,7 +51,7 @@ public class PersonDetail implements UserDetails {
         return true;
     }
 
-    public Person getPerson(){
-        return this.person;
+    public User getUser(){
+        return this.user;
     }
 }

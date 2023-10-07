@@ -4,14 +4,13 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.reswizard.Util.Languages;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "Resume")
+@Table(name = "Resumes")
 public class Resume {
 
     @Id
@@ -30,13 +29,13 @@ public class Resume {
     @ManyToOne
     @JoinColumn(name = "owner_id", referencedColumnName = "id")
     @JsonManagedReference
-    private Person owner;
+    private User owner;
 
     @Column(name = "language")
     @Enumerated(EnumType.STRING)
     private Languages language;
 
-    public Resume(@NotNull(message = "Enter resume title.") String title, @NotNull(message = "Add your resume in any format.") String path, Person owner, Languages language) {
+    public Resume(@NotNull(message = "Enter resume title.") String title, @NotNull(message = "Add your resume in any format.") String path, User owner, Languages language) {
         this.title = title;
         this.path = path;
         this.owner = owner;

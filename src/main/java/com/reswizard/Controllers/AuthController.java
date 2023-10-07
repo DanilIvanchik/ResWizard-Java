@@ -1,12 +1,11 @@
 package com.reswizard.Controllers;
 
 import com.reswizard.DTO.AuthenticationDTO;
-import com.reswizard.DTO.PersonDTO;
-import com.reswizard.Models.Person;
-import com.reswizard.Services.AuthenticationService;
-import com.reswizard.Services.PeopleService;
+import com.reswizard.DTO.UserDTO;
+import com.reswizard.Models.User;
+import com.reswizard.Services.UserService;
 import com.reswizard.Util.AuthValidator;
-import com.reswizard.Util.PersonValidator;
+import com.reswizard.Util.UserValidator;
 import com.reswizard.Services.RegistrationService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -23,104 +22,89 @@ import java.util.logging.Logger;
 @RequestMapping("/auth")
 public class AuthController {
 
-    private final PersonValidator personValidator;
+    private final UserValidator userValidator;
     private final RegistrationService registrationService;
     private final ModelMapper modelMapper;
     private final AuthValidator authValidator;
     private static final Logger logger = Logger.getGlobal();
-    private final PeopleService peopleService;
+    private final UserService userService;
 
     @Autowired
     public AuthController(
-            PersonValidator personValidator,
+            UserValidator userValidator,
             RegistrationService registrationService,
             ModelMapper modelMapper,
             AuthValidator authValidator,
-            PeopleService peopleService) {
-        this.personValidator = personValidator;
+            UserService userService) {
+        this.userValidator = userValidator;
         this.registrationService = registrationService;
         this.modelMapper = modelMapper;
         this.authValidator = authValidator;
-        this.peopleService = peopleService;
+        this.userService = userService;
     }
 
-    // Handles HTTP GET requests to the "/auth/login" path, displaying the login page.
     @GetMapping("/login")
     public String loginPage(@ModelAttribute("authenticationDTO") AuthenticationDTO authenticationDTO) {
         logger.log(Level.INFO, "Displaying login page.");
         return "LoginPage";
     }
 
-    // Handles HTTP POST requests to the "/auth/login" path, processing user login.
     @PostMapping("/login")
-    public String loginPage(Model model,
-            @ModelAttribute("authenticationDTO") @Valid AuthenticationDTO authenticationDTO,
+    public String loginPage(@ModelAttribute("authenticationDTO") @Valid AuthenticationDTO authenticationDTO,
             BindingResult bindingResult){
         logger.log(Level.INFO, "Processing user login.");
 
-        // Validate the submitted authentication data.
         authValidator.validate(authenticationDTO, bindingResult);
 
-        // If validation errors exist, return to the login page with error messages.
         if (bindingResult.hasErrors()) {
             logger.log(Level.WARNING, "Login validation failed.");
             return "LoginPage";
         }
 
-        // Redirect to the login processing page.
-        logger.log(Level.INFO, "Redirecting to login processing page.");
         return "redirect:/process_login";
     }
 
-    // Handles HTTP GET requests to the "/auth/registration" path, displaying the registration page.
     @GetMapping("/registration")
-    public String registrationPage(@ModelAttribute("personDTO") PersonDTO personDTO) {
+    public String registrationPage(@ModelAttribute("userDTO") UserDTO userDTO) {
         logger.log(Level.INFO, "Displaying registration page.");
         return "RegistrationPage";
     }
 
-    // Handles HTTP GET requests to the "/auth/access-denied" path, displaying the access denied page.
     @GetMapping("/access-denied")
     public String accessDenied() {
         logger.log(Level.INFO, "Displaying access denied page.");
         return "AccessDeniedEmailPage";
     }
 
-    // Handles HTTP POST requests to the "/auth/registration" path, processing user registration.
     @PostMapping("/registration")
     public String performRegistration(
-            @ModelAttribute("personDTO") @Valid PersonDTO personDTO,
+            @ModelAttribute("userDTO") @Valid UserDTO userDTO,
             BindingResult bindingResult){
         logger.log(Level.INFO, "Processing user registration.");
 
-        // Convert the DTO to a Person object.
-        Person person = DTOToPerson(personDTO);
+        User user = DTOToUser(userDTO);
 
-        // Validate the submitted person data.
-        personValidator.validate(person, bindingResult);
+        userValidator.validate(user, bindingResult);
 
-        // If validation errors exist, return to the registration page with error messages.
         if (bindingResult.hasErrors()) {
             logger.log(Level.WARNING, "Registration validation failed.");
             return "RegistrationPage";
         }
 
-        // Register the user and redirect to the login page.
-        registrationService.register(person);
+        registrationService.register(user);
         logger.log(Level.INFO, "User registration successful. Redirecting to login page.");
         return "redirect:/auth/login";
     }
 
-    // Converts a PersonDTO to a Person object using ModelMapper.
-    private Person DTOToPerson(PersonDTO personDTO) {
-        Person person = modelMapper.map(personDTO, Person.class);
-        logger.log(Level.INFO, "Converting PersonDTO to Person object: " + person.getUsername());
-        return person;
+    private User DTOToUser(UserDTO userDTO) {
+        User user = modelMapper.map(userDTO, User.class);
+        logger.log(Level.INFO, "Converting UserDTO to User object: " + user.getUsername());
+        return user;
     }
 
     @GetMapping("/activate/{code}")
     public String activateUser(@ModelAttribute("authenticationDTO") AuthenticationDTO authenticationDTO, Model model, @PathVariable String code ){
-        if (peopleService.isActiveUser(code)){
+        if (userService.isActiveUser(code)){
             model.addAttribute("message", "User account successfully activated!");
         }else{
             model.addAttribute("message", "Activation code is not found.");
