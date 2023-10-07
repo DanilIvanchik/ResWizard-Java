@@ -11,7 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
-import org.thymeleaf.util.StringUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,15 +19,14 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 @Service
 @Transactional(readOnly = true)
 public class UserService {
 
     private final UserRepo userRepo;
     private final PasswordEncoder passwordEncoder;
+    private final MailSender mailSender;
     private static final Logger logger = Logger.getGlobal();
-    private MailSender mailSender;
 
     @Autowired
     public UserService(UserRepo userRepo, PasswordEncoder passwordEncoder, MailSender mailSender) {
@@ -47,8 +45,7 @@ public class UserService {
 
     public User findUserByUsername(String name) {
         logger.log(Level.INFO, "Finding user by username: " + name);
-        Optional<User> optionalUser = userRepo.findByUsername(name);
-        return optionalUser.orElse(null);
+        return userRepo.findByUsername(name).orElse(null);
     }
 
     @Transactional
@@ -60,7 +57,6 @@ public class UserService {
         }
 
         File uploadDir = new File(uploadPath);
-
         if (!uploadDir.exists()) {
             uploadDir.mkdirs();
         }
@@ -69,42 +65,41 @@ public class UserService {
         if (!isValidAvatarFormat(uniqueFileName)) {
             throw new IncorrectAvatarFormatException("Invalid file format. Only PNG is allowed.");
         }
-        String filePath = uploadPath + uniqueFileName;
 
+        String filePath = uploadPath + uniqueFileName;
         file.transferTo(new File(filePath));
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         Optional<User> optionalUser = userRepo.findByUsername(username);
 
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
+        optionalUser.ifPresent(user -> {
             if (!user.getAvatarTitle().equals("defaultAvatar.png")) {
-                System.out.println("!");
                 deleteOldAvatar(uploadPath, user.getAvatarTitle());
             }
             user.setAvatarTitle(uniqueFileName);
             userRepo.save(user);
-        }
+        });
 
         logger.log(Level.INFO, "Avatar file upload completed successfully: " + file.getOriginalFilename());
     }
 
     @Transactional
-    public void sendRecoveringEmail(String email){
+    public void sendRecoveringEmail(String email) {
         Optional<User> optionalUser = userRepo.findByEmail(email);
-        if (!StringUtils.isEmpty(optionalUser.get().getEmail())) {
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
             String message = String.format(
                     "Hello, %s! \n" +
-                            "Welcome to ResWizard! Please, visit next link to recover your password: \nhttp://localhost:8080/user/reset/%s",
-                    optionalUser.get().getUsername(),
-                    optionalUser.get().getId()
+                            "Welcome to ResWizard! Please, visit the following link to recover your password: \nhttp://localhost:8080/user/reset/%s",
+                    user.getUsername(),
+                    user.getId()
             );
 
-            mailSender.sendMail(optionalUser.get().getEmail(), "Password recovering", message);
+            mailSender.sendMail(user.getEmail(), "Password recovering", message);
+            user.setIsInRecovering(true);
+            userRepo.save(user);
         }
-        optionalUser.get().setIsInRecovering(true);
-        userRepo.save(optionalUser.get());
     }
 
     private void deleteOldAvatar(String uploadPath, String fileName) {
@@ -118,7 +113,7 @@ public class UserService {
 
     private boolean isValidAvatarFormat(String fileName) {
         String fileExtension = fileName.substring(fileName.lastIndexOf(".") + 1).toLowerCase();
-        return fileExtension.equals("png");
+        return "png".equals(fileExtension);
     }
 
     private String generateUniqueKey(String originalFileName) {
@@ -147,39 +142,37 @@ public class UserService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         logger.log(Level.INFO, "Getting current authenticated user: " + username);
-        Optional<User> optionalUser = userRepo.findByUsername(username);
-        return optionalUser.orElse(null);
+        return userRepo.findByUsername(username).orElse(null);
     }
 
     /**
      * Checks if the length of the given message is valid.
      *
      * @param message The string representing the message to be checked.
-     * @return true if the message length is greater than 500 characters; otherwise, returns false.
      */
-    public void isMessageLengthValid(String message){
-        if (message.length() > 500){
+    public void isMessageLengthValid(String message) {
+        if (message.length() > 500) {
             throw new MessageLengthException("Message length out of range. Message length should be between 0 and 500 characters.");
         }
     }
 
-    public Optional<User> findByResumePassKey(String key){
+    public Optional<User> findByResumePassKey(String key) {
         return userRepo.findByResumePassKey(key);
     }
 
     @Transactional
     public boolean isActiveUser(String code) {
-        Optional<User> optioanlUser = userRepo.findByActivationCode(code);
-        if (optioanlUser.isEmpty()){
-            return false;
+        Optional<User> optionalUser = userRepo.findByActivationCode(code);
+        if (optionalUser.isPresent()) {
+            optionalUser.get().setActivationCode(null);
+            userRepo.save(optionalUser.get());
+            return true;
         }
-        optioanlUser.get().setActivationCode(null);
-        userRepo.save(optioanlUser.get());
-        return true;
+        return false;
     }
 
     @Transactional
-    public void resetPassword(User user, String password){
+    public void resetPassword(User user, String password) {
         user.setPassword(passwordEncoder.encode(password));
         user.setIsInRecovering(false);
         save(user);

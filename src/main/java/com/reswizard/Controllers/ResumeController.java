@@ -85,7 +85,7 @@ public class ResumeController {
 
     @RequestMapping(value = "/{id}")
     public String handleResumeDownload(@PathVariable("id") int ResumeId,
-                                                   HttpServletResponse response) {
+                                       HttpServletResponse response) {
         String fileName = resumeService.findResumeById(ResumeId).getTitle();
         if (!resumeService.isResumeExist(fileName, uploadPath)){
             logger.log(Level.INFO, "File not found: " + fileName);
@@ -106,7 +106,6 @@ public class ResumeController {
             return "AccessDeniedPage";
         }
         User user = currentUser.get();
-        System.out.println(user.getResumePassKey());
         if (user.getActivationCode()!=null){
             logger.log(Level.WARNING, "Users " + user.getUsername()  + " account is not activated. Access denied.");
             return "AccessDeniedEmailPage";
@@ -172,4 +171,5 @@ public class ResumeController {
     }
 
 }
+
 

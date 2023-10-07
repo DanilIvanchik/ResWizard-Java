@@ -7,12 +7,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class MainController {
+public class MainPagesController {
 
     private final UserService userService;
 
     @Autowired
-    public MainController(UserService userService) {
+    public MainPagesController(UserService userService) {
         this.userService = userService;
     }
 
