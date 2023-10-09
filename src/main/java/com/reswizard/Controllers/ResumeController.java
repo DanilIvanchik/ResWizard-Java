@@ -20,12 +20,6 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-
 @Controller
 @RequestMapping("/resumes")
 public class ResumeController {
@@ -47,6 +41,12 @@ public class ResumeController {
         this.resumeService = resumeService;
     }
 
+    /**
+     * Displays all resumes for the current user.
+     *
+     * @param model The model to add attributes.
+     * @return The resume page view.
+     */
     @GetMapping("/")
     public String showAllUsersResumes(Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -71,6 +71,14 @@ public class ResumeController {
         return "ResumePage";
     }
 
+    /**
+     * Handles the upload of a resume file.
+     *
+     * @param selectedLanguage The selected language for the resume.
+     * @param file             The uploaded resume file.
+     * @return Redirects to the resume page after successful upload.
+     * @throws IOException If an error occurs during file handling.
+     */
     @PostMapping("/")
     public String handleResumeUpload(@ModelAttribute("option") Languages selectedLanguage,
                                      @RequestParam("file") MultipartFile file) throws IOException {
@@ -83,6 +91,13 @@ public class ResumeController {
         return "redirect:/resumes/";
     }
 
+    /**
+     * Handles the download of a resume file.
+     *
+     * @param ResumeId The ID of the resume to download.
+     * @param response The HttpServletResponse object.
+     * @return Redirects to the resume page after download.
+     */
     @RequestMapping(value = "/{id}")
     public String handleResumeDownload(@PathVariable("id") int ResumeId,
                                        HttpServletResponse response) {
@@ -98,6 +113,13 @@ public class ResumeController {
         return "redirect:/resumes/";
     }
 
+    /**
+     * Displays the resume page for a specific user.
+     *
+     * @param key   The access key for the user's resume.
+     * @param model The model to add attributes.
+     * @return The resume result page view.
+     */
     @GetMapping(value = "/{key}")
     public String showResumePage(@PathVariable("key") String key,
                                  Model model) {
@@ -107,7 +129,7 @@ public class ResumeController {
         }
         User user = currentUser.get();
         if (user.getActivationCode()!=null){
-            logger.log(Level.WARNING, "Users " + user.getUsername()  + " account is not activated. Access denied.");
+            logger.log(Level.WARNING, "User's " + user.getUsername()  + " account is not activated. Access denied.");
             return "AccessDeniedEmailPage";
         }
         model.addAttribute("user", user);
@@ -119,6 +141,12 @@ public class ResumeController {
         return "ResumeResultPage";
     }
 
+    /**
+     * Adds a user message to their resume.
+     *
+     * @param message The message to add to the resume.
+     * @return Redirects to the resume page after adding the message.
+     */
     @PostMapping("/add_message")
     public String addUserResumeMessage(@ModelAttribute("message") String message) {
         userService.isMessageLengthValid(message);
@@ -135,6 +163,13 @@ public class ResumeController {
         return "redirect:/resumes/";
     }
 
+    /**
+     * Handles the upload of an avatar image.
+     *
+     * @param file The uploaded avatar image file.
+     * @return Redirects to the resume page after successful upload.
+     * @throws IOException If an error occurs during file handling.
+     */
     @PostMapping("/upload_avatar")
     public String handleAvatarUpload(@RequestParam("file") MultipartFile file) throws IOException {
         logger.log(Level.INFO, "Uploading avatar image: " + file.getOriginalFilename());
@@ -143,6 +178,12 @@ public class ResumeController {
         return "redirect:/resumes/";
     }
 
+    /**
+     * Deletes a user's resume.
+     *
+     * @param resumeId The ID of the resume to delete.
+     * @return Redirects to the resume page after successful deletion.
+     */
     @DeleteMapping("/delete/{id}")
     public String deleteResume(@PathVariable("id") int resumeId) {
         resumeService.deleteUsersResumeFromEditPage(resumeId, uploadPath);
@@ -169,7 +210,7 @@ public class ResumeController {
         logger.log(Level.SEVERE, "Message Length Exception: " + e.getMessage());
         return "MessageLengthExceptionPage";
     }
-
 }
+
 
 

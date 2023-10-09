@@ -16,14 +16,26 @@ public class MainPagesController {
         this.userService = userService;
     }
 
+    /**
+     * Displays the main page.
+     *
+     * @return The main page view.
+     */
     @GetMapping("/hello")
-    public String sayHello(){
+    public String sayHello() {
         return "MainPage";
     }
 
+    /**
+     * Displays a user-specific main page.
+     *
+     * @param model The model to add attributes.
+     * @return The user-specific main page view.
+     */
     @GetMapping("/helloUser")
-    public String helloUser(Model model){
+    public String helloUser(Model model) {
         model.addAttribute("user", userService.getCurrentUser());
         return "MainUserPage";
     }
 }
+
