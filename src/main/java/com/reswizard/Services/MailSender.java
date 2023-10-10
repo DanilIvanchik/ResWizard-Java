@@ -16,6 +16,13 @@ public class MailSender{
     @Value("${spring.mail.username}")
     private String username;
 
+    /**
+     * Sends an email according to configuration.
+     *
+     * @param emailTo The recipient's email address.
+     * @param subject The subject of the email.
+     * @param message The content of the email.
+     */
     public void sendMail(String emailTo, String subject, String message){
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(username);

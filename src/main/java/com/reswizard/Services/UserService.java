@@ -35,19 +35,44 @@ public class UserService {
         this.mailSender = mailSender;
     }
 
+    /**
+     * Checks if a username is already present in the database.
+     *
+     * @param name The username to check.
+     * @return True if the username is already present, false otherwise.
+     */
     public boolean isUsernamePresent(String name) {
         return userRepo.findByUsername(name).isPresent();
     }
 
+    /**
+     * Checks if a user with a given email address is present in the database.
+     *
+     * @param email The email address to check.
+     * @return True if a user with the email address is present, false otherwise.
+     */
     public boolean isUserPresentByEmail(String email) {
         return userRepo.findByEmail(email).isPresent();
     }
 
+    /**
+     * Finds a user by their username.
+     *
+     * @param name The username of the user to find.
+     * @return The User object if found, or null if not found.
+     */
     public User findUserByUsername(String name) {
         logger.log(Level.INFO, "Finding user by username: " + name);
         return userRepo.findByUsername(name).orElse(null);
     }
 
+    /**
+     * Handles the upload of an avatar file.
+     *
+     * @param file       The uploaded avatar file.
+     * @param uploadPath The path where the avatar file will be stored.
+     * @throws IOException If an error occurs during file handling.
+     */
     @Transactional
     public void handleAvatarFileUpload(MultipartFile file, String uploadPath) throws IOException {
         logger.log(Level.INFO, "Uploading avatar file: " + file.getOriginalFilename());
@@ -84,6 +109,11 @@ public class UserService {
         logger.log(Level.INFO, "Avatar file upload completed successfully: " + file.getOriginalFilename());
     }
 
+    /**
+     * Sends a password recovery email to the user with the provided email address.
+     *
+     * @param email The email address of the user to send the recovery email to.
+     */
     @Transactional
     public void sendRecoveringEmail(String email) {
         Optional<User> optionalUser = userRepo.findByEmail(email);
@@ -171,6 +201,12 @@ public class UserService {
         return false;
     }
 
+    /**
+     * Resets a user's password and marks them as not in recovery process.
+     *
+     * @param user     The user whose password is being reset.
+     * @param password The new password for the user.
+     */
     @Transactional
     public void resetPassword(User user, String password) {
         user.setPassword(passwordEncoder.encode(password));

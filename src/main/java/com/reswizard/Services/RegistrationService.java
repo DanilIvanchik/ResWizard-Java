@@ -25,6 +25,11 @@ public class RegistrationService {
         this.mailSender = mailSender;
     }
 
+    /**
+     * Registers a new user by saving their information to the database.
+     *
+     * @param user The User object to be registered.
+     */
     @Transactional
     public void register(User user) {
         String password = user.getPassword();
