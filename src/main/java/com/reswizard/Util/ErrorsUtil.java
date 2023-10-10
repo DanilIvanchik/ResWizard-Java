@@ -7,6 +7,12 @@ public class ErrorsUtil {
     private ErrorsUtil() {
     }
 
+    /**
+     * Return validation errors to the client.
+     *
+     * @param bindingResult The BindingResult object containing validation errors.
+     * @throws StorageFileNotFoundException with error details if validation fails.
+     */
     public static void returnErrorsToClient(BindingResult bindingResult){
         StringBuilder stringBuilder = new StringBuilder();
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();

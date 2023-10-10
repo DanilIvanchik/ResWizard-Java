@@ -16,12 +16,23 @@ public class UserValidator implements Validator {
         this.userService = userService;
     }
 
-
+    /**
+     * Check if this validator supports the given class for validation.
+     *
+     * @param clazz The class to check.
+     * @return True if the class is supported, false otherwise.
+     */
     @Override
     public boolean supports(Class<?> clazz) {
         return User.class.equals(clazz);
     }
 
+    /**
+     * Validate the provided user object and add errors to the Errors object if validation fails.
+     *
+     * @param target The user object to validate.
+     * @param errors The Errors object to which validation errors will be added.
+     */
     @Override
     public void validate(Object target, Errors errors) {
         User user = (User) target;

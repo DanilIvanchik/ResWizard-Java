@@ -20,11 +20,23 @@ public class AuthValidator implements Validator {
         this.passwordEncoder = passwordEncoder;
     }
 
+    /**
+     * Check if the Validator supports the provided class.
+     *
+     * @param clazz The class to be checked.
+     * @return True if the Validator supports the class, false otherwise.
+     */
     @Override
     public boolean supports(Class<?> clazz) {
         return AuthenticationDTO.class.equals(clazz);
     }
 
+    /**
+     * Validate the target object and populate errors if validation fails.
+     *
+     * @param target The object to be validated.
+     * @param errors The Errors object to hold validation errors.
+     */
     @Override
     public void validate(Object target, Errors errors) {
         AuthenticationDTO authenticationDTO = (AuthenticationDTO) target;
