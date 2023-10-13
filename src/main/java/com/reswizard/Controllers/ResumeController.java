@@ -149,7 +149,7 @@ public class ResumeController {
      */
     @PostMapping("/add_message")
     public String addUserResumeMessage(@ModelAttribute("message") String message) {
-        userService.isMessageLengthValid(message);
+        userService.checkMessageLength(message);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 

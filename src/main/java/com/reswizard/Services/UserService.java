@@ -132,7 +132,7 @@ public class UserService {
         }
     }
 
-    private void deleteOldAvatar(String uploadPath, String fileName) {
+    public void deleteOldAvatar(String uploadPath, String fileName) {
         File file = new File(uploadPath + fileName);
         if (file.delete()) {
             logger.log(Level.INFO, "Deleted old avatar: " + uploadPath + fileName);
@@ -180,7 +180,7 @@ public class UserService {
      *
      * @param message The string representing the message to be checked.
      */
-    public void isMessageLengthValid(String message) {
+    public void checkMessageLength(String message) {
         if (message.length() > 500) {
             throw new MessageLengthException("Message length out of range. Message length should be between 0 and 500 characters.");
         }

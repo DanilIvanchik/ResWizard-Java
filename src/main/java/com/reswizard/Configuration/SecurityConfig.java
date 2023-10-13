@@ -1,6 +1,6 @@
 package com.reswizard.Configuration;
 
-import com.reswizard.Services.UserDetailsServiceImpl;
+import com.reswizard.Services.UserDetailsImplService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,17 +16,17 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    private final UserDetailsServiceImpl userDetailsServiceImpl;
+    private final UserDetailsImplService userDetailsImplService;
 
     @Autowired
-    public SecurityConfig(UserDetailsServiceImpl userDetailsServiceImpl){
-        this.userDetailsServiceImpl = userDetailsServiceImpl;
+    public SecurityConfig(UserDetailsImplService userDetailsImplService){
+        this.userDetailsImplService = userDetailsImplService;
     }
 
     @Bean
     @Primary
     public AuthenticationManagerBuilder congigureAuthenticationManagerBuilder(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception{
-        authenticationManagerBuilder.userDetailsService(userDetailsServiceImpl).passwordEncoder(passwordEncoder());
+        authenticationManagerBuilder.userDetailsService(userDetailsImplService).passwordEncoder(passwordEncoder());
         return authenticationManagerBuilder;
     }
 
