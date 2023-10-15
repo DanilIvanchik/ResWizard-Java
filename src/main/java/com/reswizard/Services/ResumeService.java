@@ -165,7 +165,7 @@ public class ResumeService {
      * @param fileName   The name of the file.
      * @param uploadPath The path to the directory where uploaded files are stored.
      */
-    private void deleteResumeFromStorage(String uploadPath, String fileName) {
+    public void deleteResumeFromStorage(String uploadPath, String fileName) {
         File file = new File(uploadPath + fileName);
         if (file.delete()) {
             logger.log(Level.INFO, "Deleted resume: " + uploadPath + fileName);
@@ -199,7 +199,7 @@ public class ResumeService {
      * @param originalFileName The original file name.
      * @return The generated unique file name.
      */
-    private String generateUniqueFileName(String originalFileName) {
+    public String generateUniqueFileName(String originalFileName) {
         String uidFile = UUID.randomUUID().toString();
         int lastDotIndex = originalFileName.lastIndexOf(".");
         String extension = (lastDotIndex >= 0) ? originalFileName.substring(lastDotIndex) : "";
@@ -213,7 +213,7 @@ public class ResumeService {
      * @param oldResume The old Resume to be replaced.
      * @param newResume The new Resume to be added.
      */
-    private void updateUserResumes(User user, Resume oldResume, Resume newResume) {
+    public void updateUserResumes(User user, Resume oldResume, Resume newResume) {
         user.getResumes().remove(oldResume);
         user.getResumes().add(newResume);
         userService.save(user);
