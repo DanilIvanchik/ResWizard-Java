@@ -3,7 +3,7 @@
 ![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen)
 ![Test Coverage](https://img.shields.io/badge/Test%20Coverage-57%43-yellow)
 
-ResWizard is an Java-based web service designed to streamline the resume-sharing process. Its primary objective is to generate an intuitive and visually appealing web page that can be effortlessly shared through a custom link, allowing individuals to present their resumes and provide concise personal information to potential employers. With ResWizard, users can effortlessly distribute their resumes, while visitors to their unique web page can conveniently download the resume in their preferred language.
+ResWizard is a Java-based web service designed to streamline the resume-sharing process. Its primary objective is to generate an intuitive and visually appealing web page that can be effortlessly shared through a custom link, allowing individuals to present their resumes and provide concise personal information to potential employers. With ResWizard, users can effortlessly distribute their resumes, while visitors to their unique web page can conveniently download the resume in their preferred language.
 
 ## Содержание
 - [Technologies](##Technologies)
