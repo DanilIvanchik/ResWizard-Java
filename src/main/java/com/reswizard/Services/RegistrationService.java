@@ -44,7 +44,7 @@ public class RegistrationService {
         if (!StringUtils.isEmpty(user.getEmail())) {
             String message = String.format(
                     "Hello, %s! \n" +
-                            "Welcome to ResWizard! Please, visit next link to activate tour account : http://localhost:8080/auth/activate/%s",
+                            "Welcome to ResWizard! Please, visit next link to activate your account : http://localhost:8080/auth/activate/%s",
                     user.getUsername(),
                     user.getActivationCode()
             );
