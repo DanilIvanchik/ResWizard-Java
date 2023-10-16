@@ -205,7 +205,7 @@ This project was designed to simplify the process of distributing resumes by off
 - [x] Implementation of the logic for activating an account via email.
 - [x] Implementation of the logic for resetting and reassigning a password via email.
 - [x] Exception handling.
-- [ ] Test coverage.
+- [x] Test coverage.
 
 ## The project team
 
