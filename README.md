@@ -3,7 +3,21 @@
 ![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen)
 ![Test Coverage](https://img.shields.io/badge/Test%20Coverage-62-brightgreen)
 
-ResWizard is a Java-based web service designed to streamline the resume-sharing process. Its primary objective is to generate an intuitive and visually appealing web page that can be effortlessly shared through a custom link, allowing individuals to present their resumes and provide concise personal information to potential employers. With ResWizard, users can effortlessly distribute their resumes, while visitors to their unique web page can conveniently download the resume in their preferred language.
+   ResWizard is a Java-based web service designed to streamline the resume-sharing process. Its primary objective is to generate an intuitive and visually appealing web page that can be effortlessly shared through a custom link, allowing individuals to present their resumes and provide concise personal information to potential employers. With ResWizard, users can effortlessly distribute their resumes, while visitors to their unique web page can conveniently download the resume in their preferred language.
+
+![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(10).png)
+![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(12).png)
+![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(13).png)
+![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(1).png)
+![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(18).png)
+![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(20).png)
+![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(21).png)
+![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(22).png)
+![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(23).png)
+![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(24).png)
+![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(25).png)
+![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(26).png)
+![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(27).png)
 
 ## Content
 - [Technologies](##Technologies)
