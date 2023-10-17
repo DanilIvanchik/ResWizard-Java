@@ -3,9 +3,22 @@
 ![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen)
 ![Test Coverage](https://img.shields.io/badge/Test%20Coverage-62-brightgreen)
 
-   ResWizard is a Java-based web service designed to streamline the resume-sharing process. Its primary objective is to generate an intuitive and visually appealing web page that can be effortlessly shared through a custom link, allowing individuals to present their resumes and provide concise personal information to potential employers. With ResWizard, users can effortlessly distribute their resumes, while visitors to their unique web page can conveniently download the resume in their preferred language.
-<br>
-<br>
+   ResWizard is a web service designed to streamline the resume-sharing process. Its primary objective is to generate an intuitive and visually appealing web page that can be effortlessly shared through a custom link, allowing individuals to present their resumes and provide concise personal information to potential employers. With ResWizard, users can effortlessly distribute their resumes, while visitors to their unique web page can conveniently download the resume in their preferred language.
+
+## Content
+- [Technologies](##Technologies)
+- [Usage](#Usage)
+- [Configuration](#Configuration)
+- [Development](#Development)
+- [Testing](#Testing)
+- [Contributing](#contributing)
+- [Deploy and CI/CD](#Deploy-and-CI/CD)
+- [Contributing to ResWizard](#Contributing-to-ResWizard)
+- [To do](##to-do)
+- [The project team](#The-project-team)
+  
+## Functional
+
    ResWizard offers a range of functionalities, including user registration and authentication, email account activation, password recovery and reset, and the ability to create and customize your own public, shareable page showcasing your resumes. Below, you can observe tangible illustrations of the service in action.
 
    
@@ -73,18 +86,6 @@ The user is provided with the ability to initiate a password reset. To commence 
 <br>
 <br>
 I've provided an overview of ResWizard's primary functionalities, but there's no substitute for firsthand experience! Below, you'll find instructions on how to test ResWizard yourself. I'm always eager to receive your pull requests and comments. Looking forward to your participation! 😉
-
-## Content
-- [Technologies](##Technologies)
-- [Usage](#Usage)
-- [Configuration](#Configuration)
-- [Development](#Development)
-- [Testing](#Testing)
-- [Contributing](#contributing)
-- [Deploy and CI/CD](#Deploy-and-CI/CD)
-- [Contributing to ResWizard](#Contributing-to-ResWizard)
-- [To do](##to-do)
-- [The project team](#The-project-team)
 
 ## Technologies
 
