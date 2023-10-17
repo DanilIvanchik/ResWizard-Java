@@ -4,30 +4,73 @@
 ![Test Coverage](https://img.shields.io/badge/Test%20Coverage-62-brightgreen)
 
    ResWizard is a Java-based web service designed to streamline the resume-sharing process. Its primary objective is to generate an intuitive and visually appealing web page that can be effortlessly shared through a custom link, allowing individuals to present their resumes and provide concise personal information to potential employers. With ResWizard, users can effortlessly distribute their resumes, while visitors to their unique web page can conveniently download the resume in their preferred language.
-
+<br>
+<br>
    ResWizard offers a range of functionalities, including user registration and authentication, email account activation, password recovery and reset, and the ability to create and customize your own public, shareable page showcasing your resumes. Below, you can observe tangible illustrations of the service in action.
 
    The main page of ResWizard, from which a new user, in order to gain access to the service, needs to go to the registration page, create and activate his account.  
-![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(10).png)  
+<br>
+<br>
+![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(10).png)
+<br>
+<br>
 User Authentication Page.  
-![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(12).png)  
-For user registration and authentication, triple validation is implemented at the database, model, and controller levels.  
+<br>
+<br>
+![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(12).png)
+<br>
+<br>
+For user registration and authentication, triple validation is implemented at the database, model, and controller levels.
+<br>
+<br>
 ![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(13).png)
+<br>
+<br>
 Resume page customization page. On it, the user can set an avatar for himself, write a message for users visiting his page, as well as upload his resume in the selected language, after which, when he clicks "Get your resume", a unique page with an encrypted, public URL will be created, which even non-users will have access to.
+<br>
+<br>
 ![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(1).png)
+<br>
+<br>
 Result page. It is worth noting that a user who created an account without confirming his email address will not be able to create a page and will receive an error message.
+<br>
+<br>
 ![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(18).png)
+<br>
+<br>
 ![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(20).png)
+<br>
+<br>
 Message for account activation.
+<br>
+<br>
 ![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(21).png)
+<br>
+<br>
 After clicking on the link in the email, the user successfully activates the account and gains access to the full functionality of ResWizard.
+<br>
+<br>
 ![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(22).png)
+<br>
+<br>
 The user also has the option to reset the password. To begin the reset, click on the "Forgot the password?" button. on the login page, after which the standard password recovery procedure via email begins.
+<br>
+<br>
 ![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(23).png)
+<br>
+<br>
 ![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(24).png)
+<br>
+<br>
 ![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(25).png)
+<br>
+<br>
 ![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(26).png)
+<br>
+<br>
 ![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(27).png)
+<br>
+<br>
 I told you about the main functions of ResWizard, but nothing can replace real experience of use! Below you can find information on how to try ResWizard for yourself. I will always be glad to see your pull requests and comments! See you ;)
 
 ## Content
