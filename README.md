@@ -8,7 +8,8 @@
 <br>
    ResWizard offers a range of functionalities, including user registration and authentication, email account activation, password recovery and reset, and the ability to create and customize your own public, shareable page showcasing your resumes. Below, you can observe tangible illustrations of the service in action.
 
-   The main page of ResWizard, from which a new user, in order to gain access to the service, needs to go to the registration page, create and activate his account.  
+   
+   The primary entry point to ResWizard's services requires new users to navigate to the login page, where they must proceed with the creation and activation of their accounts in order to gain access.
 <br>
 <br>
 ![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(10).png)
@@ -20,19 +21,19 @@ User Authentication Page.
 ![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(12).png)
 <br>
 <br>
-For user registration and authentication, triple validation is implemented at the database, model, and controller levels.
+For user registration and authentication, a three-tier validation process is in place, encompassing validation checks at the database, model, and controller levels.
 <br>
 <br>
 ![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(13).png)
 <br>
 <br>
-Resume page customization page. On it, the user can set an avatar for himself, write a message for users visiting his page, as well as upload his resume in the selected language, after which, when he clicks "Get your resume", a unique page with an encrypted, public URL will be created, which even non-users will have access to.
+The Resume Page Customization section enables users to personalize their resume pages. Within this section, users have the option to configure their profile by adding an avatar, composing a message for visitors to their page, and uploading their resume in their preferred language. Once these steps are completed, clicking the "Generate Resume" button will generate a unique page with an encrypted, publicly accessible URL, allowing even non-registered individuals to view the content.
 <br>
 <br>
 ![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(1).png)
 <br>
 <br>
-Result page. It is worth noting that a user who created an account without confirming his email address will not be able to create a page and will receive an error message.
+Outcome Page: It's important to emphasize that a user who has registered an account without verifying their email address will be unable to generate a page and will instead receive an error message.
 <br>
 <br>
 ![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(18).png)
@@ -47,13 +48,13 @@ Message for account activation.
 ![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(21).png)
 <br>
 <br>
-After clicking on the link in the email, the user successfully activates the account and gains access to the full functionality of ResWizard.
+Upon selecting the link within the email, the user effectively activates their account, thereby obtaining complete access to ResWizard's full range of features and capabilities.
 <br>
 <br>
 ![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(22).png)
 <br>
 <br>
-The user also has the option to reset the password. To begin the reset, click on the "Forgot the password?" button. on the login page, after which the standard password recovery procedure via email begins.
+The user is provided with the ability to initiate a password reset. To commence this process, they should click on the "Forgot your password?" button located on the login page. Subsequently, the standard password recovery procedure through email will be activated.
 <br>
 <br>
 ![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(23).png)
@@ -71,7 +72,7 @@ The user also has the option to reset the password. To begin the reset, click on
 ![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(27).png)
 <br>
 <br>
-I told you about the main functions of ResWizard, but nothing can replace real experience of use! Below you can find information on how to try ResWizard for yourself. I will always be glad to see your pull requests and comments! See you ;)
+I've provided an overview of ResWizard's primary functionalities, but there's no substitute for firsthand experience! Below, you'll find instructions on how to test ResWizard yourself. I'm always eager to receive your pull requests and comments. Looking forward to your participation! 😉
 
 ## Content
 - [Technologies](##Technologies)
