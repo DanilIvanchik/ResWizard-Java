@@ -6,8 +6,8 @@
    ResWizard is a web service designed to streamline the resume-sharing process. Its primary objective is to generate an intuitive and visually appealing web page that can be effortlessly shared through a custom link, allowing individuals to present their resumes and provide concise personal information to potential employers. With ResWizard, users can effortlessly distribute their resumes, while visitors to their unique web page can conveniently download the resume in their preferred language.
 
 ## Content
-- [Functional](##Functional)
-- [Technologies](##Technologies)
+- [Functional](#Functional)
+- [Technologies](#Technologies)
 - [Usage](#Usage)
 - [Configuration](#Configuration)
 - [Development](#Development)
@@ -15,7 +15,7 @@
 - [Contributing](#contributing)
 - [Deploy and CI/CD](#Deploy-and-CI/CD)
 - [Contributing to ResWizard](#Contributing-to-ResWizard)
-- [To do](##to-do)
+- [To do](#to-do)
 - [The project team](#The-project-team)
   
 ## Functional
