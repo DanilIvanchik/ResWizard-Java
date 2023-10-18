@@ -47,7 +47,7 @@ The Resume Page Customization section enables users to personalize their resume 
 ![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(1).png)
 <br>
 <br>
-Outcome Page: It's important to emphasize that a user who has registered an account without verifying their email address will be unable to generate a page and will instead receive an error message.
+Outcome Page. When the user clicks on the selected language, a file with the specified language is downloaded, which was uploaded by the owner on the customization page. It's important to emphasize that a user who has registered an account without verifying their email address will be unable to generate a page and will instead receive an error message.
 <br>
 <br>
 ![Image alt](https://github.com/DanilIvanchik/ResWizard/raw/main/readmeImages/image%20(18).png)
