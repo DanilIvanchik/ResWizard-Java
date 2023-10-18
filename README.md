@@ -116,35 +116,42 @@ I've provided an overview of ResWizard's primary functionalities, but there's no
 
 To use our project, you can follow these steps to download it from GitHub and set it up in your Java environment.
 
-1. **Clone the Repository:**
+1. **Create a database**
+
+   For the application to work correctly, you must create and connect to the database. For PostgreSQL, you can use the psql command and the -U (username) and -d (database name) flags to connect to PostgreSQL and run SQL queries from a file:
+
+   ```shell
+   psql -U your_user_name -d database_name -a -f file_name.sql
+   
+2. **Clone the Repository:**
 
    Use `git` to clone the project repository from GitHub:
 
    ```shell
    git clone https://github.com/DanilIvanchik/ResWizard.git 
 
-2. **Navigate to the Project Directory:**
+3. **Navigate to the Project Directory:**
 
    Change your working directory to the project folder:
 
    ```shell
    cd ResWizard
 
-3. **Build the Project:**
+4. **Build the Project:**
 
    Use Maven to build the project. Make sure you have Maven installed.
 
    ```shell
    mvn clean install
 
-3. **Run the Application:**
+5. **Run the Application:**
 
    Run the application using the Spring Boot Maven plugin:
 
    ```shell
    mvn spring-boot:run
 
-4. **Access the Application: **
+6. **Access the Application:**
 
    Once the application is running, open your web browser and go to http://localhost:8080/hello to access the project.
 
