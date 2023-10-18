@@ -118,7 +118,7 @@ To use our project, you can follow these steps to download it from GitHub and se
 
 1. **Create a database**
 
-   For the application to work correctly, you must create and connect to the database. For PostgreSQL, you can use the psql command and the -U (username) and -d (database name) flags to connect to PostgreSQL and run SQL queries from a file which you can find in the repository (ResWizardDB):
+   For the application to work correctly, you must create and connect to the database. For PostgreSQL, you can use the psql command and the -U (username) and -d (database name) flags to connect to PostgreSQL and run SQL queries from a file which you can find in the repository (DB):
 
    ```shell
    psql -U your_user_name -d database_name -a -f file_name.sql
